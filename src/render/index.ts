@@ -1,12 +1,16 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, select } from 'redux-saga/effects'
 
-import { DomNode } from '../dom'
+import { React, DomNode, DOM } from '../dom'
 import Node from '../node'
 
 import { actionCreators } from '../actions'
 
 function commit(node: Node) {
     return put(actionCreators.commit(node))
+}
+
+function refresh(node: Node) {
+    return select(state => (state as Node).descendant(node.path))
 }
 
 export interface NodeProps {
@@ -26,23 +30,9 @@ export interface GroupProps extends NodeProps {
     tagName?: string
 }
 
-// class UnitRenderer extends Renderer<UnitProps> {
-
-//     render() {
-
-//         const props = this.props
-
-//         return function* () {
-//             //this.props.
-//             // props.size
-         
-//             // yield commit(node)
-//         }
-//     }
-    
-// }
-
 import renderUnit from './unit'
+import renderTest from './_test'
+import renderScript from './script'
 
 function* renderGeometry(node: Node, props: GeometryProps, domNode: DomNode) {
     
@@ -53,15 +43,7 @@ function* renderGeometry(node: Node, props: GeometryProps, domNode: DomNode) {
 }
 
 function* renderGroup(node: Node, props: GroupProps, domNode: DomNode) {
-    
-        // node.props
-    
-    // yield render(commit(node)
-    // const domNode = {
-
-    // }    
-
-    console.log('props', props)
+            
 
     if (props.tagName) {
         node = node.setTagName(props.tagName)
@@ -69,19 +51,31 @@ function* renderGroup(node: Node, props: GroupProps, domNode: DomNode) {
 
     yield commit(node)
 
-    console.log('node', node)
+    // console.log('node', node)
 
-    console.log('render group', domNode.children)
+    // console.log('render group', domNode.children)
     
     let i = 0
-    while ( i < domNode.children.length) {        
+
+    // const isNonEmpty = (c: DomNode) => !(c.type === 'text' && (c.data || '').trim().length === 0)
+    const children = domNode.children
+
+    // let j = 0
+    while ( i < children.length) {        
 
         yield call(render1, node.child(i), domNode.children[i])
-
+        
         i = i + 1
         // yield call(render1, node.child(1), domNode.children[1])
     }
     // }
+
+    node = yield refresh(node)
+    // console
+    // n1.pp()
+
+    node = node.setStatus('done')
+    yield commit(node)
     // yield call(render, node, domNode)
     // return node
 }
@@ -107,16 +101,10 @@ export default function render(node: Node, domNode: DomNode) {
     
 export function* render1(node: Node, domNode: DomNode) {
 
-    // yield select(s => s)
-    // node.createChild();
-    
-    console.log('render', domNode)//, tagName)
-    
     const tagName = domNode.name
     
     node = node.setTagName(tagName)
-    // console.log('node', node, node.tagName)    
-
+    
     yield commit(node)
 
     const props = domNode.attribs
@@ -132,7 +120,15 @@ export function* render1(node: Node, domNode: DomNode) {
     } else if (tagName === 'craftml-geometry') {
         
         yield renderGeometry(node, {geometry: 3}, domNode)
-    }        
+
+    } else if (tagName === 'test') {
+        
+        yield renderTest(node, props, domNode)
+
+    } else if (tagName === 'script') {
+
+        yield renderScript(node, props, domNode)
+    }     
 
     // yield put({type: 'hello'})
     // return node

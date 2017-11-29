@@ -11,9 +11,9 @@ export interface Attribs {
 
 export const React = {
 
-    createElement(type: string, props: {}, children: Array<DomNode>  | DomNode ): DomNode {        
+    createElement(type: string, props: {}, children: DomNode[]  | DomNode ): DomNode {        
 
-        let childrenArray: Array<DomNode>
+        let childrenArray: DomNode[]
 
         if (Array.isArray(children)) {
 
@@ -27,6 +27,9 @@ export const React = {
 
             childrenArray = []
         }
+
+        const isNonEmpty = (c: DomNode) => !(c.type === 'text' && (c.data || '').trim().length === 0)
+        childrenArray = childrenArray.filter(isNonEmpty)
 
         return {
             type: 'tag', 

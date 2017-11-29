@@ -1,0 +1,18 @@
+<test title="default">
+    <craftml-unit/>
+    <craftml-unit/>
+    <script>    
+       $('craftml-unit').should.have.two
+       $('craftml-geometry').should.have.two
+       //$('craftml-unit').should.have.position(0,0,0).and.size(10,10,10)
+    </script>
+</test> 
+
+<test title="another">
+    <craftml-unit/>    
+    <script>    
+       $('craftml-unit').should.have.one
+       $('craftml-geometry').should.have.one
+       //$('craftml-unit').should.have.position(0,0,0).and.size(10,10,10)
+    </script>
+</test> 

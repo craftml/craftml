@@ -1,28 +1,29 @@
 import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import { takeLatest } from 'redux-saga'
+import { takeLatest, END } from 'redux-saga'
 import { call, actionChannel, select } from 'redux-saga/effects'
 import { DomNode } from './dom'
 
 import { COMMIT, Actions } from './actions'
+import * as _ from 'lodash'
 
 import Node from './node'
-    
-export type RootAction =  Actions[keyof Actions]
 
-const reducer = (state: Node, action: RootAction ) => {
-    
+export type RootAction = Actions[keyof Actions]
+
+const reducer = (state: Node, action: RootAction) => {
+
     switch (action.type) {
         case COMMIT:
-            if (state) {                
+            if (state) {
                 const { node } = action.payload
-                return state.setSubtree(node)            
+                return state.setSubtree(node)
             } else {
                 return action.payload.node
-            }            
-                  
+            }
+
         default: return state;
-      }
+    }
 }
 
 const sagaMiddleware = createSagaMiddleware()
@@ -37,7 +38,7 @@ import render from './render'
 import { createRoot } from './node'
 
 // function* bar(){
-       
+
 // }
 
 // export const actionCreators = {
@@ -54,27 +55,28 @@ interface RenderAction {
 }
 
 function* foo(action: RenderAction) {
-
-    console.log('foo', action)
-    // /
+    
     const dom = action.payload.dom
     let root = createRoot()
     // yield render(node, dom)
     yield render(root, dom)
 
     // node.pp()
-    const node = yield select(state => state)
-    node.pp()
+    // const node = yield select(state => state)
+    // node.pp()
 }
 
 // declare const channel: Channel<{foo: string}>;
 
-function* engineSaga() {    
+function* engineSaga() {
     const requestChan = yield actionChannel('RENDER_REQUEST')
     yield takeLatest(requestChan, foo)
 }
 
 // dom = {}
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 async function renderAsync(dom: DomNode) {
 
@@ -84,15 +86,67 @@ async function renderAsync(dom: DomNode) {
     )
     sagaMiddleware.run(engineSaga)
     // console.log('renderAysnc')
-    store.dispatch({type: 'RENDER_REQUEST', payload: {dom}})
+    store.dispatch({ type: 'RENDER_REQUEST', payload: { dom } })
+
+    // poll every 100 seconds
+    let status = ''
+    let count = 0
+    while (status !== 'done' && count < 10) {
+        status = store.getState().status
+        // console.log('status', store.getState().status)////.get('status','')
+        await sleep(100)
+        // console.log('not yet')
+        count++
+    }
+
+    // end the saga
+    store.dispatch(END)
 
     return 0
 }
+
+import * as fs from 'fs'
+import parse from './parse'
 
 export default class Engine {
 
     public async render(dom: DomNode) {
         return await renderAsync(dom)
+    }
+
+    registerTestSuite(filename: string, describe, it) {
+
+        const content = fs.readFileSync(filename, 'utf8')
+        const parsed = parse(content, {})
+
+        describe(filename, () => {
+
+            _.forEach(parsed, (p, k) => {
+
+                if (p.name === 'test') {
+
+                    const title = filename + '>' + p.attribs.title
+
+                    it(title, async () => {
+
+                        const node = await renderAsync(p)
+
+                        // console.log('node', node.children[1].errors)
+                        // const errors = node.children[1].errors
+                        // // console.log('errors', node.children[0].errors)
+                        // if (errors.length > 0) {
+                        //     node.pp()
+                        //     // console.error(errors[0].message)
+                        //     throw errors[0].message//assert(false, )
+                        // }
+                    })
+
+                }
+
+            })
+
+        })
+
     }
 
 }

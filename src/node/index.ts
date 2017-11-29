@@ -21,6 +21,7 @@ interface Box {
 
 }
 
+import query from '../query'
 import pp from './pp'
 
 export function createRoot(): Node {
@@ -49,12 +50,25 @@ export default class Node {
     }
 
     get path(): Array<string> {
-        return this._state.get('path', []) as Array<string>
+        return this._state.get('path', []) as string[]
     }
 
-    get children(): Array<Node> {        
+    get children(): Node[] {        
         return (this._state.get('children', Map()) as Map<string, NodeState>)
-            .toArray().map(c => new Node(c)) as Array<Node>
+            .toArray().map(c => new Node(c)) as Node[]
+    }
+
+    get $() {
+        return query(this)
+    }
+
+    get status(): string {        
+        return this._state.get('status', 'unknown') as string
+    }
+
+    setStatus(status: string) {
+        const newState = this._state.set('status', status) as NodeState        
+        return this.update(newState)
     }
 
     child(index: number): Node {
@@ -65,6 +79,12 @@ export default class Node {
         return new Node(childState, this._rootState)
     }
 
+    descendant(path: string[]): Node {
+        const impath = IMPATH(path)
+        const descendantState = this._state.getIn(impath)
+        return new Node(descendantState, this._rootState)
+    }
+
     setTagName(tagName: string): Node {
         const newState = this._state.set('tagName', tagName) as NodeState        
         return this.update(newState)
@@ -73,7 +93,7 @@ export default class Node {
     setSubtree(subtree: Node) {
         const impath = IMPATH(subtree.path)
         // console.log('impath', impath, 'state', this._state.toJS())
-        const newState = this._state.setIn(IMPATH(subtree.path), subtree.state)
+        const newState = this._state.setIn(impath, subtree.state)
         return this.update(newState)
     }
 
