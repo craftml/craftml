@@ -1,9 +1,9 @@
-import { React, DomNode, DOM } from '../dom'
+import { DomNode } from '../dom'
 
 import { NodeProps } from './index'
 import Node from '../node'
 
-import render from './index'
+// import render from './index'
 import { select } from 'redux-saga/effects'
 import * as _ from 'lodash'
 
@@ -22,7 +22,7 @@ function localFunctionStatements(locals: {}) {
 export default function* renderScript(node: Node, props: NodeProps, domNode: DomNode) {
 
     // node.props
-    console.log('render script')
+    // console.log('render script')
 
     let thisPointer = {
         // make this.children read only
@@ -39,8 +39,6 @@ export default function* renderScript(node: Node, props: NodeProps, domNode: Dom
     // if (parentNode){
     //     $ = parentNode.$
     // }
-
-    
 
     const locals = {
         $,

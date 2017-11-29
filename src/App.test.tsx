@@ -36,6 +36,7 @@ function registerRecursively(input, path, func) {
 
 const cases = {
   unit: null,
+  group: null
 }
 
 const engine = new Engine()
@@ -46,37 +47,37 @@ describe('engine', () => {
 
 })
 
-it('renders without crashing', async () => {
-  // const div = document.createElement('div');
-  // ReactDOM.render(<App />, div);
-  // console.log('hello')
-  // const engine = new Engine()
+// it('renders without crashing', async () => {
+//   // const div = document.createElement('div');
+//   // ReactDOM.render(<App />, div);
+//   // console.log('hello')
+//   // const engine = new Engine()
 
-  // const unit = {
-  //   type: 'tag', 
-  //   name: 'craftml-unit', 
-  //   attribs: {}, 
-  //   children: []
-  // }
+//   // const unit = {
+//   //   type: 'tag', 
+//   //   name: 'craftml-unit', 
+//   //   attribs: {}, 
+//   //   children: []
+//   // }
 
-  // const group = {
-  //   type: 'tag', 
-  //   name: 'craftml-group', 
-  //   attribs: {}, 
-  //   children: [unit, unit, unit]
-  // }
+//   // const group = {
+//   //   type: 'tag', 
+//   //   name: 'craftml-group', 
+//   //   attribs: {}, 
+//   //   children: [unit, unit, unit]
+//   // }
 
-  // console.log(parse(code))
+//   // console.log(parse(code))
 
-  const content = fs.readFileSync('./test/unit.html', 'utf8')
-  // console.log('content', content)
-  const parsed = parse(content, {})
-  // console.log('parsed', parsed)
+//   const content = fs.readFileSync('./test/unit.html', 'utf8')
+//   // console.log('content', content)
+//   const parsed = parse(content, {})
+//   // console.log('parsed', parsed)
 
-  const root = parsed[0]// = parse(code)[0]
+//   const root = parsed[0]// = parse(code)[0]
 
-  await engine.render(root)
+//   await engine.render(root)
 
-  // node.pp()
-  // console.log('done', done)
-});
+//   // node.pp()
+//   // console.log('done', done)
+// });

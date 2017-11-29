@@ -37,13 +37,12 @@ import renderScript from './script'
 function* renderGeometry(node: Node, props: GeometryProps, domNode: DomNode) {
     
     // node.props
-    console.log('render geometry')
+    // console.log('render geometry')
 
     yield commit(node)
 }
 
 function* renderGroup(node: Node, props: GroupProps, domNode: DomNode) {
-            
 
     if (props.tagName) {
         node = node.setTagName(props.tagName)
@@ -51,19 +50,14 @@ function* renderGroup(node: Node, props: GroupProps, domNode: DomNode) {
 
     yield commit(node)
 
-    // console.log('node', node)
-
-    // console.log('render group', domNode.children)
-    
     let i = 0
 
-    // const isNonEmpty = (c: DomNode) => !(c.type === 'text' && (c.data || '').trim().length === 0)
-    const children = domNode.children
+    const isNonEmpty = (c: DomNode) => !(c.type === 'text' && (c.data || '').trim().length === 0)
+    const children = domNode.children.filter(isNonEmpty)
 
-    // let j = 0
     while ( i < children.length) {        
 
-        yield call(render1, node.child(i), domNode.children[i])
+        yield render(node.child(i), children[i])
         
         i = i + 1
         // yield call(render1, node.child(1), domNode.children[1])
@@ -84,22 +78,14 @@ export interface Renderer {
     saga: (node: Node, props: NodeProps, domNode: DomNode) => IterableIterator<{}>
 }
 
-const t: Renderer = {
-    saga: renderGroup
-} 
-
-const s: Renderer = {
-    saga: renderUnit
-} 
-
-// console.log(t)
-// console.log(s)
-
+//
+// render effect
+// 
 export default function render(node: Node, domNode: DomNode) {
     return call(render1, node, domNode)
 }
     
-export function* render1(node: Node, domNode: DomNode) {
+export function* render1(node: Node, domNode: DomNode): {} {
 
     const tagName = domNode.name
     

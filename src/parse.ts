@@ -62,7 +62,7 @@ export default function parse(code: string, context?: {}): DomNode[] {
 
     let parser = new htmlparser.Parser(handler, {
           recognizeSelfClosing: true,
-          lowerCaseAttributeNames: false
+          lowerCaseAttributeNames: false          
         })
     parser.write(code)
     parser.end()

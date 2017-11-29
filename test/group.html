@@ -1,0 +1,45 @@
+<test title="empty">
+    <craftml-group>
+    </craftml-group>
+    <script>
+        $('craftml-group').should.have.one
+        $('craftml-unit').should.have.none
+    </script>
+</test>
+
+<test title="has one child">
+    <craftml-group>
+        <craftml-unit/>
+    </craftml-group>
+    <script>
+        $('craftml-group').should.have.one
+        $('craftml-unit').should.have.one
+        $('craftml-group').pp()
+        //$('craftml-group').should.have.size(10, 10, 10)
+    </script>
+</test>
+
+<test title="has two children">
+    <craftml-group>
+        <craftml-unit/>
+        <craftml-unit/>
+    </craftml-group>
+    <script>
+        $('craftml-group').should.have.one
+        $('craftml-unit').should.have.two
+    </script>
+</test>
+
+<test title="nested">
+    <craftml-group id="top">
+        <craftml-group>
+            <craftml-unit/>
+            <craftml-unit/>
+        </craftml-group>
+    </craftml-group>
+    <script>
+        $('craftml-group').should.have.two
+        $('craftml-unit').should.have.two
+          //$('#top').pp()
+    </script>
+</test>

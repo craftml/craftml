@@ -30,7 +30,7 @@ export const React = {
 
         const isNonEmpty = (c: DomNode) => !(c.type === 'text' && (c.data || '').trim().length === 0)
         childrenArray = childrenArray.filter(isNonEmpty)
-
+        // console.log('children', childrenArray)
         return {
             type: 'tag', 
             name: type,

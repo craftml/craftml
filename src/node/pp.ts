@@ -24,7 +24,7 @@ function toStringRecursively(node: Node, levels: number = 0): string {
 }
 
 function toString(node: Node): string {
-
+    // console.log('node', node)
     let tagName
     if (node.tagName.match(/^craftml-/)) {
         tagName = node.tagName.replace(/^craftml-/, '')
