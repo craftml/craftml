@@ -18,7 +18,8 @@ export interface NodeProps {
 }
 
 export interface GeometryProps {
-    geometry: number   
+    geometry: Geometry,
+    dimensions: number
 }    
 
 export interface UnitProps extends NodeProps {
@@ -33,12 +34,14 @@ export interface GroupProps extends NodeProps {
 import renderUnit from './unit'
 import renderTest from './_test'
 import renderScript from './script'
+import { Geometry } from 'three';
 
 function* renderGeometry(node: Node, props: GeometryProps, domNode: DomNode) {
     
-    // node.props
-    // console.log('render geometry')
+    const { geometry, dimensions } = props 
 
+    node = node.setGeometry(geometry).setDimensions(dimensions)
+    
     yield commit(node)
 }
 
@@ -97,7 +100,7 @@ export function* render1(node: Node, domNode: DomNode): {} {
 
     if (tagName === 'craftml-unit') {
 
-        yield renderUnit(node, {size: 10}, domNode)
+        yield renderUnit(node, props, domNode)
     
     } else if (tagName === 'craftml-group') {
 
@@ -105,7 +108,7 @@ export function* render1(node: Node, domNode: DomNode): {} {
 
     } else if (tagName === 'craftml-geometry') {
         
-        yield renderGeometry(node, {geometry: 3}, domNode)
+        yield renderGeometry(node, props, domNode)
 
     } else if (tagName === 'test') {
         

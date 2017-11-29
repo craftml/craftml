@@ -71,9 +71,9 @@ function toString(node: Node): string {
     //     str += ' ' + node.parts.map((c,k)=>k).toArray().join(',')
     //   }
 
-    //   if (node.geometry && node.geometry.vertices){
-    //     str += ` g(${node.geometry.vertices.length}) ${node.dimensions}d`
-    //   }
+    if (node.geometry && node.geometry.vertices){
+        str += ` g(${node.geometry.vertices.length}) ${node.dimensions}d`
+    }
 
     return str
 }

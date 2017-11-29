@@ -1,14 +1,15 @@
 import { Map } from 'immutable'
 import * as _ from 'lodash'
+import { Geometry, Matrix4 } from 'three'
 
-const IMPATH = (p: Array<string>) =>  
+const IMPATH = (p: Array<string>) =>
     _.reduce(
-        p, 
+        p,
         (ret: Array<string>, e, i) => {
             ret.push('children')
             ret.push(e)
             return ret
-        },                                           
+        },
         [])
 
 type NodeState = Map<string, {}>
@@ -27,7 +28,7 @@ export function createRoot(): Node {
 }
 
 export default class Node {
-    
+
     private _state: NodeState
     private _rootState?: NodeState
     // private _cachedLayout?: Box
@@ -35,7 +36,7 @@ export default class Node {
     constructor(state: NodeState, rootState?: NodeState) {
         this._state = state
         this._rootState = rootState
-    }    
+    }
 
     get tagName(): string {
         return this._state.get('tagName', '') as string
@@ -49,7 +50,7 @@ export default class Node {
         return this._state.get('path', []) as string[]
     }
 
-    get children(): Node[] {        
+    get children(): Node[] {
         return (this._state.get('children', Map()) as Map<string, NodeState>)
             .toArray().map(c => new Node(c)) as Node[]
     }
@@ -58,19 +59,50 @@ export default class Node {
         return query(this)
     }
 
-    get status(): string {        
+    get status(): string {
         return this._state.get('status', 'unknown') as string
     }
 
     setStatus(status: string) {
-        const newState = this._state.set('status', status) as NodeState        
+        const newState = this._state.set('status', status) as NodeState
+        return this.update(newState)
+    }
+
+    get geometry(): Geometry | undefined {
+        if (this._state.hasIn(['shape', 'geometry'])) {
+            return this._state.getIn(['shape', 'geometry'])
+        } else {
+            return undefined
+        }
+    }
+
+    setGeometry(geometry: Geometry): Node {
+        const newState = this._state.setIn(['shape', 'geometry'], geometry)
+        return this.update(newState)
+    }
+
+    get dimensions(): number {
+        return this._state.getIn(['shape', 'dimensions'], 0)
+    }
+
+    setDimensions(dimensions: number = 3): Node {
+        const newState = this._state.setIn(['shape', 'dimensions'], dimensions)
+        return this.update(newState)
+    }
+
+    get matrix(): Matrix4 {
+        return this._state.getIn(['shape', 'matrix'], new Matrix4())
+    }
+
+    setMatrix(matrix: Matrix4): Node {
+        const newState = this._state.setIn(['shape', 'matrix'], matrix)
         return this.update(newState)
     }
 
     child(index: number): Node {
         const key = '' + index as string
         const childPath = [...this.path, key]
-        const childNode = Map({path: childPath})
+        const childNode = Map({ path: childPath })
         const childState = this._state.get(key, childNode) as NodeState
         return new Node(childState, this._rootState)
     }
@@ -82,7 +114,7 @@ export default class Node {
     }
 
     setTagName(tagName: string): Node {
-        const newState = this._state.set('tagName', tagName) as NodeState        
+        const newState = this._state.set('tagName', tagName) as NodeState
         return this.update(newState)
     }
 
@@ -108,5 +140,5 @@ export default class Node {
     // get merge(): boolean {            
     //     return this._state.get('props',{})['merge'] as boolean || false 
     // }
-    
+
 }

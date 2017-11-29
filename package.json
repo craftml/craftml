@@ -5,13 +5,15 @@
   "dependencies": {
     "@types/chalk": "^2.2.0",
     "@types/lodash": "^4.14.81",
+    "@types/three": "^0.84.33",
     "chalk": "^2.3.0",
     "css-select": "1.3.0-rc0",
     "htmlparser2": "github:sikuli/htmlparser2",
     "immutable": "^3.8.2",
     "lodash": "^4.17.4",
     "redux": "^3.7.2",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "three": "0.86"
   },
   "scripts": {
     "start": "react-scripts-ts start",
