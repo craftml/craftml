@@ -26,7 +26,7 @@ export default function* renderScript(node: Node, props: NodeProps, domNode: Dom
 
     let thisPointer = {
         // make this.children read only
-        get children(){
+        get children() {
             return []//children
         }
     }

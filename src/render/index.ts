@@ -1,6 +1,6 @@
 import { call, put, select } from 'redux-saga/effects'
 
-import { React, DomNode, DOM } from '../dom'
+import { DomNode } from '../dom'
 import Node from '../node'
 
 import { actionCreators } from '../actions'

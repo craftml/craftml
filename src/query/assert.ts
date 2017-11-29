@@ -23,7 +23,7 @@ class ChainableMethod {
     return this
   }
 
-  position(x:number, y:number, z:number) {
+  position(x: number, y: number, z: number) {
 
     const layout = this.q.first().layout()
     const s = layout ? layout.position : {}
@@ -45,7 +45,7 @@ class ChainableMethod {
     return this
   }
 
-  center(x:number, y:number, z:number) {
+  center(x: number, y: number, z: number) {
 
     const layout = this.q.first().layout()
     const s = layout ? layout.getCenter() : {}
@@ -103,4 +103,4 @@ class ChainableMethod {
   }
 }
 
-export const should = (q : Query) : ChainableMethod => new ChainableMethod(q)
+export const should = (q: Query): ChainableMethod => new ChainableMethod(q)

@@ -1,4 +1,3 @@
-import CSSselect from 'css-select'
 import * as _ from 'lodash'
 
 const IMPATH = (p) => _.reduce(p, (ret, e, i) => {
@@ -14,11 +13,11 @@ export function createAdapter(topNode: Node) {
     // console.log('createAdapter', state.get('path'))
 
     // get the parent of the node
-    let getParent
+    // let getParent
 
     const rootPathOffset = topNode.path.length
 
-    getParent = (node: Node) => {
+    const getParent = (node: Node) => {
         // console.log('getParent:node', node.tagName)        
         const path = node.path
         if (path.length > rootPathOffset) {
@@ -31,18 +30,6 @@ export function createAdapter(topNode: Node) {
 
         return null
     }
-
-    //
-    // function getParent(node){
-    //     // console.log('getParent:node', node.get('path'))
-    //     const path = node.get('path')
-    //     if (rootPathOffset !== null && path.length > rootPathOffset){
-    //       const parentPath =  _.slice(node.get('path'),rootPathOffset, path.length-2)
-    //       // console.log('getParent:node parentPath', parentPath)
-    //       return state.getIn(parentPath)
-    //     }
-    //     return null
-    // }
 
     // takes an array of nodes, and removes any duplicates, as well as any nodes
     // whose ancestors are also in the array

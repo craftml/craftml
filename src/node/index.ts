@@ -1,7 +1,3 @@
-// interface NodeState {
-//     get() : string
-// }
-
 import { Map } from 'immutable'
 import * as _ from 'lodash'
 

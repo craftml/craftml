@@ -3,7 +3,8 @@ export interface DomNode {
     name: string,
     attribs: Attribs,
     data?: string,
-    children: Array<DomNode>
+    children: Array<DomNode>,
+    title?: string
 }
 
 export interface Attribs {

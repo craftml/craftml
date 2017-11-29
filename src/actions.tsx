@@ -1,8 +1,6 @@
-// import { Packet } from "_debugger";
 import Node from './node'
 
 export const COMMIT = 'COMMIT';
-// export const DECREMENT_SFC = 'DECREMENT_SFC';
 
 export type Actions = {
     COMMIT: {
