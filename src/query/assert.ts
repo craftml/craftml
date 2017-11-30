@@ -24,23 +24,27 @@ class ChainableMethod {
   }
 
   position(x: number, y: number, z: number) {
-
-    const layout = this.q.first().layout()
-    const s = layout ? layout.position : {}
-    const msg = `expected position to be (${x},${y},${z}) but got (${s.x}, ${s.y}, ${s.z})`
-    const check = closeTo(s.x, x) && closeTo(s.y, y) && closeTo(s.z, z)
-    assert(check, msg)
+    
+    _.forEach(this.q.get(), node => {
+      const layout = node.layout
+      const s = layout.position
+      const msg = `expected position to be (${x},${y},${z}) but got (${s.x}, ${s.y}, ${s.z})`
+      const check = closeTo(s.x, x) && closeTo(s.y, y) && closeTo(s.z, z)
+      assert(check, msg)
+    })
 
     return this
   }
 
-  size(x:number, y:number, z:number) {
-
-    const layout = this.q.first().layout()
-    const s = layout ? layout.size : {}
-    const msg = `expected size to be (${x},${y},${z}) but got (${s.x}, ${s.y}, ${s.z})`
-    const check = closeTo(s.x, x) && closeTo(s.y, y) && closeTo(s.z, z)
-    assert(check, msg)
+  size(x: number, y: number, z: number) {
+    // const layout = this.q.first().layout()
+    _.forEach(this.q.get(), node => {
+      const layout = node.layout
+      const s = layout.size
+      const msg = `expected size to be (${x},${y},${z}) but got (${s.x}, ${s.y}, ${s.z})`
+      const check = closeTo(s.x, x) && closeTo(s.y, y) && closeTo(s.z, z)
+      assert(check, msg)
+    })
 
     return this
   }
@@ -68,37 +72,39 @@ class ChainableMethod {
   }
 
   length(n: number) {
-    assert.equal(this.q.size(), n)
+    const s = this.q.size()
+    const msg = `expected ${n} but got ${s}`
+    assert.equal(this.q.size(), n, msg)
     return this
-  }
+  }  
 
   get none() {
-    assert.equal(this.q.size(), 0)
+    this.length(0)
     return this
   }
 
   get one() {
-    assert.equal(this.q.size(), 1)
+    this.length(1)
     return this
   }
 
   get two() {
-    assert.equal(this.q.size(), 2)
+    this.length(2)
     return this
   }
 
   get three() {
-    assert.equal(this.q.size(), 3)
+    this.length(3)
     return this
   }
 
   get four() {
-    assert.equal(this.q.size(), 4)
+    this.length(4)
     return this
   }
 
   get five() {
-    assert.equal(this.q.size(), 5)
+    this.length(5)
     return this
   }
 }

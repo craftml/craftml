@@ -45,6 +45,10 @@ export class Query {
         return this._selection.length
     }
 
+    get(): Node[] {
+        return this._selection
+    }
+
     pp(): Query {
         if (this._selection.length > 0) {
             const node = this._selection[0]            

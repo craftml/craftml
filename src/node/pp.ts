@@ -13,9 +13,9 @@ function toStringRecursively(node: Node, levels: number = 0): string {
     const indent = _.repeat('  ', levels)
 
     const self = indent + toString(node)
-    
+
     const text = _.map(node.children, (c, i) => {
-    return toStringRecursively(c, levels + 1)
+        return toStringRecursively(c, levels + 1)
     }).join('')
 
     // const text = 'children'
@@ -63,15 +63,15 @@ function toString(node: Node): string {
 
     //   str += ' ' + JSON.stringify(node.style)
 
-    //   if (node.errors.length > 0){
-    //     str += ' ' + chalk.red('errors: ' + node.errors.length)
-    //   }
+    if (node.errors.length > 0) {
+        str += ' ' + chalk.red('errors: ' + node.errors.length)
+    }
 
     //   if (node.parts){
     //     str += ' ' + node.parts.map((c,k)=>k).toArray().join(',')
     //   }
 
-    if (node.geometry && node.geometry.vertices){
+    if (node.geometry && node.geometry.vertices) {
         str += ` g(${node.geometry.vertices.length}) ${node.dimensions}d`
     }
 

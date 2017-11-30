@@ -102,7 +102,7 @@ async function renderAsync(dom: DomNode) {
     // end the saga
     store.dispatch(END)
 
-    return 0
+    return store.getState()
 }
 
 import * as fs from 'fs'
@@ -129,16 +129,14 @@ export default class Engine {
 
                     it(title, async () => {
 
-                        const node = await renderAsync(p)
+                        const node: Node = await renderAsync(p)
+                        // node.pp()
+                        
+                        const errors = node.children[1].errors                        
+                        if (errors.length > 0) {
+                            throw errors[0].message
+                        }
 
-                        // console.log('node', node.children[1].errors)
-                        // const errors = node.children[1].errors
-                        // // console.log('errors', node.children[0].errors)
-                        // if (errors.length > 0) {
-                        //     node.pp()
-                        //     // console.error(errors[0].message)
-                        //     throw errors[0].message//assert(false, )
-                        // }
                     })
 
                 }

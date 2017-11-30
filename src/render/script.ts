@@ -6,6 +6,7 @@ import Node from '../node'
 // import render from './index'
 import { select } from 'redux-saga/effects'
 import * as _ from 'lodash'
+import { commit } from './effects'
 
 function localFunctionStatements(locals: {}) {
     
@@ -33,7 +34,7 @@ export default function* renderScript(node: Node, props: NodeProps, domNode: Dom
 
     const root = yield select(state => state)
 
-    root.pp()
+    // root.pp()
 
     let $ = root.$
     // if (parentNode){
@@ -73,12 +74,14 @@ export default function* renderScript(node: Node, props: NodeProps, domNode: Dom
     
       } catch (err) {
     
-        console.error(err)
+        console.error(err.message)
         // const parentNodux = nodux.parent()
         // console.log('parentNodux', parentNodux)
         // if (parentNodux){
         //   yield put(parentNodux.PushError(err))
         // }
+        node = node.pushError(err) 
+        yield commit(node)
         //  yield put(nodux.PushError(err))
       }
 

@@ -1,6 +1,7 @@
-import { Map } from 'immutable'
+import { Map, List } from 'immutable'
 import * as _ from 'lodash'
 import { Geometry, Matrix4 } from 'three'
+import { createBox, Box } from './box'
 
 const IMPATH = (p: Array<string>) =>
     _.reduce(
@@ -14,8 +15,8 @@ const IMPATH = (p: Array<string>) =>
 
 type NodeState = Map<string, {}>
 
-interface Box {
-
+interface NodeError {
+    message: string
 }
 
 import query from '../query'
@@ -30,8 +31,8 @@ export function createRoot(): Node {
 export default class Node {
 
     private _state: NodeState
-    private _rootState?: NodeState
-    // private _cachedLayout?: Box
+    private _rootState?: NodeState    
+    private _cachedLayout?: Box
 
     constructor(state: NodeState, rootState?: NodeState) {
         this._state = state
@@ -129,6 +130,22 @@ export default class Node {
         pp(this)
     }
 
+    get layout(): Box {
+        if (!this._cachedLayout) {
+          this._cachedLayout = createBox(this)
+        }
+        return this._cachedLayout
+    }
+
+    get errors(): NodeError[] {
+        return (this._state.get('errors', List<NodeError>()) as List<NodeError>).toArray()
+    }
+
+    pushError(err: NodeError): Node {
+        const newState = this._state.update('errors', List<NodeError>(), (l: List<NodeError>) => l.push(err))
+        return this.update(newState)
+    }
+    
     private update(newState: NodeState): Node {
         return new Node(newState)
     }
