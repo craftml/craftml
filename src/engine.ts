@@ -4,7 +4,7 @@ import { takeLatest, END } from 'redux-saga'
 import { call, actionChannel, select } from 'redux-saga/effects'
 import { DomNode } from './dom'
 
-import { COMMIT, Actions } from './actions'
+import { COMMIT, UPDATE, Actions } from './actions'
 import * as _ from 'lodash'
 
 import Node from './node'
@@ -21,6 +21,11 @@ const reducer = (state: Node, action: RootAction) => {
             } else {
                 return action.payload.node
             }
+        
+        case UPDATE:
+            const { node, updateFunc } = action.payload            
+            const newNode = updateFunc(state.descendant(node.path))
+            return state.setSubtree(newNode)        
 
         default: return state;
     }

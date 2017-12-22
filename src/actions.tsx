@@ -1,6 +1,7 @@
 import Node from './node'
 
 export const COMMIT = 'COMMIT';
+export const UPDATE = 'UPDATE';
 
 export type Actions = {
     COMMIT: {
@@ -8,7 +9,14 @@ export type Actions = {
       payload: {
           node: Node
       }
-    },  
+    },
+    UPDATE: {
+        type: typeof UPDATE,
+        payload: {
+            node: Node,
+            updateFunc: (a: Node) => Node
+        }
+      },  
   }
   
 export const actionCreators = {
@@ -17,5 +25,12 @@ export const actionCreators = {
         payload: {
             node
         }
-    }),    
+    }),
+    update: (node: Node, updateFunc: (a: Node) => Node): Actions[typeof UPDATE] => ({
+        type: UPDATE,
+        payload: {
+            node,
+            updateFunc
+        }
+    })    
 };
