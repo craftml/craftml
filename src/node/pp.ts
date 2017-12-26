@@ -59,7 +59,7 @@ function toString(node: Node): string {
 
     //   str += ' ' + node.cssRules.size
 
-    //   str += ' [' + node.matrix.elements.join(',') + ']'
+    str += ' [' + node.matrix.elements.join(',') + ']'
 
     //   str += ' ' + JSON.stringify(node.style)
 

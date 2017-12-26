@@ -23,7 +23,11 @@ function registerRecursively(input: {}, path: string[], func: (map: {}) => void)
 
 const cases = {
   unit: null,
-  group: null
+  group: null,
+  transform: {
+    position: null,
+    translate: null
+  }
 }
 
 const engine = new Engine()

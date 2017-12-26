@@ -10,6 +10,7 @@ import renderTest from './_test'
 import renderScript from './script'
 import renderGeometry from './geometry'
 import renderGroup from './group'
+import renderTransform from './transform'
 
 import { commit } from './effects'
     
@@ -42,6 +43,10 @@ export default function* renderNode(node: Node, domNode: DomNode): {} {
     } else if (tagName === 'script') {
 
         yield renderScript(node, props, domNode)
+
+    }   else if (tagName === 'craftml-transform') {
+        
+        yield renderTransform(node, props, domNode)
     }     
 
     // yield put({type: 'hello'})

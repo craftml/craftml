@@ -25,21 +25,25 @@ export default function* renderScript(node: Node, props: NodeProps, domNode: Dom
     // node.props
     // console.log('render script')
 
-    let thisPointer = {
-        // make this.children read only
-        get children() {
-            return []//children
-        }
-    }
-
     const root = yield select(state => state)
 
-    // root.pp()
+    // root.pp()    
 
     let $ = root.$
     // if (parentNode){
     //     $ = parentNode.$
     // }
+
+    let thisPointer = {
+        // make this.children read only
+        get children() {
+            return []//children
+        },
+
+        pp() {
+            root.pp()
+        }
+    }
 
     const locals = {
         $,
@@ -47,6 +51,7 @@ export default function* renderScript(node: Node, props: NodeProps, domNode: Dom
         // require: custom_require,
         // $params,
         // _: _
+        // $root: root
      }
 
     const code = domNode.children[0].data || ''

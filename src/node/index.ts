@@ -100,6 +100,12 @@ export default class Node {
         return this.update(newState)
     }
 
+    applyMatrix(matrix: Matrix4): Node  {
+        const m = new Matrix4().copy(matrix).multiply(this.matrix)
+        const newState = this._state.setIn(['shape', 'matrix'], m)
+        return this.update(newState)
+    }
+
     child(index: number): Node {
         const key = '' + index as string
         const childPath = [...this.path, key]

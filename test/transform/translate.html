@@ -1,0 +1,19 @@
+<test title="x 10">
+    <craftml-transform t="translate x 10">
+        <craftml-unit/>
+    </craftml-transform>
+    <script>
+        // $('craftml-transform').pp()
+        $('craftml-transform').should.have.position(10, 0, 0)
+    </script>
+</test>
+
+<test title="x 10 y 20">
+    <craftml-transform t="translate x 10 y 20">
+        <craftml-unit/>
+    </craftml-transform>
+    <script>
+        // $('craftml-transform').pp()
+        $('craftml-transform').should.have.position(10, 20, 0)
+    </script>
+</test>
