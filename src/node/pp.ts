@@ -44,12 +44,12 @@ function toString(node: Node): string {
     //   }
 
     let str = chalk.magenta(tagName)
-    //   if (node.className){
-    //     str += chalk.green(` .${node.className}`)
-    //   }
-    //   if (node.id){
-    //     str += chalk.green(` #${node.id}`)
-    //   }
+    if (node.className) {
+        str += chalk.green(` .${node.className}`)
+    }
+    if (node.id) {
+        str += chalk.green(` #${node.id}`)
+    }
 
     //   str += ` [${node.path.join('.')}]`
 

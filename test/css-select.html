@@ -1,0 +1,22 @@
+<test title="by id">
+    <craftml-group>
+        <craftml-unit id="foo" />
+    </craftml-group>
+    <script>
+        // this.pp()
+        $('#foo').should.have.one        
+    </script>
+</test>
+
+<test title="by classname">
+    <craftml-group id="top">
+        <craftml-unit class="bar" id="foo" />
+        <craftml-unit class="bar" />
+    </craftml-group>
+    <script>
+        this.pp()
+        $('#foo').should.have.one
+        $('.bar').should.have.two
+          // $('#top').pp()
+    </script>
+</test>

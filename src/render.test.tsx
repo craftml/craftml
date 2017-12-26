@@ -24,6 +24,7 @@ function registerRecursively(input: {}, path: string[], func: (map: {}) => void)
 const cases = {
   unit: null,
   group: null,
+  'css-select': null,
   transform: {
     position: null,
     translate: null

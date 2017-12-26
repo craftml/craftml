@@ -12,7 +12,7 @@ export default function* renderTransform(node: Node, props: TransformProps, domN
     const { t = '' } = props
 
     const d = DOM(
-    <craftml-group merge={true} tagName="craftml-transform">
+    <craftml-group merge={true} tagName="craftml-transform" {...props}>
         {domNode.children}
     </craftml-group>)
     

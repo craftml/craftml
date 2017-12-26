@@ -43,6 +43,14 @@ export default class Node {
         return this._state.get('tagName', '') as string
     }
 
+    get id(): string {       
+        return this._state.get('props', {})['id'] as string
+    }
+
+    get className(): string {       
+        return this._state.get('props', {})['class'] as string
+    }
+
     get state(): NodeState {
         return this._state
     }
@@ -54,6 +62,15 @@ export default class Node {
     get children(): Node[] {
         return (this._state.get('children', Map()) as Map<string, NodeState>)
             .toArray().map(c => new Node(c)) as Node[]
+    }
+
+    get props(): {} {
+        return this._state.get('props', {}) as {}
+    }
+
+    setProps(obj: {}): Node {
+        const newState = this._state.setIn(['props'], obj)
+        return this.update(newState)
     }
 
     get $() {

@@ -21,7 +21,7 @@ export default function* renderUnit(node: Node, props: UnitProps, domNode: DomNo
     geometry.applyMatrix(matrix)
 
     const d = DOM(
-        <craftml-group tagName="craftml-unit" merge={false}>
+        <craftml-group tagName="craftml-unit" merge={false} {...props}>
             <craftml-geometry geometry={geometry} dimensions={3}/>
         </craftml-group>
     )

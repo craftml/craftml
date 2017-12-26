@@ -1,11 +1,22 @@
 <test title="x 100 -> x 10">
     <craftml-transform id='top' t='position x 10'>
-        <craftml-unit/>
+        <craftml-transform t='translate x 100'>
+            <craftml-unit/>
+        </craftml-transform>
     </craftml-transform>
     <script>
-        //   $('#top').should.have.position(10,0,0)
-        // $()
-        this.pp()
-        // $('#top').pp()
+        $('#top').should.have.position(10, 0, 0)
+    </script>
+</test>
+
+
+<test title="(100,100,100) -> (10,10,10)">
+    <craftml-transform id='top' t='position 10'>
+        <craftml-transform t='translate 100 100 100'>
+            <craftml-unit/>
+        </craftml-transform>
+    </craftml-transform>
+    <script>
+        $('#top').should.have.position(10, 10, 10)
     </script>
 </test>

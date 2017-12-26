@@ -98,7 +98,7 @@ export function createAdapter(topNode: Node) {
             existsOne: (test, elems) => _.some(elems, test),
 
             // get the attribute value
-            getAttributeValue: (elem, name) => elem.get('props')[name],
+            getAttributeValue: (elem, name) => elem.props[name],
 
             // get the node's children
             getChildren,
@@ -126,7 +126,7 @@ export function createAdapter(topNode: Node) {
             getText: (node) => '',
 
             // does the element have the named attribute?
-            hasAttrib: (elem, name) => _.has(elem.get('props'), name),
+            hasAttrib: (elem, name) => _.has(elem.props, name),
 
             // takes an array of nodes, and removes any duplicates, as well as any nodes
             // whose ancestors are also in the array

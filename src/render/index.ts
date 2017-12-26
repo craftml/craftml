@@ -16,13 +16,13 @@ import { commit } from './effects'
     
 export default function* renderNode(node: Node, domNode: DomNode): {} {
 
-    const tagName = domNode.name
+    const tagName = domNode.name    
+    const props = domNode.attribs
     
     node = node.setTagName(tagName)
+        .setProps(props)
     
-    yield commit(node)
-
-    const props = domNode.attribs
+    yield commit(node)    
 
     if (tagName === 'craftml-unit') {
 
