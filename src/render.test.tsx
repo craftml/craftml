@@ -28,6 +28,9 @@ const cases = {
   transform: {
     position: null,
     translate: null
+  },
+  layout: {
+    flow: null
   }
 }
 

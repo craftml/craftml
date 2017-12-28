@@ -1,0 +1,14 @@
+<test title="x">
+    <craftml-layout l='flow x' id="top">
+        <craftml-unit size="10 10 10" id="one" />
+        <craftml-unit size="10 10 10" id="two" />
+        <craftml-unit size="20 20 20" id="three" />
+    </craftml-layout>
+    <script>
+         $('#top').pp()
+        $('#top').should.have.size(40, 20, 20)
+        $('#one').should.have.position(0, 0, 0)
+        $('#two').should.have.position(10, 0, 0)
+        $('#three').should.have.position(20, 0, 0)
+    </script>
+</test>

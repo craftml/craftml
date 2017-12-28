@@ -18,8 +18,5 @@ export default function* renderTransform(node: Node, props: TransformProps, domN
     
     yield render(node, d)
 
-    node = yield refresh(node)
-
     yield update(node, n => transformEval(n, t))
-
 }

@@ -3,6 +3,8 @@ import * as _ from 'lodash'
 import { Geometry, Matrix4 } from 'three'
 import { createBox, Box } from './box'
 
+export { Box }
+
 const IMPATH = (p: Array<string>) =>
     _.reduce(
         p,
@@ -71,6 +73,10 @@ export default class Node {
     setProps(obj: {}): Node {
         const newState = this._state.setIn(['props'], obj)
         return this.update(newState)
+    }
+
+    get merge(): boolean {            
+        return this._state.get('props', {})['merge'] as boolean || false 
     }
 
     get $() {
@@ -143,7 +149,13 @@ export default class Node {
     }
 
     setSubtree(subtree: Node) {
-        const impath = IMPATH(subtree.path)
+        // const impath = IMPATH(subtree.path)
+        const relativePath = _.slice(subtree.path, this.path.length)
+        const impath = _.reduce(relativePath, (ret: string[], e, i) => {
+          ret.push('children')
+          ret.push(e)
+          return ret
+        },                      [])
         // console.log('impath', impath, 'state', this._state.toJS())
         const newState = this._state.setIn(impath, subtree.state)
         return this.update(newState)
@@ -168,6 +180,11 @@ export default class Node {
         const newState = this._state.update('errors', List<NodeError>(), (l: List<NodeError>) => l.push(err))
         return this.update(newState)
     }
+
+    translate(x: number, y: number, z: number): Node {
+        const m = new Matrix4().makeTranslation(x, y, z)
+        return this.applyMatrix(m)
+    }
     
     private update(newState: NodeState): Node {
         return new Node(newState)
@@ -177,8 +194,6 @@ export default class Node {
     //     return this._state.get('props',{})['id'] as string
     // }
 
-    // get merge(): boolean {            
-    //     return this._state.get('props',{})['merge'] as boolean || false 
-    // }
+    
 
 }

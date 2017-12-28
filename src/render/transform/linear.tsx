@@ -11,7 +11,6 @@ export function translate(node: Node, args: { x: number, y: number, z: number })
 export function position(node: Node, args: { x: number, y: number, z: number }) {
 
     const layout = node.layout
-    // const { x, y, z } = args
     const d = { x: 0, y: 0, z: 0 }
 
     _.forEach(args, (v, dim) => {
