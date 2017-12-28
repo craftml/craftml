@@ -1,0 +1,29 @@
+<test title="default">
+    <craftml-group id="top">
+        <cube/>
+    </craftml-group>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(10, 10, 10)
+    </script>
+</test>
+
+<test title="size = 20 20 20">
+    <craftml-group id="top">
+        <cube size="20 20 20" />
+    </craftml-group>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(20, 20, 20)
+    </script>
+</test>
+
+<test title="scale 2; translate 10">
+    <craftml-group id="top">
+        <cube t="scale 2; translate 10" />
+    </craftml-group>
+    <script>
+        $('#top').pp()
+        $('#top').should.have.size(20, 20, 20).and.position(10, 10, 10)
+    </script>
+</test>

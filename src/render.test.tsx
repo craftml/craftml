@@ -25,6 +25,9 @@ const cases = {
   unit: null,
   group: null,
   'css-select': null,
+  primitives: {
+    cube: null
+  },
   transform: {
     position: null,
     translate: null

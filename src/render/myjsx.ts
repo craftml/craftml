@@ -8,6 +8,9 @@ declare namespace JSX {
         'craftml-geometry': {
             geometry: {},
             dimensions: number           
+        },
+        'craftml-transform': {
+            t: string
         }
     }
 

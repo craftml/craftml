@@ -13,6 +13,8 @@ import renderGroup from './group'
 import renderTransform from './transform'
 import renderLayout from './layout'
 
+import renderCube from './primitives/cube'
+
 import { commit } from './effects'
     
 export default function* renderNode(node: Node, domNode: DomNode): {} {
@@ -52,6 +54,10 @@ export default function* renderNode(node: Node, domNode: DomNode): {} {
     }  else if (tagName === 'craftml-layout') {
         
         yield renderLayout(node, props, domNode)
+
+    }  else if (tagName === 'cube') {
+        
+        yield renderCube(node, props, domNode)
     }         
 
     // yield put({type: 'hello'})
