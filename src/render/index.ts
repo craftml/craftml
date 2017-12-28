@@ -14,6 +14,7 @@ import renderTransform from './transform'
 import renderLayout from './layout'
 
 import renderCube from './primitives/cube'
+import renderCylinder from './primitives/cylinder'
 
 import { commit } from './effects'
     
@@ -58,7 +59,11 @@ export default function* renderNode(node: Node, domNode: DomNode): {} {
     }  else if (tagName === 'cube') {
         
         yield renderCube(node, props, domNode)
-    }         
+
+    }  else if (tagName === 'cylinder') {
+        
+        yield renderCylinder(node, props, domNode)
+    }      
 
     // yield put({type: 'hello'})
     // return node

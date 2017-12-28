@@ -1,0 +1,9 @@
+<test title="x 180">
+    <craftml-transform id="top" t="orbit x 180">
+        <cube t='center 0 20 0' />
+    </craftml-transform>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.position(-5, -25, -5)
+    </script>
+</test>

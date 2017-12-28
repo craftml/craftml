@@ -26,7 +26,8 @@ const cases = {
   group: null,
   'css-select': null,
   primitives: {
-    cube: null
+    cube: null,
+    cylinder: null
   },
   transform: {
     position: null,
@@ -36,7 +37,7 @@ const cases = {
     rotate: null,
     scale: null,
     land: null,
-    orbit: null
+    orbit: null,    
   },
   layout: {
     flow: null,
