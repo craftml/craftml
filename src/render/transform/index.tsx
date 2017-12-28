@@ -1,5 +1,5 @@
 import { React, DomNode, DOM } from '../../dom'
-import { render, refresh, update } from '../effects'
+import { render, update } from '../effects'
 import Node from '../../node'
 import transformEval from './eval'
 

@@ -1,6 +1,6 @@
 // import peg from './peg-parser'
 import Node from '../../node'
-import { Map } from 'immutable'
+import { Map, Record } from 'immutable'
 import * as _ from 'lodash'
 import * as linear from './linear'
 
@@ -10,13 +10,13 @@ const peg = require('./peg-parser')
 // import cut from './cut'
 // import wall from './wall'
 
-// const nonlinear = {
+const nonlinear = {
 //   hull,
 //   cut,
 //   wall
-// }
+}
 
-function transformReducer(node: Node, method, args, options): Node {
+function transformReducer(node: Node, method: string, args: {}, options: {selectors: string, reverse: boolean}): Node {
 
     let func
     if (func = linear[method]) {
@@ -35,9 +35,47 @@ function transformReducer(node: Node, method, args, options): Node {
 
 }
 
+type Env = {
+    node: Node,
+    selectors: string,
+    reverse: boolean
+}
+
+type Block = {
+    method: string,
+    args: string | {},
+}
+
+function reduceBlock(env: Env, block: Block): Env {
+
+    const { method, args } = block
+
+    if (method === 'select' && typeof args === 'string') {
+
+        return {
+            ...env,
+            selectors: args
+        }
+
+    } else {
+
+        const options = {
+            selectors: env.selectors,
+            reverse: env.reverse
+        }
+
+        return {
+            ...env,
+            node: transformReducer(env.node, method, args, options)
+        }
+
+    }
+
+}
+
 export default function transformEval(node: Node, expression: string): Node {
-    
-    let blocks = []
+
+    let blocks: Block[] = []
     try {
         blocks = peg.parse(expression)
     } catch (error) {
@@ -45,33 +83,60 @@ export default function transformEval(node: Node, expression: string): Node {
         throw error
     }
 
-    // console.log('blocks', blocks)
-    const env0 = Map({
+    const env0 = {
         node,
         selectors: '*',
         reverse: false
-    })
+    }
+
+    const result = _.reduce(blocks, reduceBlock, env0)
+
+    return result.node    
+}
+
+export function transformEvalOld(node: Node, expression: string): Node {
+    
+    let blocks: Block[] = []
+    try {
+        blocks = peg.parse(expression)
+    } catch (error) {
+        // TODO: handle errors
+        throw error
+    }
+
+    const env0 = {
+        node,
+        selectors: '*',
+        reverse: false
+    }
+
     //
     const result = _.reduce(blocks, (env, block) => {
 
         const { method, args } = block
-        const updateEnv = (env) => {
-            if (method === 'select') {
-                return env.set('selectors', args)
-            } else {
-                return env
-            }
-        }
+
         const options = {
-            selectors: env.get('selectors'),
-            reverse: env.get('reverse')
+            selectors: env.selectors,
+            reverse: env.reverse
         }
         // $FlowFixMe
-        const nextState = transformReducer(env.get('node'), method, args, options)
-        return updateEnv(env.set('node', nextState))
+        // const nextState = transformReducer(env.node, method, args, options)
+        env.node = transformReducer(env.node, method, args, options)
 
-    }, env0)
+        const updateEnv = (e: Env) => {
+            if (method === 'select') {
+                return {
+                    ...e,
+                    selectors: args
+                }
+            } else {
+                return e
+            }        
+        }
 
-    // $FlowFixMe
-    return result.get('node')
+        return updateEnv(env)
+
+    },                      env0)
+    
+    return result.node
 }
