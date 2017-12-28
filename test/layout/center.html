@@ -1,0 +1,30 @@
+<test title="default">
+    <craftml-layout l='center' id="top">
+        <craftml-unit size="10 10 10" id="one" />
+        <craftml-unit size="20 20 20" id="two" />
+        <craftml-unit size="30 30 30" id="three" />
+    </craftml-layout>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(30, 30, 30)
+        $('#one').should.have.position(0, 0, 0)
+        $('#two').should.have.position(-5, -5, -5)
+        $('#three').should.have.position(-10, -10, -10)
+    </script>
+</test>
+
+
+<test title="xyz">
+    <craftml-layout l='center xyz' id="top">
+        <craftml-unit size="10 10 10" id="one" />
+        <craftml-unit size="20 20 20" id="two" />
+        <craftml-unit size="30 30 30" id="three" />
+    </craftml-layout>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(30, 30, 30)
+        $('#one').should.have.position(0, 0, 0)
+        $('#two').should.have.position(-5, -5, -5)
+        $('#three').should.have.position(-10, -10, -10)
+    </script>
+</test>

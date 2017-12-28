@@ -1,0 +1,59 @@
+<test title="x max">
+    <craftml-layout l='align x max' id="top">
+        <craftml-unit size="10 10 10" id="one" />
+        <craftml-unit size="20 10 10" id="two" />
+        <craftml-unit size="30 10 10" id="three" />
+    </craftml-layout>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(30, 10, 10)
+        $('#one').should.have.position(0, 0, 0)
+        $('#two').should.have.position(-10, 0, 0)
+        $('#three').should.have.position(-20, 0, 0)
+    </script>
+</test>
+
+<test title="x center">
+    <craftml-layout l='align x center' id="top">
+        <craftml-unit size="10 10 10" id="one" />
+        <craftml-unit size="20 10 10" id="two" />
+        <craftml-unit size="30 10 10" id="three" />
+    </craftml-layout>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(30, 10, 10)
+        $('#one').should.have.position(0, 0, 0)
+        $('#two').should.have.position(-5, 0, 0)
+        $('#three').should.have.position(-10, 0, 0)
+    </script>
+</test>
+
+<test title="x min">
+    <craftml-layout l='align x min' id="top">
+        <craftml-unit size="10 10 10" id="one" />
+        <craftml-unit size="20 10 10" id="two" />
+        <craftml-unit size="30 10 10" id="three" />
+    </craftml-layout>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(30, 10, 10)
+        $('#one').should.have.position(0, 0, 0)
+        $('#two').should.have.position(0, 0, 0)
+        $('#three').should.have.position(0, 0, 0)
+    </script>
+</test>
+
+<test title="xyz center">
+    <craftml-layout l='align xyz center' id="top">
+        <craftml-unit size="10 10 10" id="one" />
+        <craftml-unit size="20 20 20" id="two" />
+        <craftml-unit size="30 30 30" id="three" />
+    </craftml-layout>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(30, 30, 30)
+        $('#one').should.have.position(0, 0, 0)
+        $('#two').should.have.position(-5, -5, -5)
+        $('#three').should.have.position(-10, -10, -10)
+    </script>
+</test>

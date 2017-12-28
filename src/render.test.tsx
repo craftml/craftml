@@ -30,7 +30,9 @@ const cases = {
     translate: null
   },
   layout: {
-    flow: null
+    flow: null,
+    align: null,
+    center: null
   }
 }
 

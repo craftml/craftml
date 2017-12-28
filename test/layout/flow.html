@@ -5,10 +5,71 @@
         <craftml-unit size="20 20 20" id="three" />
     </craftml-layout>
     <script>
-         $('#top').pp()
+        // $('#top').pp()
         $('#top').should.have.size(40, 20, 20)
         $('#one').should.have.position(0, 0, 0)
         $('#two').should.have.position(10, 0, 0)
         $('#three').should.have.position(20, 0, 0)
+    </script>
+</test>
+
+
+
+<test title="x min">
+    <craftml-layout l='flow x min' id="top">
+        <craftml-unit size="10 10 10" id="one" />
+        <craftml-unit size="10 10 10" id="two" />
+        <craftml-unit size="20 20 20" id="three" />
+    </craftml-layout>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(40, 20, 20)
+        $('#one').should.have.position(0, 0, 0)
+        $('#two').should.have.position(-10, 0, 0)
+        $('#three').should.have.position(-30, 0, 0)
+    </script>
+</test>
+
+<test title="x min spacing">
+    <craftml-layout l='flow x 10 min' id="top">
+        <craftml-unit size="10 10 10" id="one" />
+        <craftml-unit size="10 10 10" id="two" />
+        <craftml-unit size="20 20 20" id="three" />
+    </craftml-layout>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(60, 20, 20)
+        $('#one').should.have.position(0, 0, 0)
+        $('#two').should.have.position(-20, 0, 0)
+        $('#three').should.have.position(-50, 0, 0)
+    </script>
+</test>
+
+<test title="x max negative spacing">
+    <craftml-layout l='flow x -5 max' id="top">
+        <craftml-unit size="10 10 10" id="one" />
+        <craftml-unit size="10 10 10" id="two" />
+        <craftml-unit size="20 20 20" id="three" />
+    </craftml-layout>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(30, 20, 20)
+        $('#one').should.have.position(0, 0, 0)
+        $('#two').should.have.position(5, 0, 0)
+        $('#three').should.have.position(10, 0, 0)
+    </script>
+</test>
+<test title="xy max">
+    <craftml-layout l='flow xy max' id="top">
+        <craftml-unit size="10 10 10" id="one" />
+        <craftml-unit size="10 10 10" id="two" />
+        <craftml-unit size="20 20 20" id="three" />
+    </craftml-layout>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(40, 40, 20)
+        $('#one').should.have.position(0, 0, 0)
+        $('#two').should.have.position(10, 10, 0)
+        $('#three').should.have.position(20, 20, 0)
     </script>
 </test>
