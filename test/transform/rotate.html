@@ -1,0 +1,41 @@
+<test title="x 45">
+    <craftml-transform id="top" t="rotate x 45">
+        <craftml-unit/>
+    </craftml-transform>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(10, 14.14213, 14.14213).and.center(5, 5, 5)
+    </script>
+</test>
+
+<test title="y 45">
+    <craftml-transform id="top" t="rotate y 45">
+        <craftml-unit/>
+    </craftml-transform>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(14.14213, 10, 14.14213).and.center(5, 5, 5)
+    </script>
+</test>
+
+<test title="z 45">
+    <craftml-transform id="top" t="rotate z 45">
+        <craftml-unit/>
+    </craftml-transform>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(14.14213, 14.14213, 10).and.center(5, 5, 5)
+    </script>
+</test>
+
+<test title="in a group">
+    <craftml-transform id="top" t="rotate z 45">
+        <craftml-group>
+            <craftml-unit size="20 10 10" />
+        </craftml-group>
+    </craftml-transform>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(21.21320, 21.21320, 10).and.center(10, 5, 5)
+    </script>
+</test>

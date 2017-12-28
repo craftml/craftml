@@ -30,7 +30,13 @@ const cases = {
   },
   transform: {
     position: null,
-    translate: null
+    translate: null,
+    center: null,
+    fit: null,
+    rotate: null,
+    scale: null,
+    land: null,
+    orbit: null
   },
   layout: {
     flow: null,

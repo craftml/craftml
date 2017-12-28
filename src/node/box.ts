@@ -117,7 +117,7 @@ export class Box {
         // this.size = new Vector3(0,0,0)
     }
     
-    getCenter(): V3 {
+    get center(): V3 {
         return {
             x: this.position.x + this.size.x / 2,
             y: this.position.y + this.size.y / 2,

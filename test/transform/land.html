@@ -1,0 +1,23 @@
+<test title="from x 100">
+    <craftml-transform id="top" t="land">
+        <craftml-transform t='translate 0 0 100'>
+            <craftml-unit/>
+        </craftml-transform>
+    </craftml-transform>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.position(0, 0, 0)
+    </script>
+</test>
+
+<test title="from x -100">
+    <craftml-transform id="top" t="land">
+        <craftml-transform t='translate 0 0 -100'>
+            <craftml-unit/>
+        </craftml-transform>
+    </craftml-transform>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.position(0, 0, 0)
+    </script>
+</test>

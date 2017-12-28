@@ -1,0 +1,19 @@
+<test title="x 2">
+    <craftml-transform t="scale x 2">
+        <craftml-unit/>
+    </craftml-transform>
+    <script>
+        // $('craftml-transform').pp()
+        $('craftml-transform').should.have.position(0, 0, 0).and.size(20, 10, 10)
+    </script>
+</test>
+
+<test title="1 2 3">
+    <craftml-transform t="scale 1 2 3">
+        <craftml-unit/>
+    </craftml-transform>
+    <script>
+        // $('craftml-transform').pp()
+        $('craftml-transform').should.have.position(0, 0, 0).and.size(10, 20, 30)
+    </script>
+</test>

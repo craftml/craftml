@@ -37,7 +37,7 @@ class ChainableMethod {
   }
 
   size(x: number, y: number, z: number) {
-    // const layout = this.q.first().layout()
+    
     _.forEach(this.q.get(), node => {
       const layout = node.layout
       const s = layout.size
@@ -51,12 +51,14 @@ class ChainableMethod {
 
   center(x: number, y: number, z: number) {
 
-    const layout = this.q.first().layout()
-    const s = layout ? layout.getCenter() : {}
-    const msg = `expected center to be (${x},${y},${z}) but got (${s.x}, ${s.y}, ${s.z})`
-    const check = closeTo(s.x, x) && closeTo(s.y, y) && closeTo(s.z, z)
-    assert(check, msg)
-
+    _.forEach(this.q.get(), node => {
+      const layout = node.layout
+      const s = layout.center || {}
+      const msg = `expected center to be (${x},${y},${z}) but got (${s.x}, ${s.y}, ${s.z})`
+      const check = closeTo(s.x, x) && closeTo(s.y, y) && closeTo(s.z, z)
+      assert(check, msg)
+    })
+    
     return this
   }
 

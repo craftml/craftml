@@ -1,0 +1,47 @@
+<test title="10">
+    <craftml-transform id="top" t="fit 10">
+        <craftml-transform t="size x 20">
+            <craftml-unit/>
+        </craftml-transform>
+    </craftml-transform>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(10, 5, 5).and.position(0, 0, 0)
+    </script>
+</test>
+
+<test title="10,20,10 -> 20,20,20">
+    <craftml-transform id="top" t="fit 20 20 20">
+        <craftml-transform t="size y 20">
+            <craftml-unit/>
+        </craftml-transform>
+    </craftml-transform>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(10, 20, 10).and.position(0, 0, 0)
+    </script>
+</test>
+
+<test title="10,20,10 -> x 5">
+    <craftml-transform id="top" t="fit x 5">
+        <craftml-transform t="size y 20">
+            <craftml-unit/>
+        </craftml-transform>
+    </craftml-transform>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(5, 10, 5).and.position(0, 0, 0)
+    </script>
+</test>
+
+<test title="60,18,30 -> xz 10">
+    <craftml-transform id="top" t="fit xz 10">
+        <craftml-transform t="size 60 18 30">
+            <craftml-unit/>
+        </craftml-transform>
+    </craftml-transform>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(10, 3, 5).and.position(0, 0, 0)
+    </script>
+</test>
