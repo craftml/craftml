@@ -14,14 +14,11 @@ export type Frame = {
 export default function parse(code: string): Frame[] {
 
     let blocks: Block[] = []
-    try {
-        // $FlowFixMe
+    try {        
         blocks = peg.parse(code)
     } catch (error) {
         throw 'there are syntax errors'
     }
-
-    // console.log('blocks', blocks[0])
 
     const frames = split_blocks_into_context_frames(blocks)
     return frames
@@ -33,7 +30,7 @@ function split_blocks_into_context_frames(blocks: Block[]): Frame[] {
     const frames: Frame[] = []
 
     // create and push the first frame
-    let currentFrame = {
+    let currentFrame: Frame = {
         blocks: [],
         selectors: undefined
     }

@@ -1,28 +1,21 @@
 import * as _ from 'lodash'
 import Node from '../../node'
-// import query from '../query'
 
 function collectMergedTree(node: Node): Node[] {
-    // if (node.has('children')){
+    
     return _.flatten(node.children.map((c, i) => {
-        // const childKey = c.childKey
+        
         if (c.merge) {
 
             return collectMergedTree(c)
 
         } else {
 
-            // return {node: c, path:[...path, 'children', i, 'offset']}
             return c
 
         }
 
     }))
-
-    // } else {
-    //
-    //   return []
-    //
 }
 
 // TODO: deal with situations when a selected node is a descendent of another
@@ -43,7 +36,7 @@ export default function select(node: Node, selectors?: string): Node[] {
 
         // const $ = query(nodeState)
 
-        let selectedNodes = []
+        let selectedNodes: Node[] = []
 
         const parts = selectors.split(',')
         _.forEach(parts, part => {

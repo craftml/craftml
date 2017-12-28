@@ -7,7 +7,9 @@ import select from './select'
 import flow from './flow'
 // import reverse from './reverse'
 // import { align, center } from './align'
-const VALID_LAYOUT_METHODS: { [string]: any } = {
+// const VALID_LAYOUT_METHODS: { [string]: any } = {
+
+const VALID_LAYOUT_METHODS = {
     //   join,
     //   align,
     //   center,
@@ -20,12 +22,10 @@ import parse, { Frame, Block } from './parse'
 export default function layoutEval(node: Node, expression: string): Node {
 
     const frames = parse(expression)
-    // console.log('frames', frames)
+    
     const updaters = _.map(frames, f => create_updater_from_frame(f))
     
     return _.flow(updaters)(node)
-
-    // return node
 }
 
 type Updater = (n: Node) => Node
@@ -41,7 +41,7 @@ function create_updater_from_frame(frame: Frame): Updater {
         const nodes = select(node, selectors)
         // console.log('nodes', nodes)
         const layoutFunction = compose_layout_function(blocks)
-        //
+        
         const offsets = compute_layout_offsets(nodes, layoutFunction)
 
         const translatedNodes = _.map(offsets, ({ x, y, z }, i) => {
@@ -51,11 +51,8 @@ function create_updater_from_frame(frame: Frame): Updater {
         const updaters: Updater[] = _.map(translatedNodes, c => {            
             return (n: Node) => n.setSubtree(c)
         })
-
-        // console.log('node', node.path)
-
+        
         return _.flow(updaters)(node)
-
     }
 }
 
@@ -69,13 +66,11 @@ function compose_layout_function(blocks: Block[]): LayoutFunction {
 
         const method = VALID_LAYOUT_METHODS[block.method]
 
-        // if (block.method === )
-
-        return (boxes) => method.call(this, boxes, block.args)
+        return (boxes: Box[]) => method(boxes, block.args)
 
     })
 
-    const compositeLayoutFunction = (boxes) => {
+    const compositeLayoutFunction = (boxes: Box[]) => {
 
         const indexedBoxes = _.map(boxes, (box, i) => {
             let ibox = _.cloneDeep(box)
@@ -101,16 +96,9 @@ function compute_layout_offsets(nodes: Node[], layoutFunction: LayoutFunction): 
 
     const boxes = _.map(nodes, node => node.layout)
 
-    // console.log('boxes', boxes)
-
-    // console.log('bolayoutFunctionxes', layoutFunction)
-
     const newBoxes = layoutFunction(boxes)
 
-    // console.log('newBoxes', newBoxes)
-
     const offsets = _.map(_.zip(newBoxes, boxes), ([b1, b2]) => {
-        // console.log('b1', b1.position)
         return {
             x: b1.position.x - b2.position.x,
             y: b1.position.y - b2.position.y,

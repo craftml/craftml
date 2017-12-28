@@ -144,6 +144,10 @@ export class Box {
             max2.z < min1.z || min2.z > max1.z ? false : true;
     }
 
+    toString(): string {
+        return _.values(this.position).join(',') + ' (' + _.values(this.size).join(',') + ')')
+    }
+
 }
 
 export function createBox(node: Node, parentMatrix: Matrix4 = new Matrix4()): Box {
