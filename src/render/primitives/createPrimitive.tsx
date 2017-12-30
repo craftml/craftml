@@ -28,8 +28,8 @@ type PrimitiveDefinition<T extends PropTypes> = {
     dimensions: number
 }
 
-function wrap_t(component: DomNode, t: string) {
-    return <craftml-transform t={t}>{component}</craftml-transform>
+function wrap_t(component: DomNode, t: string): DomNode {
+    return DOM(<craftml-transform t={t}>{component}</craftml-transform>)
 }
 
 function wrap_repeat(component: DomNode, props: { repeat: number | string }) {
@@ -46,58 +46,103 @@ import createRenderer, { } from '../createRenderer'
 
 export default function createPrimitive<T extends PropTypes>(def: PrimitiveDefinition<T>) {
 
+    const getSaga = (node: Node, props: iots.TypeOf<T> & { t: string }, domNode: DomNode) => function* () {
+
+        const geometryProps = props
+        
+        const geometry = def.getGeometry(geometryProps)
+    
+        const dimensions = def.dimensions        
+        
+        let wrapped: DomNode
+        
+        if (Array.isArray(geometry)) {
+            wrapped = DOM(
+                <craftml-group merge={false}>
+                    {_.map(geometry, g => <craftml-geometry geometry={g} dimensions={dimensions} />)}
+                </craftml-group>
+            )
+        } else {
+            wrapped = DOM(<craftml-geometry geometry={geometry} dimensions={dimensions} />)
+        }
+
+        wrapped = wrap_t(wrapped, props.t)
+
+        wrapped = DOM(
+            <craftml-group tagName={def.tagName} merge={false}>
+                {wrapped}
+            </craftml-group>)
+        
+        // const PrimitiveProps = iots.interface(def.propTypes)
+        const validation = iots.validate(props, def.propTypes)
+        if (validation.isLeft()) {
+            // TODO: report error
+            // example: https://github.com/OliverJAsh/io-ts-reporters/blob/master/src/index.ts
+            console.error(PathReporter.report(validation))
+        }
+    
+        // wrapped = wrap_repeat(wrapped, props)
+    
+        // console.log('wrapped', wrapped)
+    
+        // yield call(render(nodux.child(0), DOM(wrapped)))
+    
+        yield render(node, wrapped)
+    }
+
     return createRenderer({
         tagName: def.tagName,
         propTypes: def.propTypes,
         defaultProps: def.defaultProps,
         merge: false,
-        getSaga: (node, props, domNode) => function* () {
+        getSaga,
+        // getSaga1: (node, props, domNode) => function* () {
 
-            const geometryProps = props
+        //     const geometryProps = props
             
-            const geometry = def.getGeometry(geometryProps)
+        //     const geometry = def.getGeometry(geometryProps)
         
-            const dimensions = def.dimensions        
+        //     const dimensions = def.dimensions        
             
-            let wrapped: DomNode
+        //     let wrapped: DomNode
             
-            if (Array.isArray(geometry)) {
-                wrapped = DOM(
-                    <craftml-group merge={false}>
-                        {_.map(geometry, g => <craftml-geometry geometry={g} dimensions={dimensions} />)}
-                    </craftml-group>
-                )
-            } else {
-                wrapped = DOM(<craftml-geometry geometry={geometry} dimensions={dimensions} />)
-            }
+        //     if (Array.isArray(geometry)) {
+        //         wrapped = DOM(
+        //             <craftml-group merge={false}>
+        //                 {_.map(geometry, g => <craftml-geometry geometry={g} dimensions={dimensions} />)}
+        //             </craftml-group>
+        //         )
+        //     } else {
+        //         wrapped = DOM(<craftml-geometry geometry={geometry} dimensions={dimensions} />)
+        //     }
 
 
-            wrapped = wrap_t(wrapped, props.t)
+        //     wrapped = wrap_t(wrapped, props.t)
 
-            wrapped = DOM(
-                <craftml-group tagName={def.tagName} merge={false}>
-                    {wrapped}
-                </craftml-group>)
+        //     wrapped = DOM(
+        //         <craftml-group tagName={def.tagName} merge={false}>
+        //             {wrapped}
+        //         </craftml-group>)
         
         
         
-            // const PrimitiveProps = iots.interface(def.propTypes)
-            const validation = iots.validate(props, def.propTypes)
-            if (validation.isLeft()) {
-                // TODO: report error
-                // example: https://github.com/OliverJAsh/io-ts-reporters/blob/master/src/index.ts
-                console.error(PathReporter.report(validation))
-            }
+        //     // const PrimitiveProps = iots.interface(def.propTypes)
+        //     const validation = iots.validate(props, def.propTypes)
+        //     if (validation.isLeft()) {
+        //         // TODO: report error
+        //         // example: https://github.com/OliverJAsh/io-ts-reporters/blob/master/src/index.ts
+        //         console.error(PathReporter.report(validation))
+        //     }
         
-            // wrapped = wrap_repeat(wrapped, props)
+        //     // wrapped = wrap_repeat(wrapped, props)
         
-            // console.log('wrapped', wrapped)
+        //     // console.log('wrapped', wrapped)
         
-            // yield call(render(nodux.child(0), DOM(wrapped)))
+        //     // yield call(render(nodux.child(0), DOM(wrapped)))
         
-            yield render(node, wrapped)
+        //     yield render(node, wrapped)
 
-        }
+        // }
     })
 
 }

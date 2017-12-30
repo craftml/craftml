@@ -4,7 +4,7 @@ import { DomNode } from '../dom'
 import { actionCreators } from '../actions'
 import { put, select, call } from 'redux-saga/effects'
 
-import renderNode from './index'
+import renderMain from './index'
 
 export function commit(node: Node) {
     return put(actionCreators.commit(node))
@@ -15,7 +15,7 @@ export function refresh(node: Node) {
 }
 
 export function render(node: Node, domNode: DomNode) {
-    return call(renderNode, node, domNode)
+    return call(renderMain, node, domNode)
 }
 
 export function update(node: Node, updateFunc: (a: Node) => Node) {

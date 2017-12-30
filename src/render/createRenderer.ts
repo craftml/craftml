@@ -13,7 +13,9 @@ type RendererDefinition<T extends PropTypes> = {
     getSaga: (node: Node, props: iots.TypeOf<T>, domNode: DomNode) => (() => {})
 }
 
-export default function createRenderer<T extends PropTypes>(def: RendererDefinition<T>) {
+export type Renderer<T> = (node: Node, props: T, domNode: DomNode) => {}
+
+export default function createRenderer<T extends PropTypes>(def: RendererDefinition<T>): Renderer<T> {
 
     return function* (node: Node, props: T, domNode: DomNode): {} {
 
@@ -47,8 +49,8 @@ function* renderNode<T extends PropTypes>(
 
     const resolvedProps = resolveProps(def.propTypes, props, def.defaultProps) as T
 
-    console.log('props', props, '->', resolvedProps)
-// 
+    // console.log('props', props, '->', resolvedProps)
+
     yield def.getSaga(node, resolvedProps, domNode)()
-    // yield render(node, null)
+
 }

@@ -1,70 +1,52 @@
 import { DomNode } from '../dom'
 import Node from '../node'
 
-export interface NodeProps {
+import unit from './unit'
+import test from './_test'
+import script from './script'
+import geometry from './geometry'
+import group from './group'
+import transform from './transform'
+import layout from './layout'
 
-}
-
-import renderUnit from './unit'
-import renderTest from './_test'
-import renderScript from './script'
-import renderGeometry from './geometry'
-import renderGroup from './group'
-import renderTransform from './transform'
-import renderLayout from './layout'
-
-import renderCube from './primitives/cube'
-import renderCylinder from './primitives/cylinder'
+import cube from './primitives/cube'
+import cylinder from './primitives/cylinder'
 
 import { commit } from './effects'
-    
-export default function* renderNode(node: Node, domNode: DomNode): {} {
 
-    const tagName = domNode.name    
+import { Renderer } from './createRenderer'
+
+function createRenderersMap(): Map<string, Renderer<{}>> {
+    const rs: Map<string, Renderer<{}>> = new Map()
+    rs.set('script', script)
+    rs.set('cube', cube)
+    rs.set('cylinder', cylinder)
+    rs.set('test', test)    
+    rs.set('craftml-group', group)
+    rs.set('craftml-unit', unit)
+    rs.set('craftml-geometry', geometry)
+    rs.set('craftml-transform', transform)
+    rs.set('craftml-layout', layout)
+    return rs
+}
+
+const RENDERERS = createRenderersMap()
+
+export default function* renderMain(node: Node, domNode: DomNode): {} {
+
+    const tagName = domNode.name
     const props = domNode.attribs
-    
+
     node = node.setTagName(tagName)
         .setProps(props)
+
+    yield commit(node)
+
+    const renderer = RENDERERS.get(tagName)
+    if (renderer) {
+
+        yield renderer(node, props, domNode)
+
+    } 
     
-    yield commit(node)    
-
-    if (tagName === 'craftml-unit') {
-
-        yield renderUnit(node, props, domNode)
-    
-    } else if (tagName === 'craftml-group') {
-
-        yield renderGroup(node, props, domNode)
-
-    } else if (tagName === 'craftml-geometry') {
-        
-        yield renderGeometry(node, props, domNode)
-
-    } else if (tagName === 'test') {
-        
-        yield renderTest(node, props, domNode)
-
-    } else if (tagName === 'script') {
-
-        yield renderScript(node, props, domNode)
-
-    }   else if (tagName === 'craftml-transform') {
-        
-        yield renderTransform(node, props, domNode)
-
-    }  else if (tagName === 'craftml-layout') {
-        
-        yield renderLayout(node, props, domNode)
-
-    }  else if (tagName === 'cube') {
-        
-        yield renderCube(node, props, domNode)
-
-    }  else if (tagName === 'cylinder') {
-        
-        yield renderCylinder(node, props, domNode)
-    }      
-
-    // yield put({type: 'hello'})
-    // return node
 }
