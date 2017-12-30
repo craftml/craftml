@@ -27,7 +27,9 @@ const cases = {
   'css-select': null,
   primitives: {
     cube: null,
-    cylinder: null
+    cylinder: null,
+    cone: null,
+    sphere: null
   },
   transform: {
     position: null,

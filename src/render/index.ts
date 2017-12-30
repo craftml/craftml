@@ -11,6 +11,8 @@ import layout from './layout'
 
 import cube from './primitives/cube'
 import cylinder from './primitives/cylinder'
+import cone from './primitives/cone'
+import sphere from './primitives/sphere'
 
 import { commit } from './effects'
 
@@ -21,6 +23,8 @@ function createRenderersMap(): Map<string, Renderer<{}>> {
     rs.set('script', script)
     rs.set('cube', cube)
     rs.set('cylinder', cylinder)
+    rs.set('cone', cone)
+    rs.set('sphere', sphere)
     rs.set('test', test)    
     rs.set('craftml-group', group)
     rs.set('craftml-unit', unit)
