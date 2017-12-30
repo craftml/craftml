@@ -14,7 +14,7 @@ export default createRenderer({
         size: t.string        
     }),
     merge: false,
-    getSaga: (node, props, domNode) => function* (): {} {
+    getSaga: (node, props, domNode) => function* () {
             
         const { size = '10 10 10' } = props
         const [ x, y, z ] = _.map(size.split(' '), Number)

@@ -16,7 +16,9 @@ import { PathReporter, } from 'io-ts/lib/PathReporter'
 //     dimensions: number
 // }
 
-type PropTypes = iots.InterfaceType<iots.Props, iots.Any>
+// type PropTypes = iots.InterfaceType<iots.Props, iots.Any>
+
+type PropTypes = iots.InterfaceType<{}, {}>
 
 type PrimitiveDefinition<T extends PropTypes> = {
     tagName: string,
@@ -40,87 +42,136 @@ function wrap_repeat(component: DomNode, props: { repeat: number | string }) {
     return <craftml-repeat n={n}>{component}</craftml-repeat>
 }
 
-export default function createPrimitive<T>(def: PrimitiveDefinition<T>) {
+import createRenderer, { } from '../createRenderer'
 
-    // yield call()
-    return function* (node: Node, props: T, domNode: DomNode): {} {
+export default function createPrimitive<T extends PropTypes>(def: PrimitiveDefinition<T>) {
 
-        yield renderPrimitive(def, node, props, domNode)
+    return createRenderer({
+        tagName: def.tagName,
+        propTypes: def.propTypes,
+        defaultProps: def.defaultProps,
+        merge: false,
+        getSaga: (node, props, domNode) => function* () {
 
-        return
-    }
-}
+            const geometryProps = props
+            
+            const geometry = def.getGeometry(geometryProps)
+        
+            const dimensions = def.dimensions        
+            
+            let wrapped: DomNode
+            
+            if (Array.isArray(geometry)) {
+                wrapped = DOM(
+                    <craftml-group merge={false}>
+                        {_.map(geometry, g => <craftml-geometry geometry={g} dimensions={dimensions} />)}
+                    </craftml-group>
+                )
+            } else {
+                wrapped = DOM(<craftml-geometry geometry={geometry} dimensions={dimensions} />)
+            }
 
-function resolveProps(propTypes: PropTypes, props: {}, defaultProps: {}) {
 
-    const resolvedProps = _.defaults(props, defaultProps)
-    // console.log('propTypes', propTypes)
-    _.map(propTypes.props, (propValue, propName) => {
+            wrapped = wrap_t(wrapped, props.t)
 
-        // type conversion
-        if (propValue === iots.number) {
+            wrapped = DOM(
+                <craftml-group tagName={def.tagName} merge={false}>
+                    {wrapped}
+                </craftml-group>)
+        
+        
+        
+            // const PrimitiveProps = iots.interface(def.propTypes)
+            const validation = iots.validate(props, def.propTypes)
+            if (validation.isLeft()) {
+                // TODO: report error
+                // example: https://github.com/OliverJAsh/io-ts-reporters/blob/master/src/index.ts
+                console.error(PathReporter.report(validation))
+            }
+        
+            // wrapped = wrap_repeat(wrapped, props)
+        
+            // console.log('wrapped', wrapped)
+        
+            // yield call(render(nodux.child(0), DOM(wrapped)))
+        
+            yield render(node, wrapped)
 
-            resolvedProps[propName] = Number(props[propName])
         }
-
     })
 
-    // console.log('resolvedProps', resolvedProps)
-    return resolvedProps
 }
 
-function* renderPrimitive<T extends PropTypes>
-    (def: PrimitiveDefinition<T>, node: Node, props: T, domNode: DomNode) {
+// function resolveProps(propTypes: PropTypes, props: {}, defaultProps: {}) {
 
-    const geometryProps = resolveProps(def.propTypes, props, def.defaultProps) as T
+//     const resolvedProps = _.defaults(props, defaultProps)
+//     // console.log('propTypes', propTypes)
+//     _.map(propTypes.props, (propValue, propName) => {
 
-    const geometry = def.getGeometry(geometryProps)
+//         // type conversion
+//         if (propValue === iots.number) {
 
-    const dimensions = def.dimensions
+//             resolvedProps[propName] = Number(props[propName])
+//         }
 
-    let wrapped: DomNode
+//     })
 
-    if (Array.isArray(geometry)) {
-        wrapped = DOM(
-            <craftml-group merge={false}>
-                {_.map(geometry, g => <craftml-geometry geometry={g} dimensions={dimensions} />)}
-            </craftml-group>
-        )
-    } else {
-        wrapped = DOM(<craftml-geometry geometry={geometry} dimensions={dimensions} />)
-    }
+//     // console.log('resolvedProps', resolvedProps)
+//     return resolvedProps
+// }
 
-    // const htmlProps = _.pick(props, ['id','class','style','merge'])
+// function* renderPrimitive<T extends PropTypes>
+//     (def: PrimitiveDefinition<T>, node: Node, props: T, domNode: DomNode) {
 
-    wrapped = wrap_t(wrapped, props.t)
+//     const geometryProps = props
 
-    // wrapped = <craftml_group tagName={def.tagName} {...htmlProps}>
-    //   { wrapped }
-    // </craftml_group>
+//     const geometry = def.getGeometry(geometryProps)
 
-    wrapped = DOM(
-        <craftml-group tagName={def.tagName} merge={false}>
-            {wrapped}
-        </craftml-group>)
+//     const dimensions = def.dimensions
+
+//     let wrapped: DomNode
+
+//     if (Array.isArray(geometry)) {
+//         wrapped = DOM(
+//             <craftml-group merge={false}>
+//                 {_.map(geometry, g => <craftml-geometry geometry={g} dimensions={dimensions} />)}
+//             </craftml-group>
+//         )
+//     } else {
+//         wrapped = DOM(<craftml-geometry geometry={geometry} dimensions={dimensions} />)
+//     }
+
+//     // const htmlProps = _.pick(props, ['id','class','style','merge'])
+
+//     wrapped = wrap_t(wrapped, props.t)
+
+//     // wrapped = <craftml_group tagName={def.tagName} {...htmlProps}>
+//     //   { wrapped }
+//     // </craftml_group>
+
+//     wrapped = DOM(
+//         <craftml-group tagName={def.tagName} merge={false}>
+//             {wrapped}
+//         </craftml-group>)
 
 
 
-    // const PrimitiveProps = iots.interface(def.propTypes)
-    const validation = iots.validate(props, def.propTypes)
-    if (validation.isLeft()) {
-        // TODO: report error
-        // example: https://github.com/OliverJAsh/io-ts-reporters/blob/master/src/index.ts
-        console.error(PathReporter.report(validation))
-    }
+//     // const PrimitiveProps = iots.interface(def.propTypes)
+//     const validation = iots.validate(props, def.propTypes)
+//     if (validation.isLeft()) {
+//         // TODO: report error
+//         // example: https://github.com/OliverJAsh/io-ts-reporters/blob/master/src/index.ts
+//         console.error(PathReporter.report(validation))
+//     }
 
-    // wrapped = wrap_repeat(wrapped, props)
+//     // wrapped = wrap_repeat(wrapped, props)
 
-    // console.log('wrapped', wrapped)
+//     // console.log('wrapped', wrapped)
 
-    // yield call(render(nodux.child(0), DOM(wrapped)))
+//     // yield call(render(nodux.child(0), DOM(wrapped)))
 
-    yield render(node, wrapped)
+//     yield render(node, wrapped)
 
-    // yield call(render(nodux, DOM(wrapped)))
+//     // yield call(render(nodux, DOM(wrapped)))
 
-}
+// }
