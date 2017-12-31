@@ -5,6 +5,7 @@ import Node from '../node'
 import { select } from 'redux-saga/effects'
 import * as _ from 'lodash'
 import { commit } from './effects'
+import createRenderer from './createRenderer'
 
 function localFunctionStatements(locals: {}) {
     
@@ -18,7 +19,7 @@ function localFunctionStatements(locals: {}) {
     return statements
 }
 
-export default function* renderScript(node: Node, props: {}, domNode: DomNode) {
+const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
 
     // node.props
     // console.log('render script')
@@ -97,3 +98,15 @@ export default function* renderScript(node: Node, props: {}, domNode: DomNode) {
 
     // yield render(node, d)
 }
+
+import * as t from 'io-ts'
+
+export default createRenderer({
+    tagName: 'script',
+    defaultProps: {        
+    },
+    propTypes: t.interface({        
+    }),
+    merge: false,
+    getSaga: getSaga    
+})
