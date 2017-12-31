@@ -3,11 +3,11 @@ export interface DomNode {
     name: string,
     attribs: Attribs,
     data?: string,
-    children: Array<DomNode>,
-    title?: string
+    children: Array<DomNode>    
 }
 
 export interface Attribs {
+    title?: string
 }
 
 export const React = {
@@ -42,7 +42,8 @@ export const React = {
 
 }
 
-export function DOM(element: JSX.Element): DomNode {
-    // console.log('element', element)    
-    return element    
+// function to trick ts to think <craftml-xxx/> as a valid DomNode
+export function DOM(element: JSX.Element): DomNode {    
+    const ret: DomNode = element as {} as DomNode   // force element to be of type DomNode
+    return ret
 }

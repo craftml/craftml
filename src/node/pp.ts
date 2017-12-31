@@ -5,6 +5,7 @@ import chalk from 'chalk'
 // pretty-print a node and its descendents to console
 export default function pp(node: Node, options: {} = {}) {
     const text = toStringRecursively(node)
+    // tslint:disable-next-line:no-console
     console.log(text)
 }
 
@@ -17,8 +18,6 @@ function toStringRecursively(node: Node, levels: number = 0): string {
     const text = _.map(node.children, (c, i) => {
         return toStringRecursively(c, levels + 1)
     }).join('')
-
-    // const text = 'children'
 
     return self + '\n' + text
 }

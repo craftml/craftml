@@ -4,7 +4,7 @@ import { Matrix4, Geometry, BufferGeometry, Box3, Vector3, InterleavedBufferAttr
 import * as _ from 'lodash'
 import Node from './index'
 
-function createBox3FromGeometry(geometry: Geometry, matrix: Matrix4 = new Matrix4()) {
+function createBox3FromGeometry(geometry: Geometry | BufferGeometry, matrix: Matrix4 = new Matrix4()) {
 
     let box = new Box3()
     let v1 = new Vector3()
@@ -46,7 +46,7 @@ function createBox3FromGeometry(geometry: Geometry, matrix: Matrix4 = new Matrix
 
             }
 
-            for (var i = offset, il = array.length; i < il; i += stride) {
+            for (i = offset, il = array.length; i < il; i += stride) {
 
                 v1.fromArray(array, i);
 
@@ -145,7 +145,8 @@ export class Box {
     }
 
     toString(): string {
-        return _.values(this.position).join(',') + ' (' + _.values(this.size).join(',') + ')')
+        return _.values(this.position)
+            .join(',') + ' (' + _.values(this.size).join(',') + ')'
     }
 
 }

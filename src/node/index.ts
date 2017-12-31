@@ -46,11 +46,11 @@ export default class Node {
     }
 
     get id(): string {       
-        return this._state.get('props', {})['id'] as string
+        return (this._state.get('props', {}) as {id: string}).id
     }
 
     get className(): string {       
-        return this._state.get('props', {})['class'] as string
+        return (this._state.get('props', {}) as {class: string}).class
     }
 
     get state(): NodeState {
@@ -76,7 +76,7 @@ export default class Node {
     }
 
     get merge(): boolean {            
-        return this._state.get('props', {})['merge'] as boolean || false 
+        return (this._state.get('props', {}) as {merge: boolean}).merge || false 
     }
 
     get $() {
@@ -189,11 +189,4 @@ export default class Node {
     private update(newState: NodeState): Node {
         return new Node(newState)
     }
-
-    // get id(): string {    
-    //     return this._state.get('props',{})['id'] as string
-    // }
-
-    
-
 }
