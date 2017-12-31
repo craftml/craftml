@@ -1,6 +1,4 @@
-// import peg from './peg-parser'
 import Node from '../../node'
-import { Map, Record } from 'immutable'
 import * as _ from 'lodash'
 import * as linear from './linear'
 

@@ -65,7 +65,7 @@ class ChainableMethod {
   style(name: string, value: string) {
     _.forEach(this.q.get(), node => {
       const style = node.style
-      const v : string = style[name]
+      const v: string = style[name]
       const msg = `expected style.${name} to be ${value} but got ${v}`
       const check = value === v
       assert(check, msg)

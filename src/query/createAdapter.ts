@@ -1,10 +1,11 @@
 import * as _ from 'lodash'
 
-const IMPATH = (p) => _.reduce(p, (ret, e, i) => {
+const IMPATH = (p: string[]): string[] => _.reduce(p, (ret: string[], e: string, i) => {
     ret.push('children')
     ret.push(e)
     return ret
-}, [])
+},
+                                                   [])
 
 import Node from '../node'
 
@@ -33,8 +34,8 @@ export function createAdapter(topNode: Node) {
 
     // takes an array of nodes, and removes any duplicates, as well as any nodes
     // whose ancestors are also in the array
-    function removeSubsets(nodes) {
-        console.log('removeSubsets:nodes', nodes)
+    function removeSubsets(nodes: Array<Node | null>) {
+        // console.log('removeSubsets:nodes', nodes)
         let idx = nodes.length, node, ancestor, replace;
 
         // Check if each node (or one of its ancestors) is already contained in the
@@ -73,7 +74,7 @@ export function createAdapter(topNode: Node) {
 
     // finds all of the element nodes in the array that match the test predicate,
     // as well as any of their children that match it
-    function findAll(test, nodes) {
+    function findAll(test: (n: Node) => boolean, nodes: Node[]): Node[] {
         // console.log('findAll:nodes', nodes)
 
         // console.log('input nodes', nodes)
@@ -85,72 +86,75 @@ export function createAdapter(topNode: Node) {
         return allMatchedNodes
     }
 
+    const adapter = {
+        // is the node a tag?
+        isTag: (node: Node) => {
+            // console.log('isTag:node', node)
+            return true
+        },
 
-    const adapter =
-        {
-            // is the node a tag?
-            isTag: (node) => {
-                // console.log('isTag:node', node)
-                return true
-            },
+        // does at least one of passed element nodes pass the test predicate?
+        existsOne: (test: (n: Node) => boolean, elems: Node[]) => _.some(elems, test),
 
-            // does at least one of passed element nodes pass the test predicate?
-            existsOne: (test, elems) => _.some(elems, test),
+        // get the attribute value
+        getAttributeValue: (elem: Node, name: string) => elem.props[name],
 
-            // get the attribute value
-            getAttributeValue: (elem, name) => elem.props[name],
+        // get the node's children
+        getChildren,
 
-            // get the node's children
-            getChildren,
+        // get the name of the tag
+        getName: (elem: Node) => {
+            // console.log('getName:elem', elem.get('path'), elem.get('tagName'))
+            // console.log('elem', elem)
+            // return elem.get('tagName')
+            return elem.tagName
+        },
 
-            // get the name of the tag
-            getName: (elem: Node) => {
-                // console.log('getName:elem', elem.get('path'), elem.get('tagName'))
-                // console.log('elem', elem)
-                // return elem.get('tagName')
-                return elem.tagName
-            },
+        // get the parent of the node
+        getParent,
 
-            // get the parent of the node
-            getParent,
+        /*
+          get the siblings of the node. Note that unlike jQuery's `siblings` method,
+          this is expected to include the current node as well
+        */
+        getSiblings: (node: Node): Node[] => {
+            const p = getParent(node)
+            if (p) {
+                return getChildren(p)
+            } else {
+                return [node]
+            }
+        },
 
-            /*
-              get the siblings of the node. Note that unlike jQuery's `siblings` method,
-              this is expected to include the current node as well
-            */
-            getSiblings: (node) => {
-                return getChildren(getParent(node))
-            },
+        // get the text content of the node, and its children if it has any
+        getText: (node: Node) => '',
 
-            // get the text content of the node, and its children if it has any
-            getText: (node) => '',
+        // does the element have the named attribute?
+        hasAttrib: (node: Node, name: string) => _.has(node.props, name),
 
-            // does the element have the named attribute?
-            hasAttrib: (elem, name) => _.has(elem.props, name),
+        // takes an array of nodes, and removes any duplicates, as well as any nodes
+        // whose ancestors are also in the array
+        removeSubsets,
 
-            // takes an array of nodes, and removes any duplicates, as well as any nodes
-            // whose ancestors are also in the array
-            removeSubsets,
+        // finds all of the element nodes in the array that match the test predicate,
+        // as well as any of their children that match it
+        findAll,
 
-            // finds all of the element nodes in the array that match the test predicate,
-            // as well as any of their children that match it
-            findAll,
+        // finds the first node in the array that matches the test predicate, or one
+        // of its children
+        findOne: (test: (n: Node) => boolean, elems: Node[]) => {
+            // console.log('findOne:elems', elems)
+            return _.find(elems, test)
+        },
 
-            // finds the first node in the array that matches the test predicate, or one
-            // of its children
-            findOne: (test, elems) => {
-                console.log('findOne:elems', elems)
-                return _.find(elems, test)
-            },
-
-            /*
-              The adapter can also optionally include an equals method, if your DOM
-              structure needs a custom equality test to compare two objects which refer
-              to the same underlying node. If not provided, `css-select` will fall back to
-              `a === b`.
-            */
-            equals: (a, b) => a === b
-        }
+        /*
+          The adapter can also optionally include an equals method, if your DOM
+          structure needs a custom equality test to compare two objects which refer
+          to the same underlying node. If not provided, `css-select` will fall back to
+          `a === b`.
+        */
+        equals: (a: Node, b: Node) => a === b
+    }
 
     return adapter
 }

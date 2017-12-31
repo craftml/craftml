@@ -1,6 +1,4 @@
 import { DomNode } from '../dom'
-
-import { NodeProps } from './index'
 import Node from '../node'
 
 // import render from './index'
@@ -20,7 +18,7 @@ function localFunctionStatements(locals: {}) {
     return statements
 }
 
-export default function* renderScript(node: Node, props: NodeProps, domNode: DomNode) {
+export default function* renderScript(node: Node, props: {}, domNode: DomNode) {
 
     // node.props
     // console.log('render script')
@@ -37,7 +35,7 @@ export default function* renderScript(node: Node, props: NodeProps, domNode: Dom
     let thisPointer = {
         // make this.children read only
         get children() {
-            return []//children
+            return [] // children
         },
 
         pp() {
@@ -79,6 +77,7 @@ export default function* renderScript(node: Node, props: NodeProps, domNode: Dom
     
       } catch (err) {
     
+        // tslint:disable-next-line:no-console
         console.error(err.message)
         // const parentNodux = nodux.parent()
         // console.log('parentNodux', parentNodux)

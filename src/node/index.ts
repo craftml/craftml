@@ -70,6 +70,10 @@ export default class Node {
         return this._state.get('props', {}) as {}
     }
 
+    get style(): {} {
+        return this._state.get('style', {}) as {}
+    }
+
     setProps(obj: {}): Node {
         const newState = this._state.setIn(['props'], obj)
         return this.update(newState)

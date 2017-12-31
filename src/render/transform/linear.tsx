@@ -57,6 +57,55 @@ export function rotate(node: Node, args: XYZ) {
     return _.flow(updaters)(node)
 }
 
+export function orbit(node: Node, args: { x: number, y: number, z: number }) {
+    // console.log('args', args)
+
+    const orbitSub = (dim: string, degrees: number) => {
+
+        const layout = node.layout
+        // const { size, position } = layout
+
+        let c = { x: 0, y: 0, z: 0 }
+        c[dim] = -layout.size.x / 2
+
+        // const m1 = new Matrix4().makeTranslation(-c.x, -c.y, -c.z)
+        // const m3 = new Matrix4().makeTranslation(c.x, c.y, c.z)
+
+        const m = new Matrix4()
+        // matrix.premultiply(m3)
+
+        // const matrixMethodName = `makeRotation${dim.toUpperCase()}`
+        let angle = Math.PI * degrees / 180
+        if (dim === 'x') {
+            angle = -angle
+        }
+        let r = new Matrix4()
+        if (dim === 'x') {
+            r.makeRotationX(angle)
+        } else if (dim === 'y') {
+            r.makeRotationY(angle)
+        } else if (dim === 'z') {
+            r.makeRotationZ(angle)
+        }
+        // const r = new THREE.Matrix4()[matrixMethodName](angle)
+        m.multiply(r)
+
+        // matrix.multiply(m1)
+
+        return m
+    }
+
+    // TODO: update the parser
+    // only one axis is allowed
+    // orbit x 30
+    const arg = args[0]//    
+    // first axis, ignore the rest
+    const axis = arg.axes[0]
+    const matrix = orbitSub(axis, arg.number)
+
+    return node.applyMatrix(matrix)
+}
+
 export function translate(node: Node, args: XYZ) {
     const { x = 0, y = 0, z = 0 } = args
     const matrix = new Matrix4().makeTranslation(x, y, z)

@@ -1,6 +1,6 @@
 import { DomNode } from '../dom'
 import Node from '../node'
-import { commit, refresh, render, update } from './effects'
+import { commit, render, update } from './effects'
 
 export interface NodeProps {
 

@@ -41,16 +41,14 @@ export default function parse(code: string, context?: {}): DomNode[] {
     // return new Promise((resolve, reject) => {
 
     let handler = new DomHandler(
-        (error, dom) => {
+        (error: { message: string}, dom: {}) => {
           // console.log('error', error)
-          if (error){
-            const syntaxError = new SyntaxError(error.message)
-            // $FlowFixMe
-            syntaxError.element = error.element
-            // reject(syntaxError)
-          } else {
-            // resolve(dom)
-          }
+          if (error) {
+            
+            // const syntaxError = new SyntaxError(error.message)        
+            // syntaxError.element = error.element            
+
+          } 
         }, 
         {
             // get the start index so we can report a better error message
