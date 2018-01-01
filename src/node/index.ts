@@ -15,13 +15,13 @@ const IMPATH = (p: Array<string>) =>
         },
         [])
 
-type NodeState = Map<string, {}>
+export type NodeState = Map<string, {}>
 
-interface NodeError {
+export interface NodeError {
     message: string
 }
 
-import query from '../query'
+import query, { Query } from '../query'
 import pp from './pp'
 
 export function createRoot(): Node {

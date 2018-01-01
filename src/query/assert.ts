@@ -7,7 +7,7 @@ function closeTo(a: number, b: number) {
   return Math.abs(a - b) < 0.0001
 }
 
-class ChainableMethod {
+export class ChainableMethod {
 
   q: Query
 

@@ -13,6 +13,8 @@ import cube from './primitives/cube'
 import cylinder from './primitives/cylinder'
 import cone from './primitives/cone'
 import sphere from './primitives/sphere'
+import prism from './primitives/prism'
+import circle from './primitives/circle'
 
 import { commit } from './effects'
 
@@ -25,6 +27,9 @@ function createRenderersMap(): Map<string, Renderer<{}>> {
     rs.set('cylinder', cylinder)
     rs.set('cone', cone)
     rs.set('sphere', sphere)
+    rs.set('prism', prism)
+    rs.set('circle', circle)
+
     rs.set('test', test)    
     rs.set('craftml-group', group)
     rs.set('craftml-unit', unit)

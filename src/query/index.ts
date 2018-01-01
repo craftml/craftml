@@ -1,5 +1,5 @@
 import Node from '../node'
-import { should } from './assert'
+import { should, ChainableMethod } from './assert'
 // import CSSselect from 'css-select'
 const CSSselect = require('css-select')
 import { createAdapter } from './createAdapter'
@@ -19,8 +19,8 @@ export default function query(node: Node, $params?: {}) {
     return queryFunction
 }
 
-type Selector = string
-type Selection = Node[]
+export type Selector = string
+export type Selection = Node[]
 
 export class Query {
 
