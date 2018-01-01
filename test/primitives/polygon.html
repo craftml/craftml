@@ -1,0 +1,9 @@
+<test title="five vertices">
+    <craftml-group id="top">
+        <polygon points="0,0 10,0 10,10 5,15 0,10" />
+    </craftml-group>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(10, 15, 0).and.position(0, 0, 0)
+    </script>
+</test>

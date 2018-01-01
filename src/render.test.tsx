@@ -64,7 +64,10 @@ const cases = {
     cube: null,
     cylinder: null,
     cone: null,
-    sphere: null
+    sphere: null,
+    path: null,
+    rectangle: null,
+    polygon: null
   },
   transform: {
     position: null,

@@ -16,6 +16,8 @@ import sphere from './primitives/sphere'
 import prism from './primitives/prism'
 import circle from './primitives/circle'
 import rectangle from './primitives/rectangle'
+import polygon from './primitives/polygon'
+import path from './primitives/path'
 
 import { commit } from './effects'
 
@@ -31,6 +33,8 @@ function createRenderersMap(): Map<string, Renderer<{}>> {
     rs.set('prism', prism)
     rs.set('circle', circle)
     rs.set('rectangle', rectangle)
+    rs.set('polygon', polygon)
+    rs.set('path', path)
     rs.set('test', test)    
     rs.set('craftml-group', group)
     rs.set('craftml-unit', unit)

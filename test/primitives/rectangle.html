@@ -1,0 +1,29 @@
+<test title="default">
+    <craftml-group id="top">
+        <rectangle/>
+    </craftml-group>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(10, 10, 0).and.position(0, 0, 0)
+    </script>
+</test>
+
+<test title="wide">
+    <craftml-group id="top">
+        <rectangle width="20" />
+    </craftml-group>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(20, 10, 0).and.position(0, 0, 0)
+    </script>
+</test>
+
+<test title="tall">
+    <craftml-group id="top">
+        <rectangle height="20" />
+    </craftml-group>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(10, 20, 0).and.position(0, 0, 0)
+    </script>
+</test>

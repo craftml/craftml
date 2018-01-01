@@ -20,3 +20,20 @@ declare module "htmlparser2" {
 
     export = HtmlParser
 }
+
+// declare module "svg-path-contours" {
+
+//     type ContourPoint = number[]
+//     export type Contour = ContourPoint[]
+    
+//     function main(svg: {}): Contour[]
+
+//     export default main
+// }
+
+// declare module "parse-svg-path" {
+
+//     function main(d: string): {}
+
+//     export default main
+// }
