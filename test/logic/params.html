@@ -1,0 +1,46 @@
+<test title="repeat n + 1">
+    <craftml-group>
+        <script>
+            $params.n = 2            
+        </script>
+        <craftml-repeat n="{{ n + 1 }}">
+            <craftml-unit/>
+        </craftml-repeat>
+    </craftml-group>
+    <script>
+        // this.pp()
+        $('craftml-unit').should.have.three
+    </script>
+</test>
+
+<test title="cube t='scale s'">
+    <craftml-group>
+        <script>
+            $params.s = 2
+        </script>
+        <cube t="scale {{ s }}" />
+    </craftml-group>
+    <script>
+        // this.pp()
+        $('craftml-group').should.have.size(20, 20, 20)
+    </script>
+</test>
+
+<test title="nested override">
+    <craftml-group>
+        <script>
+            $params.s = 10
+        </script>
+        <craftml-group>
+            <script>
+                $params.s = 2
+            </script>
+            <cube t="scale {{ s }}" />
+        </craftml-group>
+    </craftml-group>
+    <script>
+        // this.pp()
+        $('craftml-group').should.have.size(20, 20, 20)
+    </script>
+</test>
+f

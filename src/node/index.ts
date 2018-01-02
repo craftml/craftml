@@ -28,7 +28,7 @@ const IMPATH = (p: Array<string>, root: string[] = []) => {
             return ret
         },
         [])
-    }
+}
 
 export type NodeState = Map<string, {}>
 
@@ -89,6 +89,18 @@ export default class Node {
         return this._state.get('style', {}) as {}
     }
 
+    // tslint:disable-next-line:no-any
+    get context(): Map<string, any> {
+        // tslint:disable-next-line:no-any
+        return this._state.get('context', Map()) as Map<string, any>
+    }
+
+    // tslint:disable-next-line:no-any
+    setContext(obj: Map<string, any> ): Node {
+        const newState = this._state.setIn(['context'], obj)
+        return this.update(newState)
+    }
+
     setProps(obj: {}): Node {
         const newState = this._state.setIn(['props'], obj)
         return this.update(newState)
@@ -99,7 +111,7 @@ export default class Node {
     }
 
     setMerge(m: boolean): Node {
-        const newState = this._state.update('props', {}, props => ({...props, merge: m})) as NodeState
+        const newState = this._state.update('props', {}, props => ({ ...props, merge: m })) as NodeState
         return this.update(newState)
     }
 
@@ -212,9 +224,9 @@ export default class Node {
 
     // src, dest must be a descendent of this node
     copyDescendent(src: Node, dest: Node): Node {
-        
+
         const srcImmutablePath = IMPATH(src.path, this.path)
-        const destImmutablePath = IMPATH(dest.path, this.path)        
+        const destImmutablePath = IMPATH(dest.path, this.path)
         const _destNodeState = updatePath(this._state.getIn(srcImmutablePath), dest.path)
         const newState = this._state.setIn(destImmutablePath, _destNodeState)
         // console.log('dest', _destNodeState)
@@ -235,16 +247,16 @@ export default class Node {
 const updatePath = (nodeState: NodeState, destPath: string[]): NodeState => {
 
     const _updateChild = (child: NodeState, index: string) => {
-      const childDestPath = [...destPath, index]
-      const childDestImmutablePath = [...destPath, 'children', index]
-      return updatePath(child, childDestPath)
+        const childDestPath = [...destPath, index]
+        const childDestImmutablePath = [...destPath, 'children', index]
+        return updatePath(child, childDestPath)
     }
-  
+
     return nodeState
-      .set('path', destPath)
-      .update('children', children => children ? (children as NodeState).map(_updateChild) : children)
-  }
-  
+        .set('path', destPath)
+        .update('children', children => children ? (children as NodeState).map(_updateChild) : children)
+}
+
 //   const copy = (state, src, dest) => {
 //     const srcImmutablePath = src.getImmutablePath()
 //     const destImmutablePath = dest.getImmutablePath()
@@ -253,5 +265,5 @@ const updatePath = (nodeState: NodeState, destPath: string[]): NodeState => {
 //     // console.log('dest', _destNodeState)
 //     return state.setIn(destImmutablePath, _destNodeState)
 //   }
-  
+
 

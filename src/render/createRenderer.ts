@@ -1,7 +1,7 @@
 import { DomNode } from '../dom'
 import Node from '../node'
 import * as _ from 'lodash'
-import { update, refresh } from './effects'
+import { update, refresh, parentOf } from './effects'
 
 import * as iots from 'io-ts'
 
@@ -33,13 +33,35 @@ function* renderNode<T extends object>(
     def: RendererDefinition<T>,
     node: Node, props: T, domNode: DomNode): {} {
 
-    const resolvedProps = resolve(def.propTypes, props, def.defaultProps) as T
-    
-    yield update(node, x => x.setMerge(def.merge))
-    node = yield refresh(node)
-
     // const k = (ps) => _.omit(ps, 'geometry')
     // console.log('props', k(props), k(def.defaultProps), '->', k(resolvedProps), def.propTypes.name)
+
+    const parent = yield parentOf(node)
+
+    const updater = (x: Node) => {
+
+        x = x.setMerge(def.merge)
+
+        if (parent) {
+
+            if (parent.context) {
+
+                x = x.setContext(parent.context)
+            }
+        }
+
+        return x
+    }
+
+    yield update(node, updater)
+    node = yield refresh(node)
+
+    const params = node.context.toJS()
+    // node.pp()
+    // console.log('params', node.tagName, params)
+
+    const resolvedProps = resolve(def.propTypes, props, def.defaultProps, params) as T
+
 
     yield def.getSaga(node, resolvedProps, domNode)()
 

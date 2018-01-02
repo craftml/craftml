@@ -3,17 +3,34 @@ import * as t from 'io-ts'
 
 type PropTypes<T> = t.Type<{}, T>
 
-export default function resolveProps<T>(propTypes: PropTypes<T>, props: {}, defaultProps: {}) {
+const isTemplate = (v: string) => v.match(/{{(.*)}}/)
 
-    const resolvedProps = {...defaultProps, ...props}
+function resolveTemplateExpressions(props: {}, params: {}) {
 
-    // console.log('propTypes', resolvedProps)
+    _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
+
+    return _.mapValues(props, value => {
+
+        // let value = propValue
+        if (_.isString(value) && isTemplate(value)) {         
+            const compiled = _.template(value)
+            return compiled(params)
+        } else {
+            return value
+        }
+    })
+
+}
+
+export default function resolveProps<T>(propTypes: PropTypes<T>, props: {}, defaultProps: {}, params: {}) {
+
+    let resolvedProps = {...defaultProps, ...props}    
+    
+    resolvedProps = resolveTemplateExpressions(resolvedProps, params)
 
     const resolveByInterfaceType = (ps: t.InterfaceType<t.Props, T>) => {
 
         _.forEach(ps.props, (propValue, propName) => {
-
-            // console.log('propName', propName)
 
             // type conversion
             if (propValue === t.number) {

@@ -35,14 +35,14 @@ function toString(node: Node): string {
         tagName += '*'
     }
 
-    //   let str
-    //   if (node.tagName.match(/^craftml-/)){
-    //     str = chalk.magenta(tagName)
-    //   } else {
-    //     str = chalk.magenta.bold(tagName)
-    //   }
+    let str
+    if (node.tagName.match(/^craftml-/)) {
+        str = chalk.magenta(tagName)
+    } else {
+        str = chalk.magenta.bold(tagName)
+    }
 
-    let str = chalk.magenta(tagName)
+    // let str = chalk.magenta(tagName)
     if (node.className) {
         str += chalk.green(` .${node.className}`)
     }
@@ -50,9 +50,9 @@ function toString(node: Node): string {
         str += chalk.green(` #${node.id}`)
     }
 
-    str += ` [${node.path.join('.')}]`
+    // str += ` [${node.path.join('.')}]`
 
-    //   str += node.context ? ` ${JSON.stringify(node.context)}` : ''
+    str += node.context ? chalk.gray(` ${JSON.stringify(node.context)}`) : ''
 
     //   // str += ` ${node.status}`
 

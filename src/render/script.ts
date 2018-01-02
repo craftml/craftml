@@ -4,8 +4,10 @@ import Node from '../node'
 // import render from './index'
 import { select } from 'redux-saga/effects'
 import * as _ from 'lodash'
-import { commit } from './effects'
+import { commit, update, parentOf, refresh } from './effects'
 import createRenderer from './createRenderer'
+import * as invariant from 'invariant'
+import { Map } from 'immutable'
 
 function localFunctionStatements(locals: {}) {
     
@@ -26,12 +28,11 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
 
     const root = yield select(state => state)
 
-    // root.pp()    
+    // a script block must have a parent
+    let parentNode = yield parentOf(node)
+    invariant(parentNode, 'a script node must have a parent node')
 
     let $ = root.$
-    // if (parentNode){
-    //     $ = parentNode.$
-    // }
 
     let thisPointer = {
         // make this.children read only
@@ -40,15 +41,17 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
         },
 
         pp() {
-            root.pp()
+            parentNode.pp()
         }
     }
+
+    let $params = parentNode.context.toJS()
 
     const locals = {
         $,
         // expect: chai.expect,
         // require: custom_require,
-        // $params,
+        $params,
         // _: _
         // $root: root
      }
@@ -61,20 +64,11 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
     
     let f = new Function('locals', funcBody)
     
-    // console.log('f', f)
-
     try {
-        // $FlowFixMe
+    
         f.call(thisPointer, locals)
-    
-        // console.log('$params', $params)
-    
-        // const newParentNode = parentNode.setContext(Map($params))
-    
-        // const parentNodux = nodux.parent()
-        // if (parentNodux){
-        //   yield put(parentNodux.Set(newParentNode.state))
-        // }
+        
+        yield update(parentNode, x => x.setContext(Map($params)))    
     
       } catch (err) {
     

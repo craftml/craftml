@@ -37,9 +37,8 @@ function wrap_repeat(component: DomNode, props: { repeat: number | string }) {
     // const { n = 1 } = props
     // if (typeof props.repeat === 'number')
 
-    const n = props.repeat
+    const n = props.repeat    
 
-    console.log('n=', n)
     // $FlowFixMe
     return <craftml-repeat n={n}>{component}</craftml-repeat>
 }

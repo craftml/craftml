@@ -92,7 +92,8 @@ const cases = {
     stack: null
   },
   logic: {
-    repeat: null
+    repeat: null,
+    params: null
   }
 }
 

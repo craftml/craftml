@@ -3,6 +3,7 @@ import { DomNode } from '../dom'
 
 import { actionCreators } from '../actions'
 import { put, select, call } from 'redux-saga/effects'
+import { initial } from 'lodash'
 
 import renderMain from './index'
 
@@ -20,4 +21,8 @@ export function render(node: Node, domNode: DomNode) {
 
 export function update(node: Node, updateFunc: (a: Node) => Node) {
     return put(actionCreators.update(node, updateFunc))    
+}
+
+export function parentOf(node: Node) {
+    return select(state => (state as Node).descendant(initial(node.path)))
 }

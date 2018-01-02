@@ -1,6 +1,6 @@
 import { DomNode } from '../dom'
 import Node from '../node'
-import { commit, render, update } from './effects'
+import { commit, render, update, refresh } from './effects'
 
 export interface NodeProps {
 
@@ -27,6 +27,8 @@ export default function* renderGroup(node: Node, props: GroupProps, domNode: Dom
     while ( i < children.length) {        
 
         yield render(node.child(i), children[i])
+
+        node = yield refresh(node)
         
         i = i + 1
         // yield call(render1, node.child(1), domNode.children[1])
