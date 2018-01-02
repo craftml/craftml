@@ -11,6 +11,9 @@ declare namespace JSX {
         },
         'craftml-transform': {
             t: string
+        },
+        'craftml-layout': {
+            l: string
         }
     }
 

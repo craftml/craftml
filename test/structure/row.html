@@ -1,0 +1,89 @@
+<test title="3 units">
+    <row id="top">
+        <craftml-unit/>
+        <craftml-unit/>
+        <craftml-unit/>
+    </row>
+    <script>        
+        // $('#top').pp()
+        $('#top').should.have.size(30, 10, 10).and.position(0, 0, 0)
+    </script>
+</test>
+
+<test title="spacing 10">
+    <row spacing="10" id="top">
+        <craftml-unit/>
+        <craftml-unit/>
+        <craftml-unit/>
+    </row>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(50, 10, 10).and.position(0, 0, 0)
+    </script>
+</test>
+
+<test title="center along y">
+    <row id="top">
+        <craftml-unit size="10 10 10" id="one" />
+        <craftml-unit size="10 20 10" id="two" />
+        <craftml-unit size="10 30 10" id="three" />
+    </row>
+    <script>
+        //  $('#top').pp()
+        $('#one').should.have.position(0, 0, 0)
+        $('#two').should.have.position(10, -5, 0)
+        $('#three').should.have.position(20, -10, 0)
+    </script>
+</test>
+
+<test title="nest">
+    <row id="top">
+        <row>
+            <craftml-unit size="10 20 10" />
+            <craftml-unit size="10 20 10" />
+        </row>
+        <craftml-unit/>
+    </row>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(30, 20, 10)
+    </script>
+</test>
+
+<test title="scale">
+    <row id="top" t="scale 2">
+        <craftml-unit/>
+        <craftml-unit/>
+        <craftml-unit/>
+    </row>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(60, 20, 20).and.position(0, 0, 0)
+    </script>
+</test>
+
+<test title="repeat nested">
+    <row id="top">
+        <craftml-repeat n="3">
+            <craftml-unit/>
+        </craftml-repeat>
+    </row>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(30, 10, 10).and.position(0, 0, 0)
+    </script>
+</test>
+
+<test title="repeat directive">
+    <craftml-group id="top">
+        <row id="toprow">
+            <g repeat="3">
+                <craftml-unit/>
+            </g>
+        </row>
+    </craftml-group>
+    <script>
+        //  $('#top').pp()
+        $('#top').should.have.size(30, 10, 10).and.position(0, 0, 0)
+    </script>
+</test>

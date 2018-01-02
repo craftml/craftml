@@ -5,6 +5,7 @@ import * as _ from 'lodash'
 import * as iots from 'io-ts'
 
 type PropTypes<T> = iots.Type<{}, T>
+
 type RendererDefinition<T extends object> = {
     tagName: string,
     propTypes: PropTypes<T>,

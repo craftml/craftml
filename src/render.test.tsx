@@ -83,6 +83,12 @@ const cases = {
     flow: null,
     align: null,
     center: null
+  },
+  structure: {
+    row: null,
+    g: null,
+    col: null,
+    stack: null
   }
 }
 

@@ -1,0 +1,11 @@
+<test title="3 units">
+    <col id="top">
+    <craftml-unit/>
+    <craftml-unit/>
+    <craftml-unit/>
+    </col>
+    <script>
+         $('#top').pp()
+        $('#top').should.have.size(10, 30, 10).and.position(0, 0, 0)
+    </script>
+</test>

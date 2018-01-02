@@ -19,6 +19,11 @@ import rectangle from './primitives/rectangle'
 import polygon from './primitives/polygon'
 import path from './primitives/path'
 
+import row from './structure/row'
+import col from './structure/col'
+import stack from './structure/stack'
+import g from './structure/g'
+
 import { commit } from './effects'
 
 import { Renderer } from './createRenderer'
@@ -35,6 +40,12 @@ function createRenderersMap(): Map<string, Renderer<{}>> {
     rs.set('rectangle', rectangle)
     rs.set('polygon', polygon)
     rs.set('path', path)
+
+    rs.set('row', row)
+    rs.set('col', col)
+    rs.set('stack', stack)
+    rs.set('g', g)
+
     rs.set('test', test)    
     rs.set('craftml-group', group)
     rs.set('craftml-unit', unit)

@@ -5,7 +5,7 @@ import * as _ from 'lodash'
 import select from './select'
 // import join from './join'
 import flow from './flow'
-// import reverse from './reverse'
+import reverse from './reverse'
 import { align, center } from './align'
 // const VALID_LAYOUT_METHODS: { [string]: any } = {
 
@@ -14,7 +14,7 @@ const VALID_LAYOUT_METHODS = {
     align,
     center,
     flow,
-    //   reverse
+    reverse
 }
 
 import parse, { Frame, Block } from './parse'
