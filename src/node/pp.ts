@@ -31,9 +31,9 @@ function toString(node: Node): string {
         tagName = node.tagName
     }
 
-    //   if (node.merge){
-    //     tagName += '*'
-    //   }
+    if (node.merge) {
+        tagName += '*'
+    }
 
     //   let str
     //   if (node.tagName.match(/^craftml-/)){
@@ -50,7 +50,7 @@ function toString(node: Node): string {
         str += chalk.green(` #${node.id}`)
     }
 
-    //   str += ` [${node.path.join('.')}]`
+    str += ` [${node.path.join('.')}]`
 
     //   str += node.context ? ` ${JSON.stringify(node.context)}` : ''
 

@@ -1,6 +1,7 @@
 import { DomNode } from '../dom'
 import Node from '../node'
 import * as _ from 'lodash'
+import { update, refresh } from './effects'
 
 import * as iots from 'io-ts'
 
@@ -33,6 +34,9 @@ function* renderNode<T extends object>(
     node: Node, props: T, domNode: DomNode): {} {
 
     const resolvedProps = resolve(def.propTypes, props, def.defaultProps) as T
+    
+    yield update(node, x => x.setMerge(def.merge))
+    node = yield refresh(node)
 
     // const k = (ps) => _.omit(ps, 'geometry')
     // console.log('props', k(props), k(def.defaultProps), '->', k(resolvedProps), def.propTypes.name)

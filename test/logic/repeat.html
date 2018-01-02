@@ -1,0 +1,29 @@
+<test title="default n = 1">
+    <craftml-repeat>
+        <craftml-unit/>
+    </craftml-repeat>
+    <script>
+        // this.pp()
+        $('craftml-unit').should.have.one
+    </script>
+</test>
+
+<test title="two units">
+    <craftml-repeat n="2" id="top">
+        <craftml-unit/>
+    </craftml-repeat>
+    <script>        
+        // this.pp()
+        $('craftml-unit').should.have.two
+    </script>
+</test>
+
+<test title="five units">
+    <craftml-repeat n="5" id="top">
+        <craftml-unit/>
+    </craftml-repeat>
+    <script>
+        // $('#top').pp()
+        $('craftml-unit').should.have.five
+    </script>
+</test>

@@ -9,6 +9,7 @@ type StructurePropTypes = {
     spacing?: number
     t: string,
     l: string
+    repeat: string
 }
 type StructureDefinition = {
     tagName: string,
@@ -19,14 +20,15 @@ function wrap_t(component: DomNode, t: string): DomNode {
     return DOM(<craftml-transform t={t}>{component}</craftml-transform>)
 }
 
-function wrap_repeat(component: DomNode, props: { repeat: number | string }) {
+function wrap_repeat(component: DomNode, props: { repeat: number | string }): DomNode {
 
     // const { n = 1 } = props
     // if (typeof props.repeat === 'number')
 
-    const n = props.repeat
+    const n = Number(props.repeat)
+    // console.log('n', n)
     // $FlowFixMe
-    return <craftml-repeat n={n}>{component}</craftml-repeat>
+    return DOM(<craftml-repeat n={n}>{component}</craftml-repeat>)
 }
 
 import createRenderer, { } from '../createRenderer'
@@ -36,12 +38,14 @@ type GetSaga<T> = (node: Node, props: T, domNode: DomNode) => Saga
 
 const propTypes = iots.interface({
     l: iots.string,
-    t: iots.string
+    t: iots.string,
+    repeat: iots.string
 })
 
 const defaultProps = {
     l: '',
-    t: ''
+    t: '',
+    repeat: ''
 }
 
 export default function createStructure(def: StructureDefinition) {
@@ -72,6 +76,8 @@ export default function createStructure(def: StructureDefinition) {
                 </craftml-transform>
             </craftml-group>
         )
+
+        wrapped = wrap_repeat(wrapped, props)
     
         yield render(node, wrapped)
     }

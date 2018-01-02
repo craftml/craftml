@@ -90,6 +90,9 @@ const cases = {
     g: null,
     col: null,
     stack: null
+  },
+  logic: {
+    repeat: null
   }
 }
 

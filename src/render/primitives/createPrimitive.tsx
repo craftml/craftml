@@ -38,6 +38,8 @@ function wrap_repeat(component: DomNode, props: { repeat: number | string }) {
     // if (typeof props.repeat === 'number')
 
     const n = props.repeat
+
+    console.log('n=', n)
     // $FlowFixMe
     return <craftml-repeat n={n}>{component}</craftml-repeat>
 }
@@ -109,7 +111,7 @@ export default function createPrimitive<T extends object>(def: PrimitiveDefiniti
         //     console.error(PathReporter.report(validation))
         // }
     
-        // wrapped = wrap_repeat(wrapped, props)
+        wrapped = wrap_repeat(wrapped, props)
     
         // console.log('wrapped', wrapped)
     

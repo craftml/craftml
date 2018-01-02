@@ -24,6 +24,8 @@ import col from './structure/col'
 import stack from './structure/stack'
 import g from './structure/g'
 
+import repeat from './logic/repeat'
+
 import { commit } from './effects'
 
 import { Renderer } from './createRenderer'
@@ -47,11 +49,14 @@ function createRenderersMap(): Map<string, Renderer<{}>> {
     rs.set('g', g)
 
     rs.set('test', test)    
+
     rs.set('craftml-group', group)
     rs.set('craftml-unit', unit)
     rs.set('craftml-geometry', geometry)
     rs.set('craftml-transform', transform)
     rs.set('craftml-layout', layout)
+    rs.set('craftml-repeat', repeat)
+    
     return rs
 }
 
@@ -66,6 +71,10 @@ export default function* renderMain(node: Node, domNode: DomNode): {} {
         .setProps(props)
 
     yield commit(node)
+
+    // strip empty children    
+    const isNonEmpty = (c: DomNode) => !(c.type === 'text' && (c.data || '').trim().length === 0)
+    domNode.children = domNode.children.filter(isNonEmpty)
 
     const renderer = RENDERERS.get(tagName)
     if (renderer) {

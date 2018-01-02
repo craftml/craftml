@@ -14,6 +14,9 @@ declare namespace JSX {
         },
         'craftml-layout': {
             l: string
+        },
+        'craftml-repeat': {
+            n: number
         }
     }
 
