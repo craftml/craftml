@@ -82,7 +82,8 @@ const cases = {
   layout: {
     flow: null,
     align: null,
-    center: null
+    center: null,
+    join: null
   },
   structure: {
     row: null,

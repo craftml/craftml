@@ -1,16 +1,15 @@
 import Node from '../../node'
-// import { Map } from 'immutable'
 import * as _ from 'lodash'
 
 import select from './select'
-// import join from './join'
+import join from './join'
 import flow from './flow'
 import reverse from './reverse'
 import { align, center } from './align'
 // const VALID_LAYOUT_METHODS: { [string]: any } = {
 
 const VALID_LAYOUT_METHODS = {
-    //   join,
+    join,
     align,
     center,
     flow,
