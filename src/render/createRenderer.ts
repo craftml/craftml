@@ -4,18 +4,18 @@ import * as _ from 'lodash'
 
 import * as iots from 'io-ts'
 
-type PropTypes = iots.InterfaceType<{}, {}>
-type RendererDefinition<T extends PropTypes> = {
+type PropTypes<T> = iots.Type<{}, T>
+type RendererDefinition<T extends object> = {
     tagName: string,
-    propTypes: T,
-    defaultProps: iots.TypeOf<T>,
-    merge: boolean
-    getSaga: (node: Node, props: iots.TypeOf<T>, domNode: DomNode) => (() => {})
+    propTypes: PropTypes<T>,
+    defaultProps: T,
+    merge: boolean,
+    getSaga: (node: Node, props: T, domNode: DomNode) => (() => {})
 }
 
 export type Renderer<T> = (node: Node, props: T, domNode: DomNode) => {}
 
-export default function createRenderer<T extends PropTypes>(def: RendererDefinition<T>): Renderer<T> {
+export default function createRenderer<T extends object>(def: RendererDefinition<T>): Renderer<T> {
 
     return function* (node: Node, props: T, domNode: DomNode): {} {
 
@@ -25,31 +25,16 @@ export default function createRenderer<T extends PropTypes>(def: RendererDefinit
     }
 }
 
-function resolveProps(propTypes: PropTypes, props: {}, defaultProps: {}) {
+import resolve from './resolve'
 
-    const resolvedProps = _.defaults(props, defaultProps)
-    // console.log('propTypes', propTypes)
-    _.map(propTypes.props, (propValue, propName) => {
-
-        // type conversion
-        if (propValue === iots.number) {
-
-            resolvedProps[propName] = Number(props[propName])
-        }
-
-    })
-
-    // console.log('resolvedProps', resolvedProps)
-    return resolvedProps
-}
-
-function* renderNode<T extends PropTypes>(
+function* renderNode<T extends object>(
     def: RendererDefinition<T>,
     node: Node, props: T, domNode: DomNode): {} {
 
-    const resolvedProps = resolveProps(def.propTypes, props, def.defaultProps) as T
+    const resolvedProps = resolve(def.propTypes, props, def.defaultProps) as T
 
-    // console.log('props', props, '->', resolvedProps)
+    // const k = (ps) => _.omit(ps, 'geometry')
+    // console.log('props', k(props), k(def.defaultProps), '->', k(resolvedProps), def.propTypes.name)
 
     yield def.getSaga(node, resolvedProps, domNode)()
 

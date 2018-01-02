@@ -3,20 +3,48 @@ import { render, update } from '../effects'
 import Node from '../../node'
 import transformEval from './eval'
 
-export interface TransformProps {
-    t: string
-}
+// export interface TransformProps {
+//     t: string
+// }
 
-export default function* renderTransform(node: Node, props: TransformProps, domNode: DomNode) {
+// export default function* renderTransform(node: Node, props: TransformProps, domNode: DomNode) {
 
-    const { t = '' } = props
+//     const { t = '' } = props
 
-    const d = DOM(
-    <craftml-group merge={true} tagName="craftml-transform" {...props}>
-        {domNode.children}
-    </craftml-group>)
+//     const d = DOM(
+//     <craftml-group merge={true} tagName="craftml-transform" {...props}>
+//         {domNode.children}
+//     </craftml-group>)
     
-    yield render(node, d)
+//     yield render(node, d)
 
-    yield update(node, n => transformEval(n, t))
-}
+//     yield update(node, n => transformEval(n, t))
+// }
+
+import * as t from 'io-ts'
+import createRenderer from '../createRenderer'
+
+export default createRenderer({
+    tagName: 'craftml-transform',
+    defaultProps: {
+        t: ''        
+    },
+    propTypes: t.interface({
+        t: t.string
+    }),
+    merge: true,
+    getSaga: (node, props, domNode) => function* () {
+            
+        // const { t = '' } = props
+
+        const d = DOM(
+        <craftml-group merge={true} tagName="craftml-transform" {...props}>
+            {domNode.children}
+        </craftml-group>)
+        
+        yield render(node, d)
+    
+        yield update(node, n => transformEval(n, props.t))
+
+    }
+})
