@@ -47,7 +47,20 @@ import createRenderer, { } from '../createRenderer'
 // 
 //type Renderer<T extends PropTypes, K> = (node: Node, props: iots.TypeOf<T> & K, domNode: DomNode) => () => {}
 
-type Renderer<T> = (node: Node, props: T, domNode: DomNode) => () => {}
+type Saga = () => {}
+type GetSaga<T> = (node: Node, props: T, domNode: DomNode) => Saga
+
+function mergeProps<T extends object, R extends object>
+    (defaultProps: T, propTypes: PropTypes<T>, newDefaultProps: R, newPropTypes: PropTypes<R>) {
+
+    const mergedPropTypes = iots.intersection([propTypes, newPropTypes])
+    
+    type T1 = iots.TypeOf<typeof mergedPropTypes>
+
+    const mergedDefaultProps: T1 = {...defaultProps as object, ...newDefaultProps as object} as {} as T1
+
+    return [mergedDefaultProps, mergedPropTypes]
+}
 
 export default function createPrimitive<T extends object>(def: PrimitiveDefinition<T>) {
 
@@ -55,30 +68,13 @@ export default function createPrimitive<T extends object>(def: PrimitiveDefiniti
         t: iots.string
     })
 
-    // const commonPropTypes2 = iots.interface({
-    //     l: iots.number
-    // })
-
-    // const type3 = iots.intersection([commonPropTypes, commonPropTypes2])
-    // const u = { t: '' }
-    // const f: iots.TypeOf<typeof type3> = { ...u, l: 0}
-
-    // const obj: iots.TypeOf<T> = def.defaultProps
-    
     const mergedPropTypes = iots.intersection([def.propTypes, commonPropTypes])
-
     
-
-    // const g: iots.TypeOf<typeof jointPropTypes> = {...def.defaultProps, t: 3}
-
-    // type T1 = T & { t: string }
     type T1 = iots.TypeOf<typeof mergedPropTypes>
 
-    // const o: PropTypes<T1> = mergedPropTypes 
-    
     const mergedDefaultProps: T1 = {...def.defaultProps as object, t: ''} as {} as T1
 
-    const getSaga: Renderer<T1> = (node, props, domNode) => function* () {
+    const getSaga: GetSaga<T1> = (node, props, domNode) => function* () {
 
         const geometryProps = props
         
@@ -105,13 +101,13 @@ export default function createPrimitive<T extends object>(def: PrimitiveDefiniti
                 {wrapped}
             </craftml-group>)
         
-        // const PrimitiveProps = iots.interface(def.propTypes)
-        const validation = iots.validate(props, def.propTypes)
-        if (validation.isLeft()) {
-            // TODO: report error
-            // example: https://github.com/OliverJAsh/io-ts-reporters/blob/master/src/index.ts
-            console.error(PathReporter.report(validation))
-        }
+        // // const PrimitiveProps = iots.interface(def.propTypes)
+        // const validation = iots.validate(props, def.propTypes)
+        // if (validation.isLeft()) {
+        //     // TODO: report error
+        //     // example: https://github.com/OliverJAsh/io-ts-reporters/blob/master/src/index.ts
+        //     console.error(PathReporter.report(validation))
+        // }
     
         // wrapped = wrap_repeat(wrapped, props)
     
@@ -124,7 +120,7 @@ export default function createPrimitive<T extends object>(def: PrimitiveDefiniti
 
     return createRenderer({
         tagName: def.tagName,
-        propTypes: mergedPropTypes, //def.propTypes,
+        propTypes: mergedPropTypes,
         defaultProps: mergedDefaultProps,
         merge: false,
         getSaga,
