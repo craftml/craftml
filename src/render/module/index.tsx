@@ -32,7 +32,7 @@ export default createRenderer({
     merge: false,
     getSaga: (node, props, domNode) => function* () {
             
-        let part = node.getPart(props.name)
+        let part = node.getPart(props.name)        
 
         if (!part) {
 
@@ -113,18 +113,19 @@ export default createRenderer({
         }
 
         if (instanceDef) {
-        
-            
+                
             // render a new top node (without html props)
             const top = DOM(<craftml-group tagName={instanceDef.displayTagName} merge={true}/>)
             yield render(node, top)
 
             node = yield refresh(node)
-          
-            // node = yield select(nodux.getNode())
-            const params = evalParams(node, props, instanceDef.children)
+            
+            
+            const clientGivenProps = domNode.attribs    
+
+            const params = evalParams(node, clientGivenProps, instanceDef.children)
             node = node.setContext(Map(params))
-            // node.pp()
+            
             // node = node.setBlock(children)
             yield commit(node)
             // yield put(nodux.Set(node.state))

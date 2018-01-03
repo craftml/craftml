@@ -6,7 +6,7 @@
         <smallbox/>
     </craftml-group>
     <script>
-        // $('#top').pp()
+        
         $('smallbox').should.have.one.and.size(10, 10, 10)
         $('craftml-unit').should.have.one
     </script>
@@ -22,7 +22,7 @@
         <smallbox/>
     </craftml-group>
     <script>
-        // $('#top').pp()
+        
         $('smallbox').should.have.three
     </script>
 </test>
@@ -39,7 +39,7 @@
         </craftml-layout>
     </craftml-group>
     <script>
-        // $('#top').pp()
+        
         $('#top').should.have.size(30, 10, 10)
     </script>
 </test>
@@ -53,7 +53,7 @@
         <smallbox t="scale 3" id="two" />
     </craftml-group>
     <script>
-        // $('#top').pp()
+        
         $('smallbox#one').should.have.size(20, 20, 20)
         $('smallbox#two').should.have.size(30, 30, 30)
     </script>
@@ -67,7 +67,7 @@
         <smallbox/>
     </craftml-group>
     <script>
-        // $('#top').pp()
+        
         $('#top').should.have.size(20, 20, 20)
     </script>
 </test>
@@ -80,7 +80,7 @@
         <smallbox repeat="3" />
     </craftml-group>
     <script>
-        $('#top').pp()
+        
         $('smallbox').should.have.three
         $('craftml-unit').should.have.three
     </script>
@@ -98,7 +98,7 @@
             </cratml-layout>
     </craftml-group>
     <script>
-        $('#top').pp()
+        
         $('#top').should.have.size(40, 10, 10)
     </script>
 </test>
@@ -107,14 +107,90 @@
     <craftml-group id="top">
         <part name='boxes' merge>
             <param name="n" type="number" value="3" />
-            <craftml-repeat n="3">
+            <craftml-repeat n="{{ n }}">
                 <craftml-unit/>
             </craftml-repeat>
         </part>
         <boxes/>
     </craftml-group>
     <script>
-        // $('#top').pp()
+        
         $('craftml-unit').should.have.three
+    </script>
+</test>
+
+<test title="param n : user specified">
+    <craftml-group id="top">
+        <part name='boxes' merge>
+            <param name="n" type="number" value="3" />
+            <craftml-repeat n="{{ n }}">
+                <craftml-unit/>
+            </craftml-repeat>
+        </part>
+        <boxes n="5" />
+    </craftml-group>
+    <script>
+        
+        $('craftml-unit').should.have.five
+    </script>
+</test>
+
+<test title="param x y : mixed">
+    <craftml-group id="top">
+        <part name='boxes' merge>
+            <param name="x" type="number" value="20" />
+            <param name="y" type="number" value="20" />
+            <craftml-transform t="scale {{ x }} {{ y }} 1">
+                <craftml-unit/>
+            </craftml-transform>
+        </part>
+        <boxes y="30" />
+    </craftml-group>
+    <script>
+        
+        $('craftml-unit').should.have.one
+        $('boxes').should.have.size(200,300,10)
+    </script>
+</test>
+
+<test title="nested">
+    <craftml-group id="top">
+        <part name='bigbox'>
+            <part name='smallbox'>
+                <craftml-unit/>
+            </part>
+            <craftml-layout l='flow x'>
+                <craftml-unit/>
+                <smallbox/>
+                <smallbox/>
+            </craftml-layout>
+        </part>
+        <bigbox/>
+    </craftml-group>
+    <script>
+        
+        $('#top').should.have.size(30, 10, 10)
+        $('bigbox').should.have.one
+        $('smallbox').should.have.two
+    </script>
+</test>
+
+<test title="param x y : set by script">
+    <craftml-group id="top">
+        <part name='boxes' merge>
+            <param name="x" type="number" value="20" />
+            <param name="y" type="number" value="20" />
+            <craftml-transform t="scale {{ x }} {{ y }} 1">
+                <craftml-unit/>
+            </craftml-transform>
+        </part>
+        <script>
+            $params.x = 3   
+            $params.y = 3
+        </script>
+        <boxes x="{{ x }}" y="{{ y }}" />
+    </craftml-group>
+    <script>
+        $('craftml-unit').should.have.one
     </script>
 </test>

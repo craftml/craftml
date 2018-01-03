@@ -39,14 +39,6 @@ export function* renderGroup(node: Node, props: GroupProps, domNode: DomNode) {
 
     yield update(node, n => n.setStatus('done'))
 
-    // node = yield refresh(node)
-    // // console
-    // // n1.pp()
-
-    // node = node.setStatus('done')
-    // yield commit(node)
-    // yield call(render, node, domNode)
-    // return node
 }
 
 export default createRenderer({
@@ -77,9 +69,10 @@ export default createRenderer({
     
             yield render(node.child(i), children[i])
     
-            node = yield refresh(node)
+            node = yield refresh(node)            
             
             i = i + 1
+            
             // yield call(render1, node.child(1), domNode.children[1])
         }
         // }

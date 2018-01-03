@@ -56,7 +56,7 @@ function* renderNode<T extends object>(
     node = yield refresh(node)
 
     const params = node.context.toJS()
-    // node.pp()
+    
     // console.log('params', node.tagName, params)
 
     const resolvedProps = resolve(def.propTypes, props, def.defaultProps, params) as T

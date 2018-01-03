@@ -19,7 +19,7 @@ function registerTestSuite(filename: string) {// , describe, it) {
               it(title, async () => {
 
                   const node = await renderAsync(p)
-                  // node.pp()
+                  
                   
                   const errors = node.children[1].errors                        
                   if (errors.length > 0) {

@@ -34,12 +34,12 @@ function extractProps(childrenNodes: DomNode[]) {
             defaultProps[paramName] = Number(paramValue)
 
         } else if (paramType === 'string') {
-            
+
             propTypesDef[paramName] = t.string
             defaultProps[paramName] = '' + paramValue
 
         }
-           
+
     })
 
     return {
@@ -54,42 +54,16 @@ export default function evalParams(node: Node, props: {}, children: DomNode[]): 
 
     const { propTypes, defaultProps } = extractProps(children)
 
-    const context = node.context
-
-    const resolvedProps = resolve(propTypes, props, defaultProps, context)
+    // note: params should be a regular JS object (TODO: better type safety)
+    const params = node.context.toJS()
 
     // console.log('propTypes', propTypes)
     // console.log('defaultProps', defaultProps)
+    // console.log('params', params)
+    // console.log('props', props)
+
+    const resolvedProps = resolve(propTypes, props, defaultProps, params)
+
     // console.log('resolvedProps', resolvedProps)
-
     return resolvedProps
-    // const paramTags = _.filter(domNode.children, c => c.type === 'tag' && c.name === 'param')
-
-    // const contextSetters = _.map(paramTags, (pt: DomNode) => {
-
-    //     let paramAttribs = pt.attribs as ParamAttribs
-    //     let paramName = paramAttribs.name || ''
-    //     let paramValue = paramAttribs.value
-    //     let paramType = paramAttribs.type
-
-    //     // does the user supply a param value
-    //     if (_.has(props, paramName)) {
-    //         // $FlowFixMe
-    //         paramValue = props[paramName]
-    //     }
-
-    //     // check type
-    //     if (paramType === 'number') {
-    //         paramValue = Number(paramValue)
-    //     }
-
-    //     // console.log('set ', paramName, ' to ', paramValue)//, ' or ', userSuppliedValue)
-    //     return (c: Map<string, {}>) => c.set(paramName, paramValue)
-    // })
-
-    // let context = node.context
-    // context = _.flow(contextSetters)(context)
-
-    // // console.log('new context', context)
-    // return node.setContext(context)
 }

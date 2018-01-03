@@ -1,6 +1,8 @@
 import Node from './index'
 import * as _ from 'lodash'
 import chalk from 'chalk'
+import { Matrix4 } from 'three'
+import * as _ from 'lodash'
 
 // pretty-print a node and its descendents to console
 export default function pp(node: Node, options: {} = {}) {
@@ -20,6 +22,28 @@ function toStringRecursively(node: Node, levels: number = 0): string {
     }).join('')
 
     return self + '\n' + text
+}
+
+
+//
+// toString functions
+//
+function matrix(node: Node): string {
+    // if matrix is identity
+    if (node.matrix.equals(new Matrix4())) {
+        // show nothing
+        return ''
+    } else {
+        return chalk.red('[' + node.matrix.elements.join(',') + ']')
+    }
+}
+
+function context(node: Node): string {    
+    if (node.context && node.context.size  > 0) {
+        return chalk.gray(JSON.stringify(node.context))
+    } else {
+        return ''
+    }    
 }
 
 function toString(node: Node): string {
@@ -51,14 +75,14 @@ function toString(node: Node): string {
     }
 
     // str += ` [${node.path.join('.')}]`
-
-    str += node.context ? chalk.gray(` ${JSON.stringify(node.context)}`) : ''
+    
+    str += '' + context(node)
 
     //   // str += ` ${node.status}`
 
     //   str += ' ' + node.cssRules.size
-
-    str += ' [' + node.matrix.elements.join(',') + ']'
+    
+    str += ' ' + matrix(node)
 
     //   str += ' ' + JSON.stringify(node.style)
 
