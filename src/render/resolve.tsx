@@ -11,7 +11,6 @@ function resolveTemplateExpressions(props: {}, params: {}) {
 
     return _.mapValues(props, value => {
 
-        // let value = propValue
         if (_.isString(value) && isTemplate(value)) {         
             const compiled = _.template(value)
             return compiled(params)
@@ -22,21 +21,61 @@ function resolveTemplateExpressions(props: {}, params: {}) {
 
 }
 
+function resolveTemplateExpression(value: string | {}, params: {}) {
+
+    _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
+
+    if (_.isString(value) && isTemplate(value)) {         
+        const compiled = _.template(value)
+        return compiled(params)
+    } else {
+        return value
+    }    
+}
+
 export default function resolveProps<T>(propTypes: PropTypes<T>, props: {}, defaultProps: {}, params: {}) {
 
-    let resolvedProps = {...defaultProps, ...props}    
+    let resolvedProps = {}
+    //...defaultProps, ...props}    
+
+    // console.log('propTypes', propTypes, propTypes.is(props), _.keys(props))
     
-    resolvedProps = resolveTemplateExpressions(resolvedProps, params)
+    // resolvedProps = resolveTemplateExpressions(resolvedProps, params)
 
     const resolveByInterfaceType = (ps: t.InterfaceType<t.Props, T>) => {
 
-        _.forEach(ps.props, (propValue, propName) => {
+        _.forEach(ps.props, (propType, propName) => {
 
-            // type conversion
-            if (propValue === t.number) {
+            // TODO: handle no defualt prop (required)
+            // let propValue = resolveTemplateExpression
+            let resolvedPropValue = _.has(props, propName) ? props[propName] : defaultProps[propName]
 
-                resolvedProps[propName] = Number(resolvedProps[propName])
+            if (_.isString(resolvedPropValue)) {
+                resolvedPropValue = resolveTemplateExpression(resolvedPropValue, params)
             }
+
+            // automatic type conversion
+            if (propType === t.number) {                
+
+                resolvedPropValue = Number(resolvedPropValue)
+
+            } else if (propType === t.boolean) {
+
+                
+                if (!_.isBoolean(resolvedPropValue)) {
+                    
+                    // <foo merge> --> { merge: '' }                    
+                    resolvedPropValue = true
+                } 
+                // else
+
+                    // <foo merge={true}/>
+
+                    // do nothing, keep the value as is
+                
+            }
+            
+            resolvedProps[propName] = resolvedPropValue
 
         })
     }

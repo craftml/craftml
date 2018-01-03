@@ -33,19 +33,16 @@ function* renderNode<T extends object>(
     def: RendererDefinition<T>,
     node: Node, props: T, domNode: DomNode): {} {
 
-    // const k = (ps) => _.omit(ps, 'geometry')
-    // console.log('props', k(props), k(def.defaultProps), '->', k(resolvedProps), def.propTypes.name)
-
     const parent = yield parentOf(node)
 
     const updater = (x: Node) => {
 
-        x = x.setMerge(def.merge)
+        // x = x.setMerge(def.merge)
 
         if (parent) {
 
             if (parent.context) {
-
+                
                 x = x.setContext(parent.context)
             }
 
@@ -63,7 +60,13 @@ function* renderNode<T extends object>(
     // console.log('params', node.tagName, params)
 
     const resolvedProps = resolve(def.propTypes, props, def.defaultProps, params) as T
+    const k = (ps) => _.omit(ps, 'geometry')
+    // console.log(`[${node.tagName}]`, 'types:', def.propTypes.name, 'props:', k(props), 'defaultProps:', k(def.defaultProps), 'params:', params, '->', k(resolvedProps))
 
+    // x = x.setMerge(def.merge)
+
+    yield update(node, x => x.setMerge(resolvedProps.merge))
+    node = yield refresh(node)
 
     yield def.getSaga(node, resolvedProps, domNode)()
 

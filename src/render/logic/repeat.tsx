@@ -7,9 +7,11 @@ export default createRenderer({
     tagName: 'craftml-repeat',
     defaultProps: {
         n: 1,
+        merge: true
     },
     propTypes: t.interface({
-        n: t.number        
+        n: t.number,
+        merge: t.boolean  
     }),
     merge: true,
     getSaga: (node, props, domNode) => function* () {

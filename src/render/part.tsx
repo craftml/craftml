@@ -87,11 +87,17 @@ export default createRenderer({
     tagName: 'part',
     defaultProps: {
         name: '',
-        module: ''
+        module: '',
+        t: '',
+        repeat: '',
+        merge: false
     },
     propTypes: t.interface({
         name: t.string,
-        module: t.string
+        module: t.string,
+        t: t.string,
+        repeat: t.string,
+        merge: t.boolean
     }),
     merge: false,
     getSaga: (node, props, domNode) => function* () {

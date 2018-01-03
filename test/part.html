@@ -80,7 +80,7 @@
         <smallbox repeat="3" />
     </craftml-group>
     <script>
-        // $('#top').pp()
+        $('#top').pp()
         $('smallbox').should.have.three
         $('craftml-unit').should.have.three
     </script>
@@ -95,10 +95,26 @@
         <craftml-layout l='flow x'>
             <two/>
             <two/>
-        </cratml-layout>
+            </cratml-layout>
+    </craftml-group>
+    <script>
+        $('#top').pp()
+        $('#top').should.have.size(40, 10, 10)
+    </script>
+</test>
+
+<test title="param n : default">
+    <craftml-group id="top">
+        <part name='boxes' merge>
+            <param name="n" type="number" value="3" />
+            <craftml-repeat n="3">
+                <craftml-unit/>
+            </craftml-repeat>
+        </part>
+        <boxes/>
     </craftml-group>
     <script>
         // $('#top').pp()
-        $('#top').should.have.size(40, 10, 10)
+        $('craftml-unit').should.have.three
     </script>
 </test>

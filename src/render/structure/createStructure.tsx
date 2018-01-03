@@ -41,13 +41,15 @@ const propTypes = iots.interface({
     l: iots.string,
     t: iots.string,
     repeat: iots.string,
-    tagName: iots.string
+    tagName: iots.string,    
+    spacing: iots.number
 })
 
 const defaultProps = {
     l: '',
     t: '',
-    repeat: ''
+    repeat: '',
+    spacing: 0
 }
 
 export default function createStructure(def: StructureDefinition) {
