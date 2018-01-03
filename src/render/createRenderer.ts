@@ -48,6 +48,8 @@ function* renderNode<T extends object>(
 
                 x = x.setContext(parent.context)
             }
+
+            x = x.setParts(parent.parts)
         }
 
         return x

@@ -39,6 +39,8 @@ export interface NodeError {
 import query, { Query } from '../query'
 import pp from './pp'
 
+import { Part } from '../render/part'
+
 export function createRoot(): Node {
     const rootState = Map() as NodeState;
     const state = rootState
@@ -231,6 +233,32 @@ export default class Node {
         const newState = this._state.setIn(destImmutablePath, _destNodeState)
         // console.log('dest', _destNodeState)
         return this.update(newState)
+    }
+
+    //
+    // Parts
+    //
+
+    get parts(): Map<string, Part> {
+        return this._state.get('parts', Map()) as Map<string, Part>
+    }
+
+    setParts(parts: Map<string, Part>) {
+        const newState = this._state.set('parts', parts)
+        return this.update(newState)
+    }
+
+    addPart(name: string, part: Part): Node {
+        const newState = this._state.update('parts', Map(), s => (s as Map<string, {}>).set(name, part))
+        return this.update(newState)
+    }    
+
+    getPart(name: string): Part | null {
+        if (this._state.hasIn(['parts', name])) {
+            return this._state.getIn(['parts', name]) as Part
+        } else {
+            return null
+        }        
     }
 
     private update(newState: NodeState): Node {

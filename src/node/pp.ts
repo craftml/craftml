@@ -66,9 +66,9 @@ function toString(node: Node): string {
         str += ' ' + chalk.red('errors: ' + node.errors.length)
     }
 
-    //   if (node.parts){
-    //     str += ' ' + node.parts.map((c,k)=>k).toArray().join(',')
-    //   }
+    if (node.parts) {
+        str += ' ' + chalk.cyan(node.parts.map((c, k) => k).toArray().join(','))
+    }
 
     if (node.geometry && node.geometry.vertices) {
         str += ` g(${node.geometry.vertices.length}) ${node.dimensions}d`

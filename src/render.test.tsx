@@ -96,7 +96,8 @@ const cases = {
     params: null
   },
   module: {
-    inline: null
+    inline: null,
+    declare: null
   }
 }
 

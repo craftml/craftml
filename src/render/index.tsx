@@ -27,6 +27,7 @@ import g from './structure/g'
 import repeat from './logic/repeat'
 
 import moduleRenderer from './module'
+import part from './part'
 
 import { commit } from './effects'
 
@@ -49,6 +50,8 @@ function createRenderersMap(): Map<string, Renderer<{}>> {
     rs.set('col', col)
     rs.set('stack', stack)
     rs.set('g', g)
+
+    rs.set('part', part)
 
     rs.set('test', test)    
 

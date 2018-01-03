@@ -8,6 +8,8 @@ import { React, DomNode, DOM } from '../../dom'
 
 import loadDoc from './loaders/doc-loader'
 
+import { Part } from '../part'
+
 const isStl = (moduleId: string): boolean => !_.isNull(moduleId.match(/\.stl$/))
 
 export default createRenderer({
@@ -21,18 +23,34 @@ export default createRenderer({
     merge: false,
     getSaga: (node, props, domNode) => function* () {
             
-        // handles inline part definition
-        // <stuff module="bbbb">
-        // -->
-        // <craftml-module name="stuff" module="bbbb" {...props}/>
-        const part = {
-            type: 'import',
-            props: {},
-            body: props.module
+        let part = node.getPart(props.name)
+
+        console.log('part', part)
+
+        if (!part) {
+
+            // handles inline part definition
+            // <stuff module="bbbb">
+            // -->
+            // <craftml-module name="stuff" module="bbbb" {...props}/>
+            if (props.module) {
+        
+                part = {
+                    type: 'import',
+                    props: {},
+                    body: props.module,
+                }
+        
+            } else {
+        
+                return
+        
+            }
+                
         }
 
         const clientGivenTagName = props.name
-        console.log('clientGivenTagName', clientGivenTagName)
+        // console.log('clientGivenTagName', clientGivenTagName)
 
         const moduleId = props.module
 

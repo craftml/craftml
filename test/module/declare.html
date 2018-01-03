@@ -1,0 +1,38 @@
+<test title='stuff'>
+    <craftml-group id='top'>
+        <part name='stuff' module='C5EG9' />
+        <stuff/>
+    </craftml-group>
+    <script>
+        // this.pp()
+        $('#top').should.have.size(30, 10, 10)
+        $('cube').should.have.three
+        $('stuff').should.have.one
+    </script>
+</test>
+
+<test title='instance tag - scale 2'>
+    <craftml-group id='top'>
+        <part name='stuff' module='C5EG9' />
+        <stuff t='scale 2' />
+    </craftml-group>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(60, 20, 20)
+        $('cube').should.have.three
+        $('stuff').should.have.one
+    </script>
+</test>
+
+<test title='part tag - scale 2'>
+    <craftml-group id='top'>
+        <part name='stuff' module='C5EG9' t='scale 2' />
+        <stuff/>
+    </craftml-group>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(60, 20, 20)
+        $('cube').should.have.three
+        $('stuff').should.have.one
+    </script>
+</test>
