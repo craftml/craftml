@@ -181,7 +181,7 @@
             <param name="x" type="number" value="3" />
             <part name='smallbox'>
                 <param name="y" type="number" value="2" />
-                <craftml-transform t='scale 3 2 1'>
+                <craftml-transform t='scale {{ x }} {{ y }} 1'>
                     <craftml-unit/>
                 </craftml-transform>
             </part>
@@ -190,10 +190,52 @@
         <bigbox/>
     </craftml-group>
     <script>
+        $('#top').should.have.size(30, 20, 10)
+        $('bigbox').should.have.one
+        $('smallbox').should.have.one
+    </script>
+</test>
+
+<test title="nested with params shadowing">
+    <craftml-group id="top">
+        <part name='bigbox'>
+            <param name="x" type="number" value="3" />
+            <part name='smallbox'>
+                <param name="x" type="number" value="2" />
+                <craftml-transform t='scale {{ x }} {{ x }} 1'>
+                    <craftml-unit/>
+                </craftml-transform>
+            </part>
+            <smallbox/>
+        </part>
+        <bigbox/>
+    </craftml-group>
+    <script>
+
+        $('#top').should.have.size(20, 20, 10)
+        $('bigbox').should.have.one
+        $('smallbox').should.have.one
+    </script>
+</test>
+
+<test title="nested with params shadowing and type changed">
+    <craftml-group id="top">
+        <part name='bigbox'>
+            <param name="x" type="number" value="3" />
+            <part name='smallbox'>
+                <param name="x" type="string" value="20 20 20" />
+                <cube size="{{ x }}" />
+            </part>
+            <smallbox/>
+        </part>
+        <bigbox/>
+    </craftml-group>
+    <script>
         this.pp()
-        // $('#top').should.have.size(30, 20, 10)
-        // $('bigbox').should.have.one
-        // $('smallbox').should.have.two
+        $('#top').should.have.size(20, 20, 20)
+        $('bigbox').should.have.one
+        $('smallbox').should.have.one
+        $('cube').should.have.one
     </script>
 </test>
 
