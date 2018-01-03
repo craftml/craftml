@@ -15,17 +15,19 @@ const isStl = (moduleId: string): boolean => !_.isNull(moduleId.match(/\.stl$/))
 export default createRenderer({
     tagName: 'craftml-module',
     defaultProps: {     
-        module: ''   
+        module: '',
+        name: ''    // TODO: must be required
     },
     propTypes: t.interface({
-        module: t.string
+        module: t.string,
+        name: t.string
     }),
     merge: false,
     getSaga: (node, props, domNode) => function* () {
             
         let part = node.getPart(props.name)
 
-        console.log('part', part)
+        // console.log('part', part)
 
         if (!part) {
 
@@ -74,7 +76,7 @@ export default createRenderer({
                 //   partProps: part.props,
                 // }
           
-              } else {
+            } else {
           
                 const children = yield call(loadDoc, moduleId)
           
@@ -86,10 +88,28 @@ export default createRenderer({
                 }
             }
 
+        } else if (part.type === 'local') {
+          
+            // TODO: handle merge more gracefully
+            let partProps = part.props
+            // why??
+            // coerce merge='' to merge=true
+            if (_.has(part.body.attribs,'merge')) {
+                // $FlowFixMe
+                partProps.merge = true
+            }
+        
+            instanceDef = {
+                displayTagName: `craftml-module@local`,
+                children: part.body.children,
+                props,
+                partProps
+            }                          
+
         }
 
         if (instanceDef) {
-            // console.log('TODO: module', instanceDef)
+        
             
             // render a new top node (without html props)
             const top = DOM(<craftml-group tagName={instanceDef.displayTagName} merge={true}/>)

@@ -1,0 +1,104 @@
+<test title="smallbox">
+    <craftml-group id="top">
+        <part name='smallbox'>
+            <craftml-unit/>
+        </part>
+        <smallbox/>
+    </craftml-group>
+    <script>
+        // $('#top').pp()
+        $('smallbox').should.have.one.and.size(10, 10, 10)
+        $('craftml-unit').should.have.one
+    </script>
+</test>
+
+<test title="smallbox x 3">
+    <craftml-group id="top">
+        <part name='smallbox'>
+            <craftml-unit/>
+        </part>
+        <smallbox/>
+        <smallbox/>
+        <smallbox/>
+    </craftml-group>
+    <script>
+        // $('#top').pp()
+        $('smallbox').should.have.three
+    </script>
+</test>
+
+<test title="smallbox can layout">
+    <craftml-group id="top">
+        <part name='smallbox'>
+            <craftml-unit/>
+        </part>
+        <craftml-layout l='flow x'>
+            <smallbox/>
+            <smallbox/>
+            <smallbox/>
+        </craftml-layout>
+    </craftml-group>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(30, 10, 10)
+    </script>
+</test>
+
+<test title="smallbox scale">
+    <craftml-group id="top">
+        <part name='smallbox'>
+            <craftml-unit/>
+        </part>
+        <smallbox t="scale 2" id="one" />
+        <smallbox t="scale 3" id="two" />
+    </craftml-group>
+    <script>
+        // $('#top').pp()
+        $('smallbox#one').should.have.size(20, 20, 20)
+        $('smallbox#two').should.have.size(30, 30, 30)
+    </script>
+</test>
+
+<test title="smallbox scale in def">
+    <craftml-group id="top">
+        <part name='smallbox' t="scale 2">
+            <craftml-unit/>
+        </part>
+        <smallbox/>
+    </craftml-group>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(20, 20, 20)
+    </script>
+</test>
+
+<test title="repeat">
+    <craftml-group id="top">
+        <part name='smallbox' t="scale 2">
+            <craftml-unit/>
+        </part>
+        <smallbox repeat="3" />
+    </craftml-group>
+    <script>
+        // $('#top').pp()
+        $('smallbox').should.have.three
+        $('craftml-unit').should.have.three
+    </script>
+</test>
+
+<test title="merge">
+    <craftml-group id="top">
+        <part name='two' merge>
+            <craftml-unit/>
+            <craftml-unit/>
+        </part>
+        <craftml-layout l='flow x'>
+            <two/>
+            <two/>
+        </cratml-layout>
+    </craftml-group>
+    <script>
+        // $('#top').pp()
+        $('#top').should.have.size(40, 10, 10)
+    </script>
+</test>
