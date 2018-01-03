@@ -94,6 +94,9 @@ const cases = {
   logic: {
     repeat: null,
     params: null
+  },
+  module: {
+    inline: null
   }
 }
 

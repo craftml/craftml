@@ -3,7 +3,7 @@ declare namespace JSX {
     interface IntrinsicElements {
         'craftml-group': {
             merge: boolean,
-            tagName?: string 
+            tagName?: string
         },
         'craftml-geometry': {
             geometry: {},
@@ -17,6 +17,10 @@ declare namespace JSX {
         },
         'craftml-repeat': {
             n: number
+        },
+        'g': {
+            merge: boolean,
+            tagName?: string
         }
     }
 

@@ -1,4 +1,4 @@
-import { DomNode } from '../dom'
+import { DomNode, DOM, React } from '../dom'
 import Node from '../node'
 
 import unit from './unit'
@@ -25,6 +25,8 @@ import stack from './structure/stack'
 import g from './structure/g'
 
 import repeat from './logic/repeat'
+
+import moduleRenderer from './module'
 
 import { commit } from './effects'
 
@@ -56,7 +58,8 @@ function createRenderersMap(): Map<string, Renderer<{}>> {
     rs.set('craftml-transform', transform)
     rs.set('craftml-layout', layout)
     rs.set('craftml-repeat', repeat)
-    
+    rs.set('craftml-module', moduleRenderer)
+
     return rs
 }
 
@@ -81,6 +84,17 @@ export default function* renderMain(node: Node, domNode: DomNode): {} {
 
         yield renderer(node, props, domNode)
 
-    } 
+    }  else {
+
+        // attempt to load the renderer as a module
+        
+        const wrapped = DOM(<craftml-module name={tagName} {...domNode.attribs}>
+              {domNode.children}
+          </craftml-module>)
+
+        yield renderMain(node, wrapped)//(node, props, domNode)
+
+
+    }
     
 }

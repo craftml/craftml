@@ -8,8 +8,9 @@ import * as iots from 'io-ts'
 type StructurePropTypes = {
     spacing?: number
     t: string,
-    l: string
-    repeat: string
+    l: string,
+    repeat: string,
+    tagName?: string
 }
 type StructureDefinition = {
     tagName: string,
@@ -39,7 +40,8 @@ type GetSaga<T> = (node: Node, props: T, domNode: DomNode) => Saga
 const propTypes = iots.interface({
     l: iots.string,
     t: iots.string,
-    repeat: iots.string
+    repeat: iots.string,
+    tagName: iots.string
 })
 
 const defaultProps = {
@@ -67,8 +69,13 @@ export default function createStructure(def: StructureDefinition) {
     //     </craftml_transform>
     //   </craftml_group>
 
+        // this allows the tagName to be overriden by one specified in the tag attribute
+        // <g tagName="foo"> --> props.tagName
+        // <g/>  --> def.tagName                    
+        let tagName = props.tagName || def.tagName
+
         let wrapped = DOM(
-            <craftml-group tagName={def.tagName} merge={false} {...htmlProps}>
+            <craftml-group tagName={tagName} merge={false} {...htmlProps}>
                 <craftml-transform t={t}>
                     <craftml-layout l={layoutExpression}>
                         {domNode.children}

@@ -1,0 +1,37 @@
+<test title='cubes'>
+    <craftml-group id='top'>
+        <stuff module='C5EG9' />
+    </craftml-group>
+    <script>        
+        // this.pp()
+        $('#top').should.have.size(30, 10, 10)
+        $('cube').should.have.three
+        $('stuff').should.have.one
+    </script>
+</test>
+
+<test title='cubes transform'>
+    <craftml-group id='top'>
+        <stuff module='C5EG9' t='scale 2' />
+    </craftml-group>
+    <script>
+        $('#top').should.have.size(60, 20, 20)
+        $('stuff').should.have.one
+        $('cube').should.have.three
+    </script>
+</test>
+
+<test title='cubes id'>
+    <craftml-group id='top'>
+        <stuff id='one' module='C5EG9' t='scale 2' />
+        <stuff id='two' module='C5EG9' />
+    </craftml-group>
+    <script>
+        this.pp()
+        $('stuff#one').should.have.size(60, 20, 20)
+        $('#one').should.have.size(60, 20, 20)
+
+        $('stuff#two').should.have.size(30, 10, 10)
+        $('#two').should.have.size(30, 10, 10)
+    </script>
+</test>
