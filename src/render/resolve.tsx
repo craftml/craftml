@@ -61,7 +61,12 @@ const setPerPropType = (resolvedProps: {}, clientProps: {}, defaultProps: {}, co
 
 export default function resolveProps<T>(propTypes: PropTypes<T>, props: {}, defaultProps: {}, params: {}) {
 
-    let resolvedProps = {}     
+    // make everything in params avaliabile in resolvedProps by default
+    // assumptions: 
+    ///    params should come from the parent and should already have the right types   
+    let resolvedProps = {...params}     
+
+    // then override by clientProps, defaultProps according to propTypes
     
     const resolvePerPropType = setPerPropType(resolvedProps, props, defaultProps, params)
 

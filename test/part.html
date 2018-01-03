@@ -6,7 +6,7 @@
         <smallbox/>
     </craftml-group>
     <script>
-        
+
         $('smallbox').should.have.one.and.size(10, 10, 10)
         $('craftml-unit').should.have.one
     </script>
@@ -22,7 +22,7 @@
         <smallbox/>
     </craftml-group>
     <script>
-        
+
         $('smallbox').should.have.three
     </script>
 </test>
@@ -39,7 +39,7 @@
         </craftml-layout>
     </craftml-group>
     <script>
-        
+
         $('#top').should.have.size(30, 10, 10)
     </script>
 </test>
@@ -53,7 +53,7 @@
         <smallbox t="scale 3" id="two" />
     </craftml-group>
     <script>
-        
+
         $('smallbox#one').should.have.size(20, 20, 20)
         $('smallbox#two').should.have.size(30, 30, 30)
     </script>
@@ -67,7 +67,7 @@
         <smallbox/>
     </craftml-group>
     <script>
-        
+
         $('#top').should.have.size(20, 20, 20)
     </script>
 </test>
@@ -80,7 +80,7 @@
         <smallbox repeat="3" />
     </craftml-group>
     <script>
-        
+
         $('smallbox').should.have.three
         $('craftml-unit').should.have.three
     </script>
@@ -98,7 +98,7 @@
             </cratml-layout>
     </craftml-group>
     <script>
-        
+
         $('#top').should.have.size(40, 10, 10)
     </script>
 </test>
@@ -114,7 +114,7 @@
         <boxes/>
     </craftml-group>
     <script>
-        
+
         $('craftml-unit').should.have.three
     </script>
 </test>
@@ -130,7 +130,7 @@
         <boxes n="5" />
     </craftml-group>
     <script>
-        
+
         $('craftml-unit').should.have.five
     </script>
 </test>
@@ -147,9 +147,9 @@
         <boxes y="30" />
     </craftml-group>
     <script>
-        
+
         $('craftml-unit').should.have.one
-        $('boxes').should.have.size(200,300,10)
+        $('boxes').should.have.size(200, 300, 10)
     </script>
 </test>
 
@@ -168,10 +168,32 @@
         <bigbox/>
     </craftml-group>
     <script>
-        
+
         $('#top').should.have.size(30, 10, 10)
         $('bigbox').should.have.one
         $('smallbox').should.have.two
+    </script>
+</test>
+
+<test title="nested with params">
+    <craftml-group id="top">
+        <part name='bigbox'>
+            <param name="x" type="number" value="3" />
+            <part name='smallbox'>
+                <param name="y" type="number" value="2" />
+                <craftml-transform t='scale 3 2 1'>
+                    <craftml-unit/>
+                </craftml-transform>
+            </part>
+            <smallbox/>
+        </part>
+        <bigbox/>
+    </craftml-group>
+    <script>
+        this.pp()
+        // $('#top').should.have.size(30, 20, 10)
+        // $('bigbox').should.have.one
+        // $('smallbox').should.have.two
     </script>
 </test>
 
@@ -185,7 +207,7 @@
             </craftml-transform>
         </part>
         <script>
-            $params.x = 3   
+            $params.x = 3
             $params.y = 3
         </script>
         <boxes x="{{ x }}" y="{{ y }}" />

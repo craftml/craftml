@@ -120,7 +120,6 @@ export default createRenderer({
 
             node = yield refresh(node)
             
-            
             const clientGivenProps = domNode.attribs    
 
             const params = evalParams(node, clientGivenProps, instanceDef.children)
