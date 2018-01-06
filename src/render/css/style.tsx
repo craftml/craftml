@@ -16,12 +16,16 @@ export default createRenderer({
     getSaga: (node, props, domNode) => function* () {
 
         const parent = yield parentOf(node)
+
+        if (domNode.children && domNode.children[0] && domNode.children[0].data) {
         
-        const cssText: string = domNode.children[0].data || ''                
+            const cssText: string = domNode.children[0].data || ''                
 
-        const { stylesheet } = css.parse(cssText)
+            const { stylesheet } = css.parse(cssText)
 
-        yield update(parent, x => x.addStyleSheet(stylesheet))        
+            yield update(parent, x => x.addStyleSheet(stylesheet))        
+
+        }
 
     }
 })

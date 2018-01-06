@@ -67,7 +67,7 @@ function styleSheets(node: Node): string {
             chalk.red.dim(text) : chalk.dim(text)
 
     const ruleView = (rule: CssRule) => ruleStyler(rule)
-        (rule.selectors.join(' ') + ' {' + rule.declarations.map(delcarationView) + '}')
+        (rule.selectors.join(' ') + ' {' + rule.declarations.map(delcarationView).join(', ') + '}')
 
     const delcarationView = (decl: Declaration) => decl.property + ': ' + decl.value
 

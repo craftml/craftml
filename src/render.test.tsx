@@ -62,6 +62,7 @@ const cases = {
   'css-select': null,
   part: null,
   style: {
+    tag: null,
     color: null,
   },
   primitives: {

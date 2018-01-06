@@ -1,0 +1,42 @@
+<test title="second tag extends first tag">
+    <style>
+        * {
+            color: red;
+        }
+    </style>
+    <craftml-unit id="red" />
+    <style>
+        * {
+            opacity: 1.0;
+        }
+    </style>
+    <craftml-unit id="second" />
+    <script>
+        this.pp()
+        $('#first').should.have.style('color', 'red')
+        $('#second').should.have.style('color', 'red')
+        $('#second').should.have.style('opacity', '1.0')
+    </script>
+</test>
+
+<test title="second tag overrides first tag">
+    <style>
+        * {
+            color: red;
+        }
+    </style>
+    <craftml-unit id="red" />
+    <style>
+        * {
+            color: blue;
+            opacity: 1.0;
+        }
+    </style>
+    <craftml-unit id="second" />
+    <script>
+        this.pp()
+        $('#first').should.have.style('color', 'red')
+        $('#second').should.have.style('color', 'blue')
+        $('#second').should.have.style('opacity', '1.0')
+    </script>
+</test>

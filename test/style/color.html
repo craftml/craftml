@@ -1,3 +1,14 @@
+<test title="empty">
+    <craftml-group id="top">
+        <style></style>
+        <craftml-unit/>
+    </craftml-group>
+    <script>
+        this.pp()
+        $('craftml-unit').should.have.one
+    </script>
+</test>
+
 <test title="by tag">
     <craftml-group id="top">
         <style>
@@ -42,7 +53,70 @@
         <craftml-unit class="brown" />
     </craftml-group>
     <script>
-        this.pp()
         $('.brown').should.have.two.and.style('color', 'brown')
+    </script>
+</test>
+
+<test title="inherit">
+    <craftml-group id="top">
+        <style>
+            * {
+                color: inherit;
+            }
+
+            #red {
+                color: red;
+            }
+        </style>
+        <craftml-group id="red">
+            <craftml-unit id="foo" />
+        </craftml-group>
+    </craftml-group>
+    <script>
+        $('#red').should.have.style('color', 'red')
+        $('#foo').should.have.style('color', 'red')
+        $('craftml-geometry').should.have.style('color', 'red')
+    </script>
+</test>
+
+<test title="override">
+    <craftml-group id="top">
+        <style>
+            #red {
+                color: blue;
+            }
+
+            #red {
+                color: red;
+            }
+        </style>
+        <craftml-unit id="red">
+        </craftml-unit>
+    </craftml-group>
+    <script>        
+        $('#red').should.have.style('color', 'red')
+    </script>
+</test>
+
+<test title="nested">
+    <craftml-group id="top">
+        <style>
+            #red {
+                color: red;
+            }
+        </style>
+        <craftml-group>
+            <style>
+                #brown {
+                    color: brown;
+                }
+            </style>
+            <craftml-unit id="brown" />
+        </craftml-group>
+        <craftml-unit id="red" />
+    </craftml-group>
+    <script>        
+        $('#red').should.have.style('color', 'red')
+        $('#brown').should.have.style('color', 'brown')
     </script>
 </test>
