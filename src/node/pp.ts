@@ -3,6 +3,7 @@ import * as _ from 'lodash'
 import chalk from 'chalk'
 import { Matrix4 } from 'three'
 import * as _ from 'lodash'
+import { Declaration, CssRule } from '../render/css/index';
 
 // pretty-print a node and its descendents to console
 export default function pp(node: Node, options: {} = {}) {
@@ -24,10 +25,14 @@ function toStringRecursively(node: Node, levels: number = 0): string {
     return self + '\n' + text
 }
 
-
 //
 // toString functions
 //
+
+function path(node: Node): string {
+    return `[${node.path.join('.')}]`
+}
+
 function matrix(node: Node): string {
     // if matrix is identity
     if (node.matrix.equals(new Matrix4())) {
@@ -38,16 +43,80 @@ function matrix(node: Node): string {
     }
 }
 
-function context(node: Node): string {    
-    if (node.context && node.context.size  > 0) {
+function context(node: Node): string {
+    if (node.context && node.context.size > 0) {
         return chalk.gray(JSON.stringify(node.context))
+    } else {
+        return ''
+    }
+}
+
+function style(node: Node): string {
+
+    if (_.keys(node.style).length > 0) {
+        return chalk.red(JSON.stringify(node.style))
+    } else {
+        return ''
+    }
+}
+
+function styleSheets(node: Node): string {
+
+    const ruleStyler = (rule: CssRule) =>
+        (text: string) => node.isSelectedBy(rule.selectors.join(',')) ?
+            chalk.red.dim(text) : chalk.dim(text)
+
+    const ruleView = (rule: CssRule) => ruleStyler(rule)
+        (rule.selectors.join(' ') + ' {' + rule.declarations.map(delcarationView) + '}')
+
+    const delcarationView = (decl: Declaration) => decl.property + ': ' + decl.value
+
+    node.isSelectedBy('craftml-unit')
+
+    return chalk.bgRgb(20, 20, 20)(node.styleSheets.map(v => v.rules.map(ruleView).join('; ')).join('; '))
+}
+
+function geometry(node: Node): string {
+    if (node.geometry && node.geometry.vertices) {
+        return chalk.yellow(` g(${node.geometry.vertices.length}) ${node.dimensions}d`)
+    } else {
+        return ''
+    }
+}
+
+function parts(node: Node): string {
+    if (node.parts) {
+        return chalk.cyan(node.parts.keySeq().toArray().join(','))
     } else {
         return ''
     }    
 }
 
-function toString(node: Node): string {
-    // console.log('node', node)
+// ================================================
+//
+
+const DefaultOptions = {
+    path: false,
+    context: true,
+    matrix: false,
+    geometry: true,
+    style: true,
+    styleSheets: true,
+    parts: true
+}
+
+const Viewers = {
+    path,
+    context,
+    matrix,
+    geometry,
+    style,
+    styleSheets,
+    parts
+}
+
+function toString(node: Node, enabled: {} = DefaultOptions): string {
+
     let tagName
     if (node.tagName.match(/^craftml-/)) {
         tagName = node.tagName.replace(/^craftml-/, '')
@@ -74,29 +143,36 @@ function toString(node: Node): string {
         str += chalk.green(` #${node.id}`)
     }
 
-    // str += ` [${node.path.join('.')}]`
-    
-    str += '' + context(node)
+    str += ' ' + _(Viewers)
+        .filter((v, k) => enabled[k])
+        .map(v => v(node))
+        .compact()
+        .value()
+        .join(' ')
 
-    //   // str += ` ${node.status}`
+    // str += ' ' + path(node)
 
-    //   str += ' ' + node.cssRules.size
-    
-    str += ' ' + matrix(node)
+    // str += ' ' + context(node)
 
-    //   str += ' ' + JSON.stringify(node.style)
+    // //   // str += ` ${node.status}`
 
-    if (node.errors.length > 0) {
-        str += ' ' + chalk.red('errors: ' + node.errors.length)
-    }
+    // //   str += ' ' + node.cssRules.size
 
-    if (node.parts) {
-        str += ' ' + chalk.cyan(node.parts.map((c, k) => k).toArray().join(','))
-    }
+    // str += ' ' + matrix(node)
 
-    if (node.geometry && node.geometry.vertices) {
-        str += ` g(${node.geometry.vertices.length}) ${node.dimensions}d`
-    }
+    // if (node.errors.length > 0) {
+    //     str += ' ' + chalk.red('errors: ' + node.errors.length)
+    // }
+
+    // if (node.parts) {
+    //     str += ' ' + chalk.cyan(node.parts.map((c, k) => k).toArray().join(','))
+    // }
+
+    // str += ' ' + geometry(node)
+
+    // str += ' ' + style(node)
+
+    // str += ' ' + styleSheets(node)
 
     return str
 }

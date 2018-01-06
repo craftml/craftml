@@ -9,15 +9,16 @@ const IMPATH = (p: string[]): string[] => _.reduce(p, (ret: string[], e: string,
 
 import Node from '../node'
 
-export function createAdapter(topNode: Node) {
+export interface Adapter<Elem> {
+    getParent(elem: Elem): Elem
+    removeSubsets(elems: Elem[]): Elem[]
+}
 
-    // console.log('createAdapter', state.get('path'))
-
-    // get the parent of the node
-    // let getParent
+export function createAdapter(topNode: Node): Adapter<Node> {
 
     const rootPathOffset = topNode.path.length
-
+    
+    // get the parent of the node
     const getParent = (node: Node) => {
         // console.log('getParent:node', node.tagName)        
         const path = node.path
@@ -25,10 +26,8 @@ export function createAdapter(topNode: Node) {
             const parentPath = _.slice(path, rootPathOffset, path.length - 1)
             // console.log('getParent:node parentPath', parentPath)
             const impath = IMPATH(parentPath)
-
             return new Node(topNode.state.getIn(impath))
         }
-
         return null
     }
 
@@ -67,7 +66,7 @@ export function createAdapter(topNode: Node) {
 
     // get the node's children
     function getChildren(node: Node) {
-        // console.log('getChildren:node', node.get('path'))
+        // console.log('getChildren:node', node.path)
         // return node.has('children') ? node.get('children').map(c => c).toArray() : []
         return node.children
     }
@@ -104,9 +103,7 @@ export function createAdapter(topNode: Node) {
 
         // get the name of the tag
         getName: (elem: Node) => {
-            // console.log('getName:elem', elem.get('path'), elem.get('tagName'))
-            // console.log('elem', elem)
-            // return elem.get('tagName')
+            // console.log('getName:elem', elem.path)            
             return elem.tagName
         },
 

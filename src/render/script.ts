@@ -31,6 +31,7 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
     // a script block must have a parent
     let parentNode = yield parentOf(node)
     invariant(parentNode, 'a script node must have a parent node')
+    
 
     let $ = root.$
 

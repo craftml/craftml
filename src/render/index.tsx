@@ -19,6 +19,8 @@ import rectangle from './primitives/rectangle'
 import polygon from './primitives/polygon'
 import path from './primitives/path'
 
+import style from './css/style'
+
 import row from './structure/row'
 import col from './structure/col'
 import stack from './structure/stack'
@@ -29,7 +31,7 @@ import repeat from './logic/repeat'
 import moduleRenderer from './module'
 import part from './part'
 
-import { commit } from './effects'
+import { commit, refresh } from './effects'
 
 import { Renderer } from './createRenderer'
 
@@ -51,9 +53,11 @@ function createRenderersMap(): Map<string, Renderer<{}>> {
     rs.set('stack', stack)
     rs.set('g', g)
 
+    rs.set('style', style)
+
     rs.set('part', part)
 
-    rs.set('test', test)    
+    rs.set('test', test)        
 
     rs.set('craftml-group', group)
     rs.set('craftml-unit', unit)
@@ -77,6 +81,9 @@ export default function* renderMain(node: Node, domNode: DomNode): {} {
         .setProps(props)
 
     yield commit(node)
+
+    // get a new snapshot
+    node = yield refresh(node)
 
     // strip empty children    
     const isNonEmpty = (c: DomNode) => !(c.type === 'text' && (c.data || '').trim().length === 0)

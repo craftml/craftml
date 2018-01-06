@@ -1,0 +1,48 @@
+<test title="by tag">
+    <craftml-group id="top">
+        <style>
+            craftml-unit {
+                color: brown;
+            }
+        </style>
+        <craftml-unit/>
+        <craftml-unit/>
+        <craftml-unit/>
+    </craftml-group>
+    <script>    
+        $('craftml-unit').should.have.three.and.style('color', 'brown')
+    </script>
+</test>
+
+<test title="by id">
+    <craftml-group id="top">
+        <style>
+            #foo {
+                color: black;
+            }
+        </style>
+        <craftml-unit/>
+        <craftml-unit id="foo" />
+        <craftml-unit/>
+    </craftml-group>
+    <script>
+        $('#foo').should.have.style('color', 'black')
+    </script>
+</test>
+
+<test title="by classname">
+    <craftml-group id="top">
+        <style>
+            .brown {
+                color: brown;
+            }
+        </style>
+        <craftml-unit/>
+        <craftml-unit class="brown" />
+        <craftml-unit class="brown" />
+    </craftml-group>
+    <script>
+        this.pp()
+        $('.brown').should.have.two.and.style('color', 'brown')
+    </script>
+</test>

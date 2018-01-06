@@ -2,9 +2,21 @@ import { Map, List } from 'immutable'
 import * as _ from 'lodash'
 import { Geometry, Matrix4 } from 'three'
 import { createBox, Box } from './box'
+import { StyleSheet, Declaration, CssRule } from '../render/css'
+import * as invariant from 'invariant'
+
+import { createAdapter, Adapter } from '../query/createAdapter';
+
+interface CSSSelectType {
+    is<T>(x: T, selectors: string, options: { adapter: Adapter<T> }): boolean
+}
+
+const CSSSelect: CSSSelectType = require('css-select')
+
+// const ret = createAdapter(f)
+// ret.
 
 export { Box }
-
 
 // const IMPATH = (p: Array<string>) =>
 //     _.reduce(
@@ -41,22 +53,76 @@ import pp from './pp'
 
 import { Part } from '../render/part'
 
-export function createRoot(): Node {
-    const rootState = Map() as NodeState;
-    const state = rootState
-    return new Node(state, rootState);
-}
+// export function createRoot(): Node {
+//     const rootState = Map({
+//         path: []
+//     }) as NodeState;
+//     const root = new Node(rootState)
+//     root._root = root
+//     return root//new Node(rootState, rootState)
+// }
 
 export default class Node {
 
     private _state: NodeState
-    private _rootState?: NodeState
+    private _root?: Node
     private _cachedLayout?: Box
 
-    constructor(state: NodeState, rootState?: NodeState) {
-        this._state = state
-        this._rootState = rootState
+    static createRoot(): Node {
+        
+        const rootState = Map({
+            path: []
+        }) as NodeState;
+        const root = new Node(rootState)
+        root._root = root
+        return root        
     }
+
+    constructor(state: NodeState, root?: Node) {
+        this._state = state
+        this._root = root
+    }
+
+    //
+    // A snapshot has a pointer to the root node of a state tree this node 
+    // is attached to.
+    //
+    // Each time a mutate method is called, a derivative is returned. This derivative 
+    // does not have access to the root node, which means it is no longer attached
+    // to a state tree.
+    //     
+
+    isSnapshot() {
+        return this._root
+    }
+
+    hasParent() {
+        return this._root && this.path.length > 0
+    }
+
+    get parent(): Node | undefined {
+        
+        if (this._root && this.path.length > 0) {
+
+            const path = this.path
+            if (path.length > 0) {
+                const parentPath = _.slice(path, 0, path.length - 1)                
+                const impath = IMPATH(parentPath)
+                const parentNodeState = this._root._state.getIn(impath)
+                return new Node(parentNodeState, this._root)
+            } 
+        }
+        
+        return undefined
+    }
+
+    get root(): Node | undefined {
+        return this._root
+    }
+
+    // 
+    // Getters & Mutaters
+    //
 
     get tagName(): string {
         return this._state.get('tagName', '') as string
@@ -80,7 +146,7 @@ export default class Node {
 
     get children(): Node[] {
         return (this._state.get('children', Map()) as Map<string, NodeState>)
-            .toArray().map(c => new Node(c)) as Node[]
+            .toArray().map(([key, c]) => new Node(c, this._root)) as Node[]
     }
 
     get props(): {} {
@@ -98,7 +164,7 @@ export default class Node {
     }
 
     // tslint:disable-next-line:no-any
-    setContext(obj: Map<string, any> ): Node {
+    setContext(obj: Map<string, any>): Node {
         const newState = this._state.setIn(['context'], obj)
         return this.update(newState)
     }
@@ -172,13 +238,13 @@ export default class Node {
         const childPath = [...this.path, key]
         const childNode = Map({ path: childPath })
         const childState = this._state.get(key, childNode) as NodeState
-        return new Node(childState, this._rootState)
+        return new Node(childState, this._root)
     }
 
     descendant(path: string[]): Node {
         const impath = IMPATH(path)
         const descendantState = this._state.getIn(impath)
-        return new Node(descendantState, this._rootState)
+        return new Node(descendantState, this._root)
     }
 
     setTagName(tagName: string): Node {
@@ -249,30 +315,111 @@ export default class Node {
     }
 
     addPart(name: string, part: Part): Node {
-        const newState = this._state.update('parts', Map(), s => (s as Map<string, {}>).set(name, part))
+        const newState = this._state.update(
+            'parts', 
+            Map<string, Part>(), 
+            s => (s as Map<string, Part>).set(name, part))
         return this.update(newState)
-    }    
+    }
 
     getPart(name: string): Part | null {
         if (this._state.hasIn(['parts', name])) {
             return this._state.getIn(['parts', name]) as Part
         } else {
             return null
-        }        
+        }
+    }
+
+    // 
+    // CSS
+    //
+
+    get styleSheets(): List<StyleSheet> {
+        return this._state.get('stylesheets', List<StyleSheet>()) as List<StyleSheet>
+    }
+
+    addStyleSheet(stylesheet: StyleSheet): Node {
+        const newState = this._state.update(
+            'stylesheets',
+            List<StyleSheet>(),
+            s => (s as List<StyleSheet>).push(stylesheet)) as NodeState
+        return this.update(newState)
+    }
+
+    setStyleSheets(styleSheets: StyleSheet[]): Node {
+        const newState = this._state.set('stylesheets', styleSheets)
+        return this.update(newState)
+    }
+
+    computeStyle(): Node {
+        
+        if (this.parent && this.root) {
+
+            // collect all applicable rules
+            const adapter = createAdapter(this.root)
+            const applicableCssRules = _.flatten(this.styleSheets.map(stylesheet => {
+
+                return _.filter(stylesheet.rules, rule => this.isSelectedBy(rule.selectors.join(',')))
+
+            }).toArray())
+
+            const style = computeStyleFromCssRules(applicableCssRules, this.parent.style)
+
+            return this.update(this._state.set('style', style))
+            console.log('applicableRules', this.tagName, applicableCssRules.length, style)
+        }
+
+        return this
+
+    }
+
+    isSelectedBy(selectors: string): boolean {
+        invariant(
+            this._root,
+            'can not check for css selection because the node is not attached to the main tree')
+
+        if (this._root) {
+            const adapter = createAdapter(this._root)
+            return CSSSelect.is(this, selectors, { adapter })
+        } else {
+            return false
+        }
+
+
+        // this.styleSheets.map(stylesheet => {
+        //     _.filter(stylesheet.rules, rule => {
+
+        //         const isSelected = CSSSelect.is(this, rule.selectors.join(','), {adapter})
+        //         // return 
+        //         console.log('isSelected', rule.selectors.join(','), isSelected)
+        //         return isSelected
+        //     })
+        // })
+        // _.map(this.styleSheets, stylesheet => {
+
+
+        // })
+
+        // const adapter = node._rootState && createAdapter(node._rootState)
+        // const applicableRules = cssRules.filter(r => {
+        //   // console.log('r', r.selectors)
+        //   return CSSselect.is(node.state, r.selectors.join(','), {adapter})
+        // })
+        return false
     }
 
     private update(newState: NodeState): Node {
         return new Node(newState)
     }
+
 }
-
-
-
+//
 // helpers
+//
 
 // update a given node's path to 'destPath', and recursively update all the
 // descendes of this node's path to match
-const updatePath = (nodeState: NodeState, destPath: string[]): NodeState => {
+function updatePath(nodeState: NodeState, destPath: string[]): NodeState {
 
     const _updateChild = (child: NodeState, index: string) => {
         const childDestPath = [...destPath, index]
@@ -294,4 +441,43 @@ const updatePath = (nodeState: NodeState, destPath: string[]): NodeState => {
 //     return state.setIn(destImmutablePath, _destNodeState)
 //   }
 
+function computeStyleFromCssRules(rules: CssRule[], parentStyle: {}) {
 
+    let computedStyle = {}
+
+    const setProperty = (decl: Declaration) => {
+
+        let val
+
+        if (decl.value === 'inherit' && parentStyle) {
+
+            val = parentStyle[decl.property]
+
+        } else {
+
+            val = decl.value
+
+        }
+
+        if (decl.value === 'random' && decl.property === 'color') {
+            // if parent's color is defined, use it
+            // otherwise get a random color            
+            // val = (parentStyle && parentStyle.get('color')) || getRandomColor()
+        }
+
+        if (val) {
+
+            computedStyle[decl.property] = val
+
+        }
+    }
+    
+    _.forEach(rules, rule => {
+        _.forEach(rule.declarations, decl => {
+            setProperty(decl)
+        })
+    })
+
+    // console.log('computedStyle', computedStyle)
+    return computedStyle
+}

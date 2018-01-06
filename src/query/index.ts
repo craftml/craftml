@@ -62,7 +62,11 @@ export class Query {
         // console.log('_find')
         return _(context)
             .map(el => {
-                return CSSselect(selector, el, { adapter })
+                try {
+                    return CSSselect(selector, el, { adapter })
+                } catch(e) {
+                    console.error(e)
+                }
             })
             .flatten()
             .uniq()

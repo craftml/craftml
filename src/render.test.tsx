@@ -61,6 +61,9 @@ const cases = {
   group: null,
   'css-select': null,
   part: null,
+  style: {
+    color: null,
+  },
   primitives: {
     cube: null,
     cylinder: null,

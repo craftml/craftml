@@ -130,6 +130,8 @@ export default createRenderer({
 
         if (parent) {
             
+            parent.pp()
+
             yield update(parent, x => x.addPart(name, part))
 
         }

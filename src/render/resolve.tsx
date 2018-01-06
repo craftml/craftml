@@ -66,8 +66,7 @@ export default function resolveProps<T>(propTypes: PropTypes<T>, props: {}, defa
     ///    params should come from the parent and should already have the right types   
     let resolvedProps = {...params}     
 
-    // then override by clientProps, defaultProps according to propTypes
-    
+    // then override by clientProps, defaultProps according to propTypes    
     const resolvePerPropType = setPerPropType(resolvedProps, props, defaultProps, params)
 
     const resolvePerInterfaceType = (ps: t.InterfaceType<t.Props, T>) => _.forEach(ps.props, resolvePerPropType) 

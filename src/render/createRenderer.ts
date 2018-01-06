@@ -35,7 +35,7 @@ function* renderNode<T extends object>(
 
     const parent = yield parentOf(node)
 
-    const updater = (x: Node) => {
+    const inheritFromParent = (x: Node) => {
 
         // x = x.setMerge(def.merge)
 
@@ -47,12 +47,19 @@ function* renderNode<T extends object>(
             }
 
             x = x.setParts(parent.parts)
+
+            x = x.setStyleSheets(parent.styleSheets)
         }
 
         return x
     }
 
-    yield update(node, updater)
+    yield update(node, inheritFromParent)
+    
+    node = yield refresh(node)
+
+    yield update(node, x => x.computeStyle())
+
     node = yield refresh(node)
 
     const params = node.context.toJS()
@@ -67,6 +74,8 @@ function* renderNode<T extends object>(
 
     yield update(node, x => x.setMerge(resolvedProps.merge))
     node = yield refresh(node)
+
+    
 
     yield def.getSaga(node, resolvedProps, domNode)()
 

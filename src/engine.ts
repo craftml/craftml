@@ -16,7 +16,9 @@ const reducer = (state: Node, action: RootAction) => {
         case COMMIT: {
             if (state) {
                 const { node } = action.payload
-                return state.setSubtree(node)
+                state = state.setSubtree(node)
+                state._root = state
+                return state
             } else {
                 return action.payload.node
             }
@@ -24,7 +26,9 @@ const reducer = (state: Node, action: RootAction) => {
         case UPDATE: {
             const { node, updateFunc } = action.payload            
             const newNode = updateFunc(state.descendant(node.path))
-            return state.setSubtree(newNode)        
+            state = state.setSubtree(newNode)        
+            state._root = state
+            return state
         }
         default: return state;
     }
@@ -33,7 +37,7 @@ const reducer = (state: Node, action: RootAction) => {
 const sagaMiddleware = createSagaMiddleware()
 
 import render from './render'
-import { createRoot } from './node'
+// import Node from './node'
 
 interface RenderAction {
     payload: {
@@ -44,7 +48,7 @@ interface RenderAction {
 function* handleRenderRequest(action: RenderAction) {
     
     const dom = action.payload.dom
-    let root = createRoot()    
+    let root = Node.createRoot()    
     yield render(root, dom)
  }
 
