@@ -129,16 +129,10 @@ export default createRenderer({
         const parent = yield parentOf(node)
 
         if (parent) {
-            
-            parent.pp()
 
             yield update(parent, x => x.addPart(name, part))
 
         }
-
-        // node = node.setGeometry(geometry as Geometry).setDimensions(dimensions)
-
-        // yield commit(node)
 
     }
 })

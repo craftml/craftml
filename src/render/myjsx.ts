@@ -18,6 +18,9 @@ declare namespace JSX {
         'craftml-repeat': {
             n: number
         },
+        'craftml-module': {
+            name: string
+        },
         'g': {
             merge: boolean,
             tagName?: string

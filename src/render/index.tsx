@@ -88,22 +88,21 @@ export default function* renderMain(node: Node, domNode: DomNode): {} {
     // strip empty children    
     const isNonEmpty = (c: DomNode) => !(c.type === 'text' && (c.data || '').trim().length === 0)
     domNode.children = domNode.children.filter(isNonEmpty)
-
+    
     const renderer = RENDERERS.get(tagName)
-    if (renderer) {
+    if (renderer) {        
 
         yield renderer(node, props, domNode)
 
     }  else {
 
-        // attempt to load the renderer as a module
-        
-        const wrapped = DOM(<craftml-module name={tagName} {...domNode.attribs}>
+        // attempt to load the renderer as a module        
+        const wrapped = DOM(
+            <craftml-module name={tagName} {...domNode.attribs}>
               {domNode.children}
-          </craftml-module>)
+            </craftml-module>)
 
-        yield renderMain(node, wrapped)//(node, props, domNode)
-
+        yield renderMain(node, wrapped)
 
     }
     

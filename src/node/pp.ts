@@ -2,7 +2,6 @@ import Node from './index'
 import * as _ from 'lodash'
 import chalk from 'chalk'
 import { Matrix4 } from 'three'
-import * as _ from 'lodash'
 import { Declaration, CssRule } from '../render/css/index';
 
 // pretty-print a node and its descendents to console

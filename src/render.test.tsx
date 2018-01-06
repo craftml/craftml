@@ -64,6 +64,7 @@ const cases = {
   style: {
     tag: null,
     color: null,
+    inline: null
   },
   primitives: {
     cube: null,

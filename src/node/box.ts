@@ -1,6 +1,4 @@
 import { Matrix4, Geometry, BufferGeometry, Box3, Vector3, InterleavedBufferAttribute } from 'three'
-// import { Map } from 'immutable'
-// import type { NodeState } from '../nodux'
 import * as _ from 'lodash'
 import Node from './index'
 

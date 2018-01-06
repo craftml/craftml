@@ -1,3 +1,5 @@
+import * as _ from 'lodash'
+
 export interface DomNode {
     type: string,
     name: string,
@@ -8,11 +10,14 @@ export interface DomNode {
 
 export interface Attribs {
     title?: string
+    style?: string
 }
 
 export const React = {
 
-    createElement(type: string, props: {}, children: DomNode[]  | DomNode ): DomNode {        
+    createElement(type: string, props: {}, ...children: DomNode[] ): DomNode {        
+
+        // console.log('type', type, 'children', children)//, 'props', props)
 
         let childrenArray: DomNode[]
 
@@ -20,18 +25,43 @@ export const React = {
 
             childrenArray = children
 
-        } else if (children) {
+        // } else if (typeof children === 'string') {
 
-            childrenArray = [children]
+        //     childrenArray = [{ data: children}]
+
+        } else if ( children ) {
+
+            childrenArray = children
 
         } else {
 
             childrenArray = []
         }
 
+        // console.log('children', childrenArray)
+
+        childrenArray = _.flatten(childrenArray)
+
+        childrenArray = _.map(childrenArray, c => {
+
+            // console.log('c', c)
+
+            if (_.isString(c)) {
+                
+                return {
+                    type: 'text',
+                    data: c
+                }
+                 
+            } else {
+
+                return c
+            }
+        })
+
         const isNonEmpty = (c: DomNode) => !(c.type === 'text' && (c.data || '').trim().length === 0)
         childrenArray = childrenArray.filter(isNonEmpty)
-        // console.log('children', childrenArray)
+        // console.log('children', childrenArray.length)
         return {
             type: 'tag', 
             name: type,

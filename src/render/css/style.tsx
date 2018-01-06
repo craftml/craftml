@@ -1,10 +1,7 @@
-import { parentOf, update, refresh } from '../effects'
+import { parentOf, update } from '../effects'
 import * as t from 'io-ts'
 import createRenderer from '../createRenderer'
-import { CssDefault } from './index'
-import { createAdapter } from '../../query/createAdapter'
-
-const css: CssDefault = require('./vendor/css')
+import * as css from './index'
 
 export default createRenderer({
     tagName: 'craftml-style',

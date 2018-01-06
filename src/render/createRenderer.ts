@@ -49,6 +49,7 @@ function* renderNode<T extends object>(
             x = x.setParts(parent.parts)
 
             x = x.setStyleSheets(parent.styleSheets)
+            
         }
 
         return x

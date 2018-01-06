@@ -2,31 +2,11 @@ import { Map, List } from 'immutable'
 import * as _ from 'lodash'
 import { Geometry, Matrix4 } from 'three'
 import { createBox, Box } from './box'
-import { StyleSheet, Declaration, CssRule } from '../render/css'
+import * as css from '../render/css'
 import * as invariant from 'invariant'
-
-import { createAdapter, Adapter } from '../query/createAdapter';
-
-interface CSSSelectType {
-    is<T>(x: T, selectors: string, options: { adapter: Adapter<T> }): boolean
-}
-
-const CSSSelect: CSSSelectType = require('css-select')
-
-// const ret = createAdapter(f)
-// ret.
+import { createAdapter } from '../query/createAdapter';
 
 export { Box }
-
-// const IMPATH = (p: Array<string>) =>
-//     _.reduce(
-//         p,
-//         (ret: Array<string>, e, i) => {
-//             ret.push('children')
-//             ret.push(e)
-//             return ret
-//         },
-//         [])
 
 const IMPATH = (p: Array<string>, root: string[] = []) => {
 
@@ -48,19 +28,10 @@ export interface NodeError {
     message: string
 }
 
-import query, { Query } from '../query'
+import query from '../query'
 import pp from './pp'
 
 import { Part } from '../render/part'
-
-// export function createRoot(): Node {
-//     const rootState = Map({
-//         path: []
-//     }) as NodeState;
-//     const root = new Node(rootState)
-//     root._root = root
-//     return root//new Node(rootState, rootState)
-// }
 
 export default class Node {
 
@@ -149,7 +120,7 @@ export default class Node {
             .toArray().map(([key, c]) => new Node(c, this._root)) as Node[]
     }
 
-    get props(): {} {
+    get props(): {style?: {}} {
         return this._state.get('props', {}) as {}
     }
 
@@ -255,12 +226,13 @@ export default class Node {
     setSubtree(subtree: Node) {
         // const impath = IMPATH(subtree.path)
         const relativePath = _.slice(subtree.path, this.path.length)
-        const impath = _.reduce(relativePath, (ret: string[], e, i) => {
-            ret.push('children')
-            ret.push(e)
-            return ret
-        }, [])
-        // console.log('impath', impath, 'state', this._state.toJS())
+        const impath = IMPATH(relativePath)
+        // const impath = _.reduce(relativePath, (ret: string[], e, i) => {
+        //     ret.push('children')
+        //     ret.push(e)
+        //     return ret
+        // }, [])
+        // // console.log('impath', impath, 'state', this._state.toJS())
         const newState = this._state.setIn(impath, subtree.state)
         return this.update(newState)
     }
@@ -334,19 +306,19 @@ export default class Node {
     // CSS
     //
 
-    get styleSheets(): List<StyleSheet> {
-        return this._state.get('stylesheets', List<StyleSheet>()) as List<StyleSheet>
+    get styleSheets(): List<css.StyleSheet> {
+        return this._state.get('stylesheets', List<css.StyleSheet>()) as List<css.StyleSheet>
     }
 
-    addStyleSheet(stylesheet: StyleSheet): Node {
+    addStyleSheet(stylesheet: css.StyleSheet): Node {
         const newState = this._state.update(
             'stylesheets',
             List<StyleSheet>(),
-            s => (s as List<StyleSheet>).push(stylesheet)) as NodeState
+            s => (s as List<css.StyleSheet>).push(stylesheet)) as NodeState
         return this.update(newState)
     }
 
-    setStyleSheets(styleSheets: StyleSheet[]): Node {
+    setStyleSheets(styleSheets: css.StyleSheet[]): Node {
         const newState = this._state.set('stylesheets', styleSheets)
         return this.update(newState)
     }
@@ -355,18 +327,31 @@ export default class Node {
         
         if (this.parent && this.root) {
 
-            // collect all applicable rules
-            const adapter = createAdapter(this.root)
-            const applicableCssRules = _.flatten(this.styleSheets.map(stylesheet => {
+            // select rules from all inherited style sheets
+            //            
+            const selectedCssRules = _.flatten(this.styleSheets.map(stylesheet => {
 
                 return _.filter(stylesheet.rules, rule => this.isSelectedBy(rule.selectors.join(',')))
 
             }).toArray())
 
-            const style = computeStyleFromCssRules(applicableCssRules, this.parent.style)
+            // inline style
+            //
+            // e.g.,
+            //
+            // <foo style="color: brown"/>
+            // -> * {color: brown}
+            //
+            const inlineStyleText = `* { ${this.props.style || ''} }`
+
+            const inlineCssRules = css.parse(inlineStyleText).stylesheet.rules 
+
+            const applicableCssRules = [...selectedCssRules, ...inlineCssRules]
+
+            const style = computeStyleFromCssRules(applicableCssRules, this.parent.style)    
 
             return this.update(this._state.set('style', style))
-            console.log('applicableRules', this.tagName, applicableCssRules.length, style)
+            // console.log('applicableRules', this.tagName, selectedCssRules.length, style)
         }
 
         return this
@@ -380,32 +365,10 @@ export default class Node {
 
         if (this._root) {
             const adapter = createAdapter(this._root)
-            return CSSSelect.is(this, selectors, { adapter })
+            return css.is(this, selectors, { adapter })
         } else {
             return false
-        }
-
-
-        // this.styleSheets.map(stylesheet => {
-        //     _.filter(stylesheet.rules, rule => {
-
-        //         const isSelected = CSSSelect.is(this, rule.selectors.join(','), {adapter})
-        //         // return 
-        //         console.log('isSelected', rule.selectors.join(','), isSelected)
-        //         return isSelected
-        //     })
-        // })
-        // _.map(this.styleSheets, stylesheet => {
-
-
-        // })
-
-        // const adapter = node._rootState && createAdapter(node._rootState)
-        // const applicableRules = cssRules.filter(r => {
-        //   // console.log('r', r.selectors)
-        //   return CSSselect.is(node.state, r.selectors.join(','), {adapter})
-        // })
-        return false
+        }        
     }
 
     private update(newState: NodeState): Node {
@@ -423,7 +386,6 @@ function updatePath(nodeState: NodeState, destPath: string[]): NodeState {
 
     const _updateChild = (child: NodeState, index: string) => {
         const childDestPath = [...destPath, index]
-        const childDestImmutablePath = [...destPath, 'children', index]
         return updatePath(child, childDestPath)
     }
 
@@ -432,20 +394,11 @@ function updatePath(nodeState: NodeState, destPath: string[]): NodeState {
         .update('children', children => children ? (children as NodeState).map(_updateChild) : children)
 }
 
-//   const copy = (state, src, dest) => {
-//     const srcImmutablePath = src.getImmutablePath()
-//     const destImmutablePath = dest.getImmutablePath()
-//     // console.log('path', srcPath, destPath)
-//     const _destNodeState = updatePath(state.getIn(srcImmutablePath), dest.path)
-//     // console.log('dest', _destNodeState)
-//     return state.setIn(destImmutablePath, _destNodeState)
-//   }
-
-function computeStyleFromCssRules(rules: CssRule[], parentStyle: {}) {
+function computeStyleFromCssRules(rules: css.CssRule[], parentStyle: {}) {
 
     let computedStyle = {}
 
-    const setProperty = (decl: Declaration) => {
+    const setProperty = (decl: css.Declaration) => {
 
         let val
 

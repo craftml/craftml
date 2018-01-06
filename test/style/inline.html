@@ -1,0 +1,39 @@
+<test title="single tag">
+    <craftml-unit style="color: brown" />
+    <script>            
+        this.pp()
+        $('craftml-unit').should.have.style('color', 'brown')
+    </script>
+</test>
+
+<test title="nested tags are not affected">
+    <style>
+        craftml-unit {
+            foo: kim;
+        }
+    </style>
+    <craftml-group style="foo: max" id="foo">
+        <craftml-unit/>
+    </craftml-group>
+    <script>
+        this.pp()
+        $('craftml-group').should.have.style('foo', 'max')
+        $('craftml-unit').should.have.style('foo', 'kim')
+    </script>
+</test>
+
+<test title="inherit">
+    <style>
+        craftml-unit {
+            foo: inherit;
+        }
+    </style>
+    <craftml-group style="foo: max" id="foo">
+        <craftml-unit/>
+    </craftml-group>
+    <script>
+        this.pp()
+        $('craftml-group').should.have.style('foo', 'max')
+        $('craftml-unit').should.have.style('foo', 'max')
+    </script>
+</test>
