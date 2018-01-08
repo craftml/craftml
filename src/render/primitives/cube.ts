@@ -36,8 +36,6 @@ export default createPrimitive({
   getGeometry: (props) => {
    
     const { size } = props
-
-    console.log('size', size)
     
     // TODO: error handling
     const [ x, y, z ] = size.split(' ').map(Number)

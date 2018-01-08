@@ -109,6 +109,11 @@ export class ChainableMethod {
     this.length(5)
     return this
   }
+
+  get six() {
+    this.length(6)
+    return this
+  }
 }
 
 export const should = (q: Query): ChainableMethod => new ChainableMethod(q)

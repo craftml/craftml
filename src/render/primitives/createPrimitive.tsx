@@ -97,8 +97,12 @@ export default function createPrimitive<T extends object>(def: PrimitiveDefiniti
 
         wrapped = wrap_t(wrapped, props.t)
 
+        // const htmlProps = props.
+        console.log('cube props', props)
+        const htmlProps = _.pick(props, ['id', 'class', 'style'])
+
         wrapped = DOM(
-            <craftml-group tagName={def.tagName} merge={false}>
+            <craftml-group tagName={def.tagName} merge={false} {...htmlProps}>
                 {wrapped}
             </craftml-group>)
         

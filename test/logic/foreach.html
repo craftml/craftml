@@ -1,15 +1,75 @@
-<test title="default n = 1">
+<test title="array 1 2 3">
     <script>
         $params.array = [1, 2, 3]
     </script>
     <craftml-foreach iterator="i" iterable="array">
-        <craftml-unit size="{{ i }} {{ i }} {{ i }}" id="unit{{i}}"/>
+        <craftml-unit size="{{ i }} {{ i }} {{ i }}" id="unit{{i}}" />
     </craftml-foreach>
     <script>
-        this.pp()
         $('craftml-unit').should.have.three
-        $('craftml-unit#unit1').should.have.size(1,1,1)
-        $('craftml-unit#unit2').should.have.size(2,2,2)
-        $('craftml-unit#unit3').should.have.size(3,3,3)
+        $('craftml-unit#unit1').should.have.size(1, 1, 1)
+        $('craftml-unit#unit2').should.have.size(2, 2, 2)
+        $('craftml-unit#unit3').should.have.size(3, 3, 3)
+    </script>
+</test>
+
+<test title="nested">
+    <script>
+        $params.array = [1, 2, 3]
+    </script>
+    <craftml-foreach iterator="i" iterable="array">
+        <craftml-repeat n="{{ i }}">
+            <craftml-unit/>
+        </craftml-repeat>
+    </craftml-foreach>
+    <script>
+        $('craftml-unit').should.have.six
+    </script>
+</test>
+
+<test title="layout">
+    <script>
+        $params.array = [1, 2, 3]
+    </script>
+    <craftml-layout l="flow x">
+        <craftml-foreach iterator="i" iterable="array">
+            <cube t="scale x {{ i }}" />
+        </craftml-foreach>
+    </craftml-layout>
+    <script>
+        $('cube').should.have.three
+        $('craftml-layout').should.have.size(60, 10, 10)
+    </script>
+</test>
+
+<test title="shadow">
+    <script>
+        $params.array = [1, 1, 1]
+        $params.i = 2
+    </script>
+    <craftml-layout l="flow x">
+        <craftml-foreach iterator="i" iterable="array">
+            <cube t="scale x {{ i }}" />
+        </craftml-foreach>
+    </craftml-layout>
+    <script>        
+        $('cube').should.have.three
+        $('craftml-layout').should.have.size(30, 10, 10)
+    </script>
+</test>
+
+<test title="index">
+    <script>
+        $params.array = [1, 2, 3]
+    </script>    
+    <craftml-foreach iterator="i" iterable="array" index="key">
+        <cube t="scale x {{ i }}" id="unit{{key}}"/>
+    </craftml-foreach>    
+    <script>        
+        this.pp()
+        $('cube#unit0').should.have.one
+        $('cube#unit1').should.have.one
+        $('cube#unit2').should.have.one
+        $('cube').should.have.three        
     </script>
 </test>

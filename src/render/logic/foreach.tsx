@@ -9,10 +9,14 @@ export default createRenderer({
     defaultProps: {
         iterator: '',
         iterable: '',
+        index: '',
+        merge: true,
     },
     propTypes: t.interface({
         iterator: t.string,
-        iterable: t.string
+        iterable: t.string,
+        index: t.string,
+        merge: t.boolean
     }),
     merge: true,
     getSaga: (node, props, domNode) => function* () {
@@ -24,7 +28,7 @@ export default createRenderer({
             return
         }
       
-        const { iterator: iteratorName, iterable: iterableName } = props
+        const { iterator: iteratorName, iterable: iterableName, index: indexName } = props
 
         const context = node.context        
 
@@ -47,7 +51,12 @@ export default createRenderer({
                 yield render(node.child(i), eachTop)
              
                 const value = iterable[i]
-                const eachContext = context.set(iteratorName, value)
+                
+                let eachContext = context.set(iteratorName, value)
+                if (indexName) {
+                    eachContext = eachContext.set(indexName, i)
+                }
+
                 yield update(node.child(i), c => c.setContext(eachContext))
 
                 yield render(node.child(i).child(0), eachContent)
