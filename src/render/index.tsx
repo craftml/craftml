@@ -27,6 +27,7 @@ import stack from './structure/stack'
 import g from './structure/g'
 
 import repeat from './logic/repeat'
+import foreach from './logic/foreach'
 
 import moduleRenderer from './module'
 import part from './part'
@@ -65,6 +66,7 @@ function createRenderersMap(): Map<string, Renderer<{}>> {
     rs.set('craftml-transform', transform)
     rs.set('craftml-layout', layout)
     rs.set('craftml-repeat', repeat)
+    rs.set('craftml-foreach', foreach)
     rs.set('craftml-module', moduleRenderer)
 
     return rs
@@ -78,7 +80,7 @@ export default function* renderMain(node: Node, domNode: DomNode): {} {
     const props = domNode.attribs
 
     node = node.setTagName(tagName)
-        .setProps(props)
+        // .setProps(props)
 
     yield commit(node)
 

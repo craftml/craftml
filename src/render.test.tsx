@@ -99,7 +99,8 @@ const cases = {
   },
   logic: {
     repeat: null,
-    params: null
+    params: null,
+    foreach: null
   },
   module: {
     inline: null,

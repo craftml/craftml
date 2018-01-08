@@ -59,6 +59,26 @@ const setPerPropType = (resolvedProps: {}, clientProps: {}, defaultProps: {}, co
 
     }
 
+type Intersection = t.IntersectionType<t.Type<{}, {}>[], {}>
+type Interface =  t.InterfaceType<t.Props, {}>
+type PT = Intersection | Interface
+type PropType = t.Type<{}, {}>
+
+function forEachPropType(propTypes: PT, func: (propType: PropType, propName: string) => void) {
+
+    if (propTypes._tag === 'IntersectionType') {
+
+        const c = propTypes
+        _.forEach(c.types, tp => forEachPropType(tp as PT, func))
+
+    } else if (propTypes._tag === 'InterfaceType') {
+
+        const c = propTypes
+        
+        _.forEach(c.props, func) 
+    }
+}
+
 export default function resolveProps<T>(propTypes: PropTypes<T>, props: {}, defaultProps: {}, params: {}) {
 
     // make everything in params avaliabile in resolvedProps by default
@@ -69,20 +89,7 @@ export default function resolveProps<T>(propTypes: PropTypes<T>, props: {}, defa
     // then override by clientProps, defaultProps according to propTypes    
     const resolvePerPropType = setPerPropType(resolvedProps, props, defaultProps, params)
 
-    const resolvePerInterfaceType = (ps: t.InterfaceType<t.Props, T>) => _.forEach(ps.props, resolvePerPropType) 
-
-    const _tag = (propTypes as {} as {_tag: string})._tag
-    if (_tag === 'IntersectionType') {
-
-        const c = propTypes as t.IntersectionType<t.Type<{}, {}>[], T>
-        _.forEach(c.types, resolvePerInterfaceType)
-
-    } else if (_tag === 'InterfaceType') {
-
-        const c = propTypes as t.InterfaceType<t.Props, T>
-        resolvePerInterfaceType(c)
-
-    }
+    forEachPropType(propTypes as {} as PT, resolvePerPropType)
 
     // console.log('resolvedProps', resolvedProps)
     return resolvedProps

@@ -51,7 +51,7 @@
         <craftml-unit class="brown" />
         <craftml-unit class="brown" />
     </craftml-group>
-    <script>
+    <script>        
         $('.brown').should.have.two.and.style('color', 'brown')
     </script>
 </test>
@@ -72,9 +72,10 @@
         </craftml-group>
     </craftml-group>
     <script>
+        this.pp()
         $('#red').should.have.style('color', 'red')
         $('#foo').should.have.style('color', 'red')
-        $('craftml-geometry').should.have.style('color', 'red')
+        // $('craftml-geometry').should.have.style('color', 'red')
     </script>
 </test>
 

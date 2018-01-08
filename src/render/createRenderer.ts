@@ -3,9 +3,9 @@ import Node from '../node'
 import * as _ from 'lodash'
 import { update, refresh, parentOf } from './effects'
 
-import * as iots from 'io-ts'
+import * as t from 'io-ts'
 
-type PropTypes<T> = iots.Type<{}, T>
+type PropTypes<T> = t.Type<{}, T>
 
 type RendererDefinition<T extends object> = {
     tagName: string,
@@ -28,6 +28,12 @@ export default function createRenderer<T extends object>(def: RendererDefinition
 }
 
 import resolve from './resolve'
+
+const htmlPropTypes = t.interface({
+    id: t.string,
+    class: t.string,
+    style: t.string
+})
 
 function* renderNode<T extends object>(
     def: RendererDefinition<T>,
@@ -59,24 +65,23 @@ function* renderNode<T extends object>(
     
     node = yield refresh(node)
 
-    yield update(node, x => x.computeStyle())
 
-    node = yield refresh(node)
+    const params = node.context.toJS()    
 
-    const params = node.context.toJS()
-    
-    // console.log('params', node.tagName, params)
+    const mergedPropTypes = t.intersection([def.propTypes, htmlPropTypes])
 
-    const resolvedProps = resolve(def.propTypes, props, def.defaultProps, params) as T
-    const k = (ps) => _.omit(ps, 'geometry')
+    const resolvedProps = resolve(mergedPropTypes, props, def.defaultProps, params) as T
+
+    // const k = (ps) => _.omit(ps, 'geometry')
     // console.log(`[${node.tagName}]`, 'types:', def.propTypes.name, 'props:', k(props), 'defaultProps:', k(def.defaultProps), 'params:', params, '->', k(resolvedProps))
 
-    // x = x.setMerge(def.merge)
+    yield update(node, x => 
+        x.setMerge(resolvedProps.merge)
+         .setProps(resolvedProps))
 
-    yield update(node, x => x.setMerge(resolvedProps.merge))
-    node = yield refresh(node)
+    yield update(node, x => x.computeStyle())
 
-    
+    node = yield refresh(node)    
 
     yield def.getSaga(node, resolvedProps, domNode)()
 

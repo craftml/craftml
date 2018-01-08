@@ -8,10 +8,10 @@ import createRenderer from './createRenderer'
 export default createRenderer({
     tagName: 'craftml-unit',
     defaultProps: {
-        size: '10 10 10',
+        size: '10 10 10',        
     },
     propTypes: t.interface({
-        size: t.string        
+        size: t.string,                
     }),
     merge: false,
     getSaga: (node, props, domNode) => function* () {
