@@ -1,0 +1,166 @@
+<test title="has two children">
+    <part name='foo'>
+        <row>
+            <content/>
+        </row>
+    </part>
+    <foo>
+        <cube/>
+        <cube/>
+    </foo>
+    <script>
+        $('cube').should.have.two
+        $('foo').should.have.one.and.size(20, 10, 10)        
+    </script>
+</test>
+
+<test title="empty">
+    <part name='foo'>
+        <row>
+            <cube/>
+            <content/>
+        </row>
+    </part>
+    <foo/>
+    <script>    
+        $('cube').should.have.one
+    </script>
+</test>
+
+<test title="with script">
+    <part name='foo'>
+        <row>
+            <cube/>
+            <content/>
+            <script>            
+                $('cube').should.have.two
+            </script>
+        </row>
+    </part>
+    <foo>
+        <cube/>
+    </foo>
+    <cube/>
+    <script>                  
+        $('cube').should.have.three
+    </script>
+</test>
+
+<test title="multiple">
+    <part name='foo'>
+        <row>
+            <content/>
+            <cylinder/>
+            <content/>
+        </row>
+    </part>
+    <foo>
+        <cube/>
+        <cube/>
+    </foo>
+    <script>
+        $('cube').should.have.four
+        $('foo').should.have.size(50, 10, 10)
+    </script>
+</test>
+
+
+<test title="context">
+    <part name='foo'>
+        <script>
+            $params.s = 1    
+        </script>
+        <content/>
+        <cube t='scale {{ s }}' id="inside" />
+    </part>
+    <script>
+        $params.s = 2
+    </script>
+    <foo>
+        <cube t='scale {{ s }}' />
+    </foo>
+    <script>
+        this.pp()
+        $('foo').should.have.size(20, 20, 20)
+        $('#inside').should.have.size(10, 10, 10)        
+    </script>
+</test>
+
+<test title="nested">
+    <part name='foo'>
+        <script>
+            $params.s = 1    
+        </script>
+        <part name='bar'>
+            <craftml-layout l="flow x">
+                <content/>
+                </craftml>
+        </part>
+        <content/>
+        <bar>
+            <cube/>
+            <cube/>
+            <cube/>
+        </bar>
+    </part>
+    <script>
+        $params.s = 2
+    </script>
+    <foo>
+        <cube t='scale {{ s }}' />
+    </foo>
+    <script>
+        $('cube').should.have.four
+        $('foo').should.have.size(30, 20, 20)
+    </script>
+</test>
+
+<test title="layout without merge">
+    <part name='foo'>
+        <content/>
+        <content/>
+    </part>
+    <craftml-layout l="flow x">
+        <foo>
+            <craftml-unit/>
+            <craftml-unit/>
+        </foo>
+    </craftml-layout>
+    <script>        
+        $('craftml-unit').should.have.four            
+    </script>
+</test>
+
+<test title="layout with merge in part">
+    <part name='foo' merge>
+        <content/>
+        <content/>
+    </part>
+    <craftml-layout l="flow x">
+        <foo>
+            <craftml-unit/>
+            <craftml-unit/>
+        </foo>
+    </craftml-layout>
+    <script>        
+        $('craftml-unit').should.have.four     
+        $('craftml-layout').should.have.size(40,10,10)       
+    </script>
+</test>
+
+<test title="layout with merge in instance">
+    <part name='foo'>
+        <content/>
+        <content/>
+    </part>
+    <craftml-layout l="flow x">
+        <foo merge>
+            <craftml-unit/>
+            <craftml-unit/>
+        </foo>
+    </craftml-layout>
+    <script>        
+        $('craftml-unit').should.have.four   
+        $('craftml-layout').should.have.size(40,10,10)                
+    </script>
+</test>

@@ -19,6 +19,7 @@ import rectangle from './primitives/rectangle'
 import polygon from './primitives/polygon'
 import path from './primitives/path'
 
+
 import style from './css/style'
 
 import row from './structure/row'
@@ -31,6 +32,7 @@ import foreach from './logic/foreach'
 
 import moduleRenderer from './module'
 import part from './part'
+import content from './module/content'
 
 import { commit, refresh } from './effects'
 
@@ -57,6 +59,7 @@ function createRenderersMap(): Map<string, Renderer<{}>> {
     rs.set('style', style)
 
     rs.set('part', part)
+    rs.set('content', content)
 
     rs.set('test', test)        
 

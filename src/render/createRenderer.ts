@@ -54,6 +54,8 @@ function* renderNode<T extends object>(
 
             x = x.setParts(parent.parts)
 
+            x = x.setBlock(parent.block)
+
             x = x.setStyleSheets(parent.styleSheets)
             
         }
@@ -77,7 +79,7 @@ function* renderNode<T extends object>(
 
     yield update(node, x => 
         x.setMerge(resolvedProps.merge)
-         .setProps(resolvedProps))
+         .setProps(resolvedProps))         
 
     yield update(node, x => x.computeStyle())
 

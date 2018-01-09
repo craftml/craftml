@@ -5,6 +5,7 @@ import { createBox, Box } from './box'
 import * as css from '../render/css'
 import * as invariant from 'invariant'
 import { createAdapter } from '../query/createAdapter';
+import { DomNode } from '../dom'
 
 export { Box }
 
@@ -33,6 +34,14 @@ import pp from './pp'
 
 import { Part } from '../render/part'
 
+// tslint:disable-next-line:no-any
+type Context = Map<string, any>
+
+interface ContentBlock {
+    children: DomNode[],
+    context: Context
+}
+
 export default class Node {
 
     private _state: NodeState
@@ -40,13 +49,13 @@ export default class Node {
     private _cachedLayout?: Box
 
     static createRoot(): Node {
-        
+
         const rootState = Map({
             path: []
         }) as NodeState;
         const root = new Node(rootState)
         root._root = root
-        return root        
+        return root
     }
 
     constructor(state: NodeState, root?: Node) {
@@ -72,18 +81,18 @@ export default class Node {
     }
 
     get parent(): Node | undefined {
-        
+
         if (this._root && this.path.length > 0) {
 
             const path = this.path
             if (path.length > 0) {
-                const parentPath = _.slice(path, 0, path.length - 1)                
+                const parentPath = _.slice(path, 0, path.length - 1)
                 const impath = IMPATH(parentPath)
                 const parentNodeState = this._root._state.getIn(impath)
                 return new Node(parentNodeState, this._root)
-            } 
+            }
         }
-        
+
         return undefined
     }
 
@@ -120,7 +129,7 @@ export default class Node {
             .toArray().map(([key, c]) => new Node(c, this._root)) as Node[]
     }
 
-    get props(): {style?: {}} {
+    get props(): { style?: {} } {
         return this._state.get('props', {}) as {}
     }
 
@@ -273,6 +282,15 @@ export default class Node {
         return this.update(newState)
     }
 
+    setBlock(block: ContentBlock): Node {
+        const newState = this._state.set('block', block)
+        return this.update(newState)
+    }
+
+    get block(): ContentBlock | null {
+        return this._state.get('block', null) as ContentBlock | null
+    }
+
     //
     // Parts
     //
@@ -288,8 +306,8 @@ export default class Node {
 
     addPart(name: string, part: Part): Node {
         const newState = this._state.update(
-            'parts', 
-            Map<string, Part>(), 
+            'parts',
+            Map<string, Part>(),
             s => (s as Map<string, Part>).set(name, part))
         return this.update(newState)
     }
@@ -324,7 +342,7 @@ export default class Node {
     }
 
     computeStyle(): Node {
-        
+
         if (this.parent && this.root) {
 
             // select rules from all inherited style sheets
@@ -344,11 +362,11 @@ export default class Node {
             //
             const inlineStyleText = `* { ${this.props.style || ''} }`
 
-            const inlineCssRules = css.parse(inlineStyleText).stylesheet.rules 
+            const inlineCssRules = css.parse(inlineStyleText).stylesheet.rules
 
             const applicableCssRules = [...selectedCssRules, ...inlineCssRules]
 
-            const style = computeStyleFromCssRules(applicableCssRules, this.parent.style)    
+            const style = computeStyleFromCssRules(applicableCssRules, this.parent.style)
 
             return this.update(this._state.set('style', style))
             // console.log('applicableRules', this.tagName, selectedCssRules.length, style)
@@ -368,7 +386,7 @@ export default class Node {
             return css.is(this, selectors, { adapter })
         } else {
             return false
-        }        
+        }
     }
 
     private update(newState: NodeState): Node {
@@ -424,7 +442,7 @@ function computeStyleFromCssRules(rules: css.CssRule[], parentStyle: {}) {
 
         }
     }
-    
+
     _.forEach(rules, rule => {
         _.forEach(rule.declarations, decl => {
             setProperty(decl)

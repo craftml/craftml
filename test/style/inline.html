@@ -1,7 +1,6 @@
 <test title="single tag">
     <craftml-unit style="color: brown" />
     <script>            
-        this.pp()
         $('craftml-unit').should.have.style('color', 'brown')
     </script>
 </test>
@@ -16,7 +15,6 @@
         <craftml-unit/>
     </craftml-group>
     <script>
-        this.pp()
         $('craftml-group').should.have.style('foo', 'max')
         $('craftml-unit').should.have.style('foo', 'kim')
     </script>
@@ -32,7 +30,6 @@
         <craftml-unit/>
     </craftml-group>
     <script>
-        this.pp()
         $('craftml-group').should.have.style('foo', 'max')
         $('craftml-unit').should.have.style('foo', 'max')
     </script>

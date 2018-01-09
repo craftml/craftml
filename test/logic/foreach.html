@@ -61,15 +61,29 @@
 <test title="index">
     <script>
         $params.array = [1, 2, 3]
-    </script>    
+    </script>
     <craftml-foreach iterator="i" iterable="array" index="key">
-        <cube t="scale x {{ i }}" id="unit{{key}}"/>
-    </craftml-foreach>    
+        <cube t="scale x {{ i }}" id="unit{{key}}" />
+    </craftml-foreach>
     <script>        
-        this.pp()
         $('cube#unit0').should.have.one
         $('cube#unit1').should.have.one
         $('cube#unit2').should.have.one
         $('cube').should.have.three        
+    </script>
+</test>
+
+<test title="object array">
+    <script>
+        $params.array = [{a: 1, b: 'a'}, {a: 2, b: 'b'}, {a: 3, b: 'c'}]
+    </script>
+    <craftml-foreach iterator="i" iterable="array">
+        <cube t="scale x {{ i.a }}" id="{{i.b}}" />
+    </craftml-foreach>
+    <script>                
+        $('cube').should.have.three       
+        $('cube#a').should.have.size(10,10,10)
+        $('cube#b').should.have.size(20,10,10)
+        $('cube#c').should.have.size(30,10,10)
     </script>
 </test>

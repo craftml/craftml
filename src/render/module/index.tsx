@@ -98,10 +98,10 @@ export default createRenderer({
             let partProps = part.props
             // why??
             // coerce merge='' to merge=true
-            if (_.has(part.body.attribs,'merge')) {
-                // $FlowFixMe
-                partProps.merge = true
-            }
+            // if (_.has(part.body.attribs,'merge')) {
+            //     // $FlowFixMe
+            //     partProps.merge = true
+            // }
         
             instanceDef = {
                 displayTagName: `craftml-module@local`,
@@ -113,6 +113,10 @@ export default createRenderer({
         }
 
         if (instanceDef) {
+
+            // <part name="foo" merge> -> instanceDef.partProps.merge
+            // <foo merge> -> props.merge
+            const merge = instanceDef.partProps.merge || props.merge
                 
             // render a new top node (without html props)
             const top = DOM(<craftml-group tagName={instanceDef.displayTagName} merge={true}/>)
@@ -123,14 +127,17 @@ export default createRenderer({
             const clientGivenProps = domNode.attribs    
 
             const params = evalParams(node, clientGivenProps, instanceDef.children)
-            node = node.setContext(Map(params))
-            
-            // node = node.setBlock(children)
-            yield commit(node)
-            // yield put(nodux.Set(node.state))
+
+            const contextMap = Map(params)
+
+            node = node.setContext(contextMap)
+
+            node = node.setBlock({children: domNode.children, context: contextMap})
+                        
+            yield commit(node)            
         
             let wrapped = DOM(
-                <g {...instanceDef.props} merge={true} tagName={clientGivenTagName}>
+                <g {...instanceDef.props} merge={merge} tagName={clientGivenTagName}>
                     <g {...instanceDef.partProps} merge={true}>
                         {instanceDef.children}
                     </g>

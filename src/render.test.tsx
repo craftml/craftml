@@ -105,6 +105,9 @@ const cases = {
   module: {
     inline: null,
     declare: null
+  },
+  content: {
+    basic: null
   }
 }
 

@@ -97,7 +97,7 @@ function parts(node: Node): string {
 const DefaultOptions = {
     path: false,
     context: true,
-    matrix: false,
+    matrix: true,
     geometry: true,
     style: true,
     styleSheets: true,
@@ -149,29 +149,9 @@ function toString(node: Node, enabled: {} = DefaultOptions): string {
         .value()
         .join(' ')
 
-    // str += ' ' + path(node)
-
-    // str += ' ' + context(node)
-
-    // //   // str += ` ${node.status}`
-
-    // //   str += ' ' + node.cssRules.size
-
-    // str += ' ' + matrix(node)
-
     // if (node.errors.length > 0) {
     //     str += ' ' + chalk.red('errors: ' + node.errors.length)
     // }
-
-    // if (node.parts) {
-    //     str += ' ' + chalk.cyan(node.parts.map((c, k) => k).toArray().join(','))
-    // }
-
-    // str += ' ' + geometry(node)
-
-    // str += ' ' + style(node)
-
-    // str += ' ' + styleSheets(node)
 
     return str
 }
