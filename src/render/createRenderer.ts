@@ -87,4 +87,6 @@ function* renderNode<T extends object>(
 
     yield def.getSaga(node, resolvedProps, domNode)()
 
+    yield update(node, n => n.setStatus('done'))
+
 }

@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import { takeLatest, END } from 'redux-saga'
-import { actionChannel } from 'redux-saga/effects'
+import { END } from 'redux-saga'
+import { actionChannel, takeLatest } from 'redux-saga/effects'
 import { DomNode } from './dom'
 
 import { COMMIT, UPDATE, Actions } from './actions'
@@ -74,16 +74,20 @@ export async function renderAsync(dom: DomNode) {
     // poll every 100 seconds
     let status = ''
     let count = 0
+    // console.time('render')
     while (status !== 'done' && count < 10) {
         status = store.getState().status
-        // console.log('status', store.getState().status)////.get('status','')
+        // console.log('status', store.getState().status)
         await sleep(100)
         // console.log('not yet')
         count++
     }
+    // console.timeEnd('render')
 
     // end the saga
     store.dispatch(END)
+
+    store.getState().pp()
 
     return store.getState()
 }

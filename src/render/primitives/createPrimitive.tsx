@@ -66,7 +66,8 @@ function mergeProps<T extends object, R extends object>
 export default function createPrimitive<T extends object>(def: PrimitiveDefinition<T>) {
 
     const commonPropTypes = iots.interface({
-        t: iots.string
+        t: iots.string,
+        repeat: iots.string
     })
 
     const mergedPropTypes = iots.intersection([def.propTypes, commonPropTypes])

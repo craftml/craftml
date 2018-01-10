@@ -9,12 +9,20 @@
             </row>
         </craftml-group>
     </craftml-transform>
-    <script>
-          // $('#top').pp()        
-        this.pp()
+    <script>        
         $('.a craftml-geometry').should.have.none
         $('#c craftml-geometry').should.have.none        
         $('#d craftml-geometry').should.have.one
         $('#top').should.have.size(16,10,10)
+    </script>
+</test>
+
+<test title='hole in a cube'>
+    <g l="center" t="cut cylinder">
+        <cube/>
+        <cylinder t='scale xy 0.5 z 2'/>
+    </g>
+    <script>
+        $('g').should.have.size(10,10,10)        
     </script>
 </test>

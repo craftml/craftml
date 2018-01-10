@@ -50,7 +50,7 @@ export default class Polygon {
 
     flip() {
         var i, vertices = [];
-        if (this.normal && this.w) {
+        if (this.normal && typeof this.w !== 'undefined') {
 
             this.normal.multiplyScalar(-1);
             this.w *= -1;
@@ -64,7 +64,7 @@ export default class Polygon {
     };
 
     classifyVertex(vertex: Vertex) {
-        if (this.normal && this.w) {
+        if (this.normal && typeof this.w !== 'undefined') {
             var sideValue = this.normal.dot(vertex) - this.w;
 
             if (sideValue < -EPSILON) {
@@ -111,7 +111,7 @@ export default class Polygon {
         front: Polygon[], 
         back: Polygon[]) {
 
-        if (!this.normal || !this.w || !polygon.normal) {
+        if (!this.normal || typeof this.w === 'undefined' || !polygon.normal) {            
             return
         }
 
@@ -130,7 +130,7 @@ export default class Polygon {
             back.push(polygon);
 
         } else {
-
+            
             var verticeCount,
                 i, j, ti, tj, vi, vj,
                 t, v,

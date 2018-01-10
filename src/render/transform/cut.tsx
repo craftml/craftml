@@ -47,7 +47,11 @@ export default function cut(node: Node, args: string = '*', options: { selectors
     
     const resultBsp = bsp1.subtract(bsp2)
 
+    // console.log('bsp1', bsp1.tree.allPolygons())
+
     const newGeometry = resultBsp.toGeometry()
+
+    // console.log('newGeom', newGeometry)
 
     const addGeometry = (n: Node) => n.addGeometryNode(newGeometry)
 

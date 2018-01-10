@@ -25,7 +25,7 @@ export default class Node {
 
         for (i = 0, polygonCount = polygons.length; i < polygonCount; i++) {
             this.divider.splitPolygon(polygons[i], this.polygons, this.polygons, front, back);
-        }
+        }        
 
         if (front.length > 0) {
             this.front = new Node(front);
@@ -34,6 +34,15 @@ export default class Node {
         if (back.length > 0) {
             this.back = new Node(back);
         }
+        
+        // console.log('in', polygons.length, ' out', this.allPolygons().length)
+        // console.log('input', polygons.length, 'front', front.length, 'back', back.length, 'this', this.polygons.length)
+        // console.log('all', this.allPolygons().length,
+        //     'front', this.front ? this.front.allPolygons().length : 0,
+        //     'back', this.back ? this.back.allPolygons().length : 0)
+
+        // )
+
     }
 
     isConvex(polygons: Polygon[]) {
@@ -83,7 +92,7 @@ export default class Node {
         }
         if (this.back) {
             polygons = polygons.concat(this.back.allPolygons());
-        }
+        }        
         return polygons;
     };
 

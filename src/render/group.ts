@@ -35,10 +35,6 @@ export function* renderGroup(node: Node, props: GroupProps, domNode: DomNode) {
         i = i + 1
         // yield call(render1, node.child(1), domNode.children[1])
     }
-    // }
-
-    yield update(node, n => n.setStatus('done'))
-
 }
 
 export default createRenderer({

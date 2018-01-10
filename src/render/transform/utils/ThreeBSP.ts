@@ -5,6 +5,7 @@ import Polygon from './Polygon'
 
 function geometry2Polygons(geometry: THREE.Geometry, matrix: THREE.Matrix4) {
     // console.log('g2p geometry', matrix.elements)
+    // console.log('geometry', geometry.faces.length)
     let vertices = geometry.vertices
     let polygons = []
     for (let i = 0, _length_i = geometry.faces.length; i < _length_i; i++) {
@@ -55,16 +56,13 @@ export function createThreeBSP(nodeIterator: CraftMLNode[]): ThreeBSP {
     // for (let value of nodeIterator) {
     for (let node of nodeIterator) {
 
-        // const { node, matrix } = value
-        const geometry = node.geometry//getIn(['shape', 'geometry'])
+        const geometry = node.geometry
         const matrix = node.matrix
 
         if (geometry) {
-
-            // console.log('[createBSP: geometry]', geometry, 'faces', geometry.faces.length);
-            // console.log('matrix', matrix.elements)
-
+        
             const polygons = geometry2Polygons(geometry, matrix)
+            
             const bsp = new ThreeBSP(polygons)
 
             if (bspAll) {

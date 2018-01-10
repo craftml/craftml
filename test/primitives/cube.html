@@ -27,3 +27,12 @@
         $('#top').should.have.size(20, 20, 20).and.position(10, 10, 10)
     </script>
 </test>
+
+<test title="repeat">
+    <craftml-group id="top">
+        <cube repeat="3"/>
+    </craftml-group>
+    <script>        
+        $('cube').should.have.three
+    </script>
+</test>
