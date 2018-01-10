@@ -33,6 +33,7 @@ import query from '../query'
 import pp from './pp'
 
 import { Part } from '../render/part'
+import normalizeMatrix from './normalizeMatrix';
 
 // tslint:disable-next-line:no-any
 type Context = Map<string, any>
@@ -61,6 +62,11 @@ export default class Node {
     constructor(state: NodeState, root?: Node) {
         this._state = state
         this._root = root
+    }
+
+    // check equality between two nodes
+    equals(node: Node) {
+        return this._state === node._state
     }
 
     //
@@ -127,6 +133,11 @@ export default class Node {
     get children(): Node[] {
         return (this._state.get('children', Map()) as Map<string, NodeState>)
             .toArray().map(([key, c]) => new Node(c, this._root)) as Node[]
+    }
+
+    get childrenCount(): number {
+        const childrenMap = this._state.get('children', Map()) as Map<string, NodeState>
+        return childrenMap.size
     }
 
     get props(): { style?: {} } {
@@ -213,6 +224,10 @@ export default class Node {
         return this.update(newState)
     }
 
+    normalizeMatrix(): Node {
+        return normalizeMatrix(this)
+    }
+
     child(index: number): Node {
         const key = '' + index as string
         const childPath = [...this.path, key]
@@ -221,10 +236,34 @@ export default class Node {
         return new Node(childState, this._root)
     }
 
+    newChild(): Node {
+        const lastChildIndex = this.childrenCount
+        return this.child(lastChildIndex)
+    }
+
     descendant(path: string[]): Node {
         const impath = IMPATH(path)
         const descendantState = this._state.getIn(impath)
         return new Node(descendantState, this._root)
+    }
+
+    addGeometryNode(geometry: Geometry): Node {
+        const newChildIndex = '' + this.childrenCount
+        const absPath = [...this.path, newChildIndex]
+        const relativePath = [newChildIndex]
+        const geometryNodeState = Map({
+            path: absPath
+        })
+        const newState = this._state.updateIn(
+            IMPATH(relativePath),
+            geometryNodeState,
+            s => new Node(s)
+                .setTagName('craftml-geometry')
+                .setGeometry(geometry)
+                .setDimensions(3)
+                .setProps({})
+                .state)
+        return this.update(newState)
     }
 
     setTagName(tagName: string): Node {
@@ -232,17 +271,16 @@ export default class Node {
         return this.update(newState)
     }
 
-    setSubtree(subtree: Node) {
-        // const impath = IMPATH(subtree.path)
+    setSubtree(subtree: Node) {        
         const relativePath = _.slice(subtree.path, this.path.length)
         const impath = IMPATH(relativePath)
-        // const impath = _.reduce(relativePath, (ret: string[], e, i) => {
-        //     ret.push('children')
-        //     ret.push(e)
-        //     return ret
-        // }, [])
-        // // console.log('impath', impath, 'state', this._state.toJS())
         const newState = this._state.setIn(impath, subtree.state)
+        return this.update(newState)
+    }
+
+    deleteSubtree(subtree: Node): Node {
+        const relativePath = _.slice(subtree.path, this.path.length)
+        const newState = this._state.deleteIn(IMPATH(relativePath))
         return this.update(newState)
     }
 

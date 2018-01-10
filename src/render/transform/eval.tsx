@@ -5,12 +5,12 @@ import * as linear from './linear'
 const peg = require('./peg-parser')
 
 // import hull from './hull'
-// import cut from './cut'
+import cut from './cut'
 // import wall from './wall'
 
 const nonlinear = {
 //   hull,
-//   cut,
+  cut,
 //   wall
 }
 
@@ -107,8 +107,7 @@ export function transformEvalOld(node: Node, expression: string): Node {
         selectors: '*',
         reverse: false
     }
-
-    //
+    
     const result = _.reduce(blocks, (env, block) => {
 
         const { method, args } = block
@@ -117,8 +116,7 @@ export function transformEvalOld(node: Node, expression: string): Node {
             selectors: env.selectors,
             reverse: env.reverse
         }
-        // $FlowFixMe
-        // const nextState = transformReducer(env.node, method, args, options)
+
         env.node = transformReducer(env.node, method, args, options)
 
         const updateEnv = (e: Env) => {

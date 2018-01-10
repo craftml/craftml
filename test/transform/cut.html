@@ -1,0 +1,20 @@
+<test title='first of four'>
+    <craftml-transform t='cut .a' id='top'>
+        <craftml-group>
+            <row spacing='-2'>
+                <craftml-unit class='a' />
+                <craftml-unit class='a' />
+                <craftml-unit id='c' />
+                <craftml-unit id='d' />
+            </row>
+        </craftml-group>
+    </craftml-transform>
+    <script>
+          // $('#top').pp()        
+        this.pp()
+        $('.a craftml-geometry').should.have.none
+        $('#c craftml-geometry').should.have.none        
+        $('#d craftml-geometry').should.have.one
+        $('#top').should.have.size(16,10,10)
+    </script>
+</test>

@@ -28,9 +28,16 @@ export class Query {
     private _topNode: Node
 
     constructor(selector: Selector, context: Selection = [], topNode: Node) {
-        this._topNode = topNode
-        this._selection = this._find(selector, context)
-        // console.log('selection', this._selection)
+        this._topNode = topNode        
+        this._selection = this._find(selector, context)           
+        if (selector === 'craftml-geometry') {
+            // _.forEach(context, n => {
+            //     console.log('n', n.tagName)
+            //     n.pp()
+            // })
+            // console.log('selection', selector, this._selection)                 
+        } 
+        
     }
 
     // foo() {
@@ -51,25 +58,35 @@ export class Query {
 
     pp(): Query {
         if (this._selection.length > 0) {
-            const node = this._selection[0]            
-            node.pp()          
+            const node = this._selection[0]
+            node.pp()
         }
         return this
+    }
+
+    // Get the descendants of each element in the current set of matched elements, filtered by a selector
+    find(selector: Selector): Query {
+        return this._create(selector, this._selection)
+    }
+
+    private _create(selector: Selector, context: Selection): Query {
+        return new Query(selector, context, this._topNode)
     }
 
     private _find(selector: string, context: Selection): Selection {
         const adapter = createAdapter(this._topNode)
         // console.log('_find')
         return _(context)
-            .map(el => {
+            .map(el => {                
                 try {
                     return CSSselect(selector, el, { adapter })
-                } catch(e) {
+                } catch (e) {
                     console.error(e)
                 }
             })
             .flatten()
-            .uniq()
+            .compact()
+            .uniqWith((a, b) => a.equals(b))
             .value()
     }
 

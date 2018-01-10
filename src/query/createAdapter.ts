@@ -66,22 +66,20 @@ export function createAdapter(topNode: Node): Adapter<Node> {
 
     // get the node's children
     function getChildren(node: Node) {
-        // console.log('getChildren:node', node.path)
-        // return node.has('children') ? node.get('children').map(c => c).toArray() : []
+        // console.log('getChildren:node', node.tagName)        
         return node.children
     }
 
     // finds all of the element nodes in the array that match the test predicate,
     // as well as any of their children that match it
     function findAll(test: (n: Node) => boolean, nodes: Node[]): Node[] {
-        // console.log('findAll:nodes', nodes)
+        // console.log('findAll:nodes', nodes.length)
 
-        // console.log('input nodes', nodes)
+        const matchedNodes = _.filter(nodes, test)
+        
         const matchedDescendentNodes = _.flatten(_.map(nodes, (c) => findAll(test, getChildren(c))))
-
-        // console.log('matchedDescendentNodes', matchedDescendentNodes)
-        const allMatchedNodes = _.filter(nodes, test).concat(matchedDescendentNodes)
-        // console.log('allMatchedNodes', allMatchedNodes)
+        
+        const allMatchedNodes = matchedNodes.concat(matchedDescendentNodes)
         return allMatchedNodes
     }
 
@@ -96,14 +94,15 @@ export function createAdapter(topNode: Node): Adapter<Node> {
         existsOne: (test: (n: Node) => boolean, elems: Node[]) => _.some(elems, test),
 
         // get the attribute value
-        getAttributeValue: (elem: Node, name: string) => elem.props[name],
+        getAttributeValue: (elem: Node, name: string) => {
+            return elem.props[name]
+        },
 
         // get the node's children
         getChildren,
 
         // get the name of the tag
-        getName: (elem: Node) => {
-            // console.log('getName:elem', elem.path)            
+        getName: (elem: Node) => {        
             return elem.tagName
         },
 
@@ -150,7 +149,7 @@ export function createAdapter(topNode: Node): Adapter<Node> {
           to the same underlying node. If not provided, `css-select` will fall back to
           `a === b`.
         */
-        equals: (a: Node, b: Node) => a === b
+        equals: (a: Node, b: Node) => a.equals(b)
     }
 
     return adapter

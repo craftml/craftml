@@ -100,7 +100,7 @@ const DefaultOptions = {
     matrix: true,
     geometry: true,
     style: true,
-    styleSheets: true,
+    styleSheets: false,
     parts: true
 }
 
