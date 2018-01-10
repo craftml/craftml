@@ -1,0 +1,32 @@
+<test title='all descendents'>
+    <craftml-transform t='hull' id="top">
+        <craftml-group id="second">
+            <craftml-transform t='translate 30 30 0'>
+                <craftml-unit/>
+            </craftml-transform>
+            <craftml-unit/>
+        </craftml-group>
+    </craftml-transform>
+    <script>
+        $('#second craftml-geometry').should.have.none
+        $('craftml-geometry').should.have.one
+    </script>
+</test>
+
+<test title='select descendets by class'>
+    <craftml-transform t='hull .foo' id='top'>
+        <craftml-group>
+            <craftml-transform t='translate 30 30 0'>
+                <craftml-unit class='foo' />
+            </craftml-transform>
+            <craftml-transform t='translate -30 30 0'>
+                <craftml-unit/>
+            </craftml-transform>
+            <craftml-unit class='foo' />
+        </craftml-group>
+    </craftml-transform>
+    <script>
+        $('.foo craftml-geometry').should.have.none
+        $('craftml-geometry').should.have.two
+    </script>
+</test>

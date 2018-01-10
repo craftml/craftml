@@ -3,24 +3,6 @@ import { render, update } from '../effects'
 import Node from '../../node'
 import transformEval from './eval'
 
-// export interface TransformProps {
-//     t: string
-// }
-
-// export default function* renderTransform(node: Node, props: TransformProps, domNode: DomNode) {
-
-//     const { t = '' } = props
-
-//     const d = DOM(
-//     <craftml-group merge={true} tagName="craftml-transform" {...props}>
-//         {domNode.children}
-//     </craftml-group>)
-    
-//     yield render(node, d)
-
-//     yield update(node, n => transformEval(n, t))
-// }
-
 import * as t from 'io-ts'
 import createRenderer from '../createRenderer'
 

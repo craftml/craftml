@@ -8,6 +8,7 @@ import { createAdapter } from '../query/createAdapter';
 import { DomNode } from '../dom'
 
 export { Box }
+import * as helpers from './helpers'
 
 const IMPATH = (p: Array<string>, root: string[] = []) => {
 
@@ -226,6 +227,10 @@ export default class Node {
 
     normalizeMatrix(): Node {
         return normalizeMatrix(this)
+    }
+
+    get vertices() {
+        return helpers.getVertices(this)   
     }
 
     child(index: number): Node {
@@ -489,4 +494,17 @@ function computeStyleFromCssRules(rules: css.CssRule[], parentStyle: {}) {
 
     // console.log('computedStyle', computedStyle)
     return computedStyle
+}
+
+
+// applyMixins(Node, [GeometryOperations])
+
+// ref: https://www.typescriptlang.org/docs/handbook/mixins.html
+// tslint:disable-next-line:no-any
+function applyMixins(derivedCtor: any, baseCtors: any[]) {
+    baseCtors.forEach(baseCtor => {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+            derivedCtor.prototype[name] = baseCtor.prototype[name];
+        });
+    });
 }

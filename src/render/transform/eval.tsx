@@ -4,12 +4,12 @@ import * as linear from './linear'
 
 const peg = require('./peg-parser')
 
-// import hull from './hull'
+import hull from './hull'
 import cut from './cut'
 // import wall from './wall'
 
 const nonlinear = {
-//   hull,
+  hull,
   cut,
 //   wall
 }

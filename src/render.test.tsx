@@ -84,7 +84,8 @@ const cases = {
     scale: null,
     land: null,
     orbit: null,  
-    cut: null  
+    cut: null,
+    hull: null
   },
   layout: {
     flow: null,

@@ -4,6 +4,7 @@ import { should, ChainableMethod } from './assert'
 const CSSselect = require('css-select')
 import { createAdapter } from './createAdapter'
 import * as _ from 'lodash'
+import { Vector3 } from 'three'
 
 export default function query(node: Node, $params?: {}) {
 
@@ -28,16 +29,16 @@ export class Query {
     private _topNode: Node
 
     constructor(selector: Selector, context: Selection = [], topNode: Node) {
-        this._topNode = topNode        
-        this._selection = this._find(selector, context)           
+        this._topNode = topNode
+        this._selection = this._find(selector, context)
         if (selector === 'craftml-geometry') {
             // _.forEach(context, n => {
             //     console.log('n', n.tagName)
             //     n.pp()
             // })
             // console.log('selection', selector, this._selection)                 
-        } 
-        
+        }
+
     }
 
     // foo() {
@@ -69,6 +70,20 @@ export class Query {
         return this._create(selector, this._selection)
     }
 
+    // Get an array of unique vertices
+    // coordinates are normalized to the root node
+    // applied to selected nodes and their descendents
+    vertices(): Vector3[] {
+
+        // console.log('[vertices] selected nodes', this.selection)
+        let result: Vector3[] = []
+        _.forEach(this.get(), node => {
+            result = result.concat(node.vertices)
+        })
+        return result
+
+    }
+
     private _create(selector: Selector, context: Selection): Query {
         return new Query(selector, context, this._topNode)
     }
@@ -77,7 +92,7 @@ export class Query {
         const adapter = createAdapter(this._topNode)
         // console.log('_find')
         return _(context)
-            .map(el => {                
+            .map(el => {
                 try {
                     return CSSselect(selector, el, { adapter })
                 } catch (e) {
