@@ -9,10 +9,16 @@ const MyHashRecord = Record({
 
 type S = {
     parts: Map<string, Part>,
+    // tslint:disable-next-line:no-any
     params: Map<string, any>
 }
 
 export default class NodeContext extends MyHashRecord {
+
+    // tslint:disable-next-line:no-any
+    setParams(obj: Map<string, any>) {        
+        return this.set('params', obj)
+    }
     
     setParts(parts: Map<string, Part>) {        
         return this.set('parts', parts)

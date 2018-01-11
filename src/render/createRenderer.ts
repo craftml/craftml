@@ -46,9 +46,10 @@ function* renderNode<T extends object>(
 
         if (parent) {
 
-            if (parent.params) {
+            if (parent.context1.params) {
                 
-                x = x.setParams(parent.params)
+                // x = x.setParams(parent.params)
+                x = x.updateContext(ctx => ctx.setParams(parent.context1.params))
             }            
 
             x = x.updateContext(ctx => ctx.setParts(parent.context1.parts))
@@ -68,7 +69,9 @@ function* renderNode<T extends object>(
     
     node = yield refresh(node)
 
-    const params = node.params.toJS()    
+    //const params = node.params.toJS()    
+
+    const params = node.context1.params.toJS()    
 
     const mergedPropTypes = t.intersection([def.propTypes, htmlPropTypes])
 

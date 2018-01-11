@@ -133,7 +133,7 @@ export default createRenderer({
 
             const contextMap = Map(params)
 
-            node = node.setParams(contextMap)
+            node = node.updateContext(ctx => ctx.setParams(contextMap))
 
             node = node.setBlock({children: domNode.children || [], context: contextMap})
                         

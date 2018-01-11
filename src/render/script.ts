@@ -29,7 +29,7 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
     const root = yield select(state => state)
 
     // a script block must have a parent
-    let parentNode = yield parentOf(node)
+    let parentNode: Node = yield parentOf(node)
     invariant(parentNode, 'a script node must have a parent node')
     
     let $ = root.$
@@ -45,7 +45,7 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
         }
     }
 
-    let $params = parentNode.params.toJS()
+    let $params = parentNode.context1.params.toJS()
 
     const locals = {
         $,
@@ -68,7 +68,10 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
     
         f.call(thisPointer, locals)
         
-        yield update(parentNode, x => x.setParams(Map($params)))    
+        // yield update(parentNode, x => x.setParams(Map($params)))    
+
+        yield update(parentNode, x => 
+                x.updateContext(ctx => ctx.setParams(Map($params))))
     
       } catch (err) {
     

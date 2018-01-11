@@ -54,8 +54,8 @@ function matrix(node: Node): string {
 }
 
 function context(node: Node): string {
-    if (node.params && node.params.size > 0) {
-        return chalk.gray(JSON.stringify(node.params))
+    if (node.context1.params && node.context1.params.size > 0) {
+        return chalk.gray(JSON.stringify(node.context1.params))            
     } else {
         return ''
     }

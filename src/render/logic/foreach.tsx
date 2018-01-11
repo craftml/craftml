@@ -30,7 +30,7 @@ export default createRenderer({
       
         const { iterator: iteratorName, iterable: iterableName, index: indexName } = props
 
-        const context = node.params        
+        const params = node.context1.params        
 
         const eachTop = DOM(<craftml-group merge={true}/>)
         const eachContent = DOM(
@@ -39,7 +39,7 @@ export default createRenderer({
             </craftml-group>
         )
                         
-        const iterable = context.get(iterableName)
+        const iterable = params.get(iterableName)
         
         if (_.isArray(iterable)) {
 
@@ -52,12 +52,16 @@ export default createRenderer({
              
                 const value = iterable[i]
                 
-                let eachContext = context.set(iteratorName, value)
+                let eachContext = params.set(iteratorName, value)
                 if (indexName) {
                     eachContext = eachContext.set(indexName, i)
                 }
 
-                yield update(node.child(i), c => c.setParams(eachContext))
+                // yield update(node.child(i), c => c.setParams(eachContext))
+
+                yield update(
+                        node.child(i), 
+                        c => c.updateContext(ctx => ctx.setParams(eachContext)))
 
                 yield render(node.child(i).child(0), eachContent)
 

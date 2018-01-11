@@ -152,18 +152,6 @@ export default class Node {
         return this._state.get('style', {}) as {}
     }
 
-    // tslint:disable-next-line:no-any
-    get params(): Map<string, any> {
-        // tslint:disable-next-line:no-any
-        return this._state.get('params', Map()) as Map<string, any>
-    }
-
-    // tslint:disable-next-line:no-any
-    setParams(obj: Map<string, any>): Node {
-        const newState = this._state.setIn(['params'], obj)
-        return this.update(newState)
-    }
-
     setProps(obj: {}): Node {
         const newState = this._state.setIn(['props'], obj)
         return this.update(newState)
@@ -358,9 +346,9 @@ export default class Node {
         return this.update(newState)
     }
 
-    get parts(): Map<string, Part> {
-        return this._state.get('parts', Map()) as Map<string, Part>
-    }
+    // get parts(): Map<string, Part> {
+    //     return this._state.get('parts', Map()) as Map<string, Part>
+    // }
 
     // setParts(parts: Map<string, Part>) {
     //     const newState = this._state.set('parts', parts)
