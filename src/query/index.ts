@@ -78,10 +78,10 @@ export class Query {
         // console.log('[vertices] selected nodes', this.selection)
         let result: Vector3[] = []
         _.forEach(this.get(), node => {
-            result = result.concat(node.vertices)
+            result = result.concat(node.shape.vertices)
         })
+        
         return result
-
     }
 
     private _create(selector: Selector, context: Selection): Query {

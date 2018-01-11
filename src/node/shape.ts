@@ -31,4 +31,21 @@ export default class NodeShape extends NodeShapeRecord {
         return this.applyMatrix(m)
     }
 
+    get vertices() {
+        const geometry = this.geometry
+        const matrix = this.matrix
+
+        let result = []
+        if (geometry && geometry.vertices) {
+            // console.log('matrix=>', matrix.elements.join(','))
+            let vertices = geometry.vertices
+            for (var i = 0, il = vertices.length; i < il; i++) {
+                let v = vertices[i].clone()
+                v.applyMatrix4(matrix)
+                result.push(v)
+            }
+        }
+        return result
+    }
+
 }

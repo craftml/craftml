@@ -182,11 +182,7 @@ export default class Node {
     normalizeMatrix(): Node {
         return normalizeMatrix(this)
     }
-
-    get vertices() {
-        return helpers.getVertices(this)   
-    }
-
+    
     child(index: number): Node {
         const key = '' + index as string
         const childPath = [...this.path, key]
