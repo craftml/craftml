@@ -17,10 +17,10 @@ export default createRenderer({
     getSaga: (node, props, domNode) => function* () {
             
         const { geometry, dimensions } = props 
+        
+        node = node.updateShape(s => s.setGeometry(geometry as Geometry).setDimensions(dimensions))
 
-        node = node.setGeometry(geometry as Geometry).setDimensions(dimensions)
-    
         yield commit(node)
-
+        
     }
 })

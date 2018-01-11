@@ -68,8 +68,8 @@ export function createThreeBSP(nodeIterator: CraftMLNode[]): ThreeBSP {
 
     for (let node of nodeIterator) {
 
-        const geometry = node.geometry
-        const matrix = node.matrix
+        const geometry = node.shape.geometry
+        const matrix = node.shape.matrix
 
         if (geometry) {
 

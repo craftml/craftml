@@ -43,7 +43,7 @@ function rotateSub(node: Node, dim: string, degrees: number) {
 
     matrix.multiply(m1)
 
-    return node.applyMatrix(matrix)
+    return node.updateShape(s => s.applyMatrix(matrix))
 }
 
 export function rotate(node: Node, args: XYZ) {
@@ -103,13 +103,13 @@ export function orbit(node: Node, args: { x: number, y: number, z: number }) {
     const axis = arg.axes[0]
     const matrix = orbitSub(axis, arg.number)
 
-    return node.applyMatrix(matrix)
+    return node.updateShape(s => s.applyMatrix(matrix))
 }
 
 export function translate(node: Node, args: XYZ) {
     const { x = 0, y = 0, z = 0 } = args
     const matrix = new Matrix4().makeTranslation(x, y, z)
-    return node.applyMatrix(matrix)
+    return node.updateShape(s => s.applyMatrix(matrix))
 }
 
 export function position(node: Node, args: { x: number, y: number, z: number }) {
@@ -122,7 +122,7 @@ export function position(node: Node, args: { x: number, y: number, z: number }) 
     })
     const matrix = new Matrix4().makeTranslation(d.x, d.y, d.z)
 
-    return node.applyMatrix(matrix)
+    return node.updateShape(s => s.applyMatrix(matrix))
 }
 
 export function scale(node: Node, args: XYZ) {
@@ -140,7 +140,7 @@ export function scale(node: Node, args: XYZ) {
     // re-position back
     matrix.premultiply(m.makeTranslation(layout.position.x, layout.position.y, layout.position.z))
 
-    return node.applyMatrix(matrix)
+    return node.updateShape(sp => sp.applyMatrix(matrix))
 }
 
 export function land(node: Node) {
@@ -150,7 +150,7 @@ export function land(node: Node) {
     const { position: { z } } = layout
     const matrix = new Matrix4().makeTranslation(0, 0, -z)
 
-    return node.applyMatrix(matrix)
+    return node.updateShape(s => s.applyMatrix(matrix))
 }
 
 export function center(node: Node, args: XYZ) {
@@ -200,7 +200,7 @@ export function center(node: Node, args: XYZ) {
 
     const matrix = new Matrix4().makeTranslation(dx, dy, dz)
 
-    return node.applyMatrix(matrix)
+    return node.updateShape(s => s.applyMatrix(matrix))
 }
 
 export function size(node: Node, args: XYZ) {
@@ -222,7 +222,7 @@ export function size(node: Node, args: XYZ) {
     // re-position back
     matrix.premultiply(m.makeTranslation(layout.position.x, layout.position.y, layout.position.z))
 
-    return node.applyMatrix(matrix)
+    return node.updateShape(s => s.applyMatrix(matrix))
 }
 
 export function fit(node: Node, args: XYZ) {
@@ -233,5 +233,5 @@ export function fit(node: Node, args: XYZ) {
 
     const matrix = new Matrix4().makeScale(minRatio, minRatio, minRatio)
 
-    return node.applyMatrix(matrix)
+    return node.updateShape(s => s.applyMatrix(matrix))
 }

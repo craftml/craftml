@@ -44,7 +44,7 @@ function create_updater_from_frame(frame: Frame): Updater {
         const offsets = compute_layout_offsets(nodes, layoutFunction)
 
         const translatedNodes = _.map(offsets, ({ x, y, z }, i) => {
-            return nodes[i].translate(x, y, z)
+            return nodes[i].updateShape( s => s.translate(x, y, z))
         })
 
         const updaters: Updater[] = _.map(translatedNodes, c => {

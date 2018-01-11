@@ -45,11 +45,11 @@ function path(node: Node): string {
 
 function matrix(node: Node): string {
     // if matrix is identity
-    if (node.matrix.equals(new Matrix4())) {
+    if (node.shape.matrix.equals(new Matrix4())) {
         // show nothing
         return ''
     } else {
-        return chalk.red('[' + node.matrix.elements.join(',') + ']')
+        return chalk.red('[' + node.shape.matrix.elements.join(',') + ']')
     }
 }
 
@@ -87,8 +87,8 @@ function styleSheets(node: Node): string {
 }
 
 function geometry(node: Node): string {
-    if (node.geometry && node.geometry.vertices) {
-        return chalk.yellow(` g(${node.geometry.vertices.length}) ${node.dimensions}d`)
+    if (node.shape.geometry && node.shape.dimensions > 0 && node.shape.geometry.vertices) {
+        return chalk.yellow(` g(${node.shape.geometry.vertices.length}) ${node.shape.dimensions}d`)
     } else {
         return ''
     }

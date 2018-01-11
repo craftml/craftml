@@ -69,8 +69,6 @@ function* renderNode<T extends object>(
     
     node = yield refresh(node)
 
-    //const params = node.params.toJS()    
-
     const params = node.context.params.toJS()    
 
     const mergedPropTypes = t.intersection([def.propTypes, htmlPropTypes])

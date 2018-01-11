@@ -6,7 +6,7 @@ export default function normalizeMatrix(node: Node, parentMatrix: Matrix4 = new 
 
     const children = node.children
 
-    let localMatrix = node.matrix
+    let localMatrix = node.shape.matrix
     let worldMatrix = new Matrix4()
 
     if (parentMatrix) {
@@ -22,7 +22,7 @@ export default function normalizeMatrix(node: Node, parentMatrix: Matrix4 = new 
 
     if (children && children.length > 0) {
 
-        let newNode = node.setMatrix(new Matrix4())
+        let newNode = node.updateShape(s => s.setMatrix(new Matrix4()))
 
         const childUpdaters = _.map(children, c => (n: Node) => n.setSubtree(normalizeMatrix(c, worldMatrix)))
 
@@ -31,6 +31,6 @@ export default function normalizeMatrix(node: Node, parentMatrix: Matrix4 = new 
     } else {
 
         // console.log('world matrix=>', node.tagName, worldMatrix.elements.join(','))
-        return node.setMatrix(worldMatrix)
+        return node.updateShape(s => s.setMatrix(worldMatrix))
     }
 }

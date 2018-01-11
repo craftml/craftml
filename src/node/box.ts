@@ -70,12 +70,12 @@ function computeBoundingBox(node: Node, parentMatrix: Matrix4 = new Matrix4()): 
     const matrix = new Matrix4()
     matrix.copy(parentMatrix)
 
-    const currentMatrix = node.matrix
+    const currentMatrix = node.shape.matrix
     if (currentMatrix) {
         matrix.multiply(currentMatrix)
     }
 
-    const geometry = node.geometry
+    const geometry = node.shape.geometry
 
     let selfBox
     if (geometry) {

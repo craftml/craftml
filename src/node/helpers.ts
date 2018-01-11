@@ -2,8 +2,8 @@ import Node from './index'
 import { Vector3 } from 'three'
 
 export function getVertices(node: Node): Vector3[] {
-    const geometry = node.geometry
-    const matrix = node.matrix
+    const geometry = node.shape.geometry
+    const matrix = node.shape.matrix
 
     let result = []
     if (geometry && geometry.vertices) {

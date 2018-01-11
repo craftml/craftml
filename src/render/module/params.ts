@@ -1,7 +1,6 @@
 import { DomNode } from '../../dom'
 import Node from '../../node'
 import * as _ from 'lodash'
-import { Map } from 'immutable'
 
 interface ParamAttribs {
     type: string,
@@ -9,8 +8,6 @@ interface ParamAttribs {
     // tslint:disable-next-line:no-any
     value: any
 }
-
-//function evalParams(node: Node, props: {}, children: DomNode[]): Node{
 
 import * as t from 'io-ts'
 

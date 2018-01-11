@@ -5,7 +5,6 @@ import { createBox, Box } from './box'
 import * as css from '../render/css'
 import * as invariant from 'invariant'
 import { createAdapter } from '../query/createAdapter';
-import { DomNode } from '../dom'
 
 export { Box }
 import * as helpers from './helpers'
@@ -36,14 +35,7 @@ import pp, { pps, html } from './pp'
 import normalizeMatrix from './normalizeMatrix';
 
 import NodeContext from './context'
-
-// tslint:disable-next-line:no-any
-type Context = Map<string, any>
-
-interface ContentBlock {
-    children: DomNode[],
-    context: Context
-}
+import NodeShape from './shape'
 
 export default class Node {
 
@@ -178,40 +170,12 @@ export default class Node {
         return this.update(newState)
     }
 
-    get geometry(): Geometry | undefined {
-        if (this._state.hasIn(['shape', 'geometry'])) {
-            return this._state.getIn(['shape', 'geometry'])
-        } else {
-            return undefined
-        }
+    get shape(): NodeShape {
+        return this._state.get('shape', new NodeShape()) as NodeShape
     }
 
-    setGeometry(geometry: Geometry): Node {
-        const newState = this._state.setIn(['shape', 'geometry'], geometry)
-        return this.update(newState)
-    }
-
-    get dimensions(): number {
-        return this._state.getIn(['shape', 'dimensions'], 0)
-    }
-
-    setDimensions(dimensions: number = 3): Node {
-        const newState = this._state.setIn(['shape', 'dimensions'], dimensions)
-        return this.update(newState)
-    }
-
-    get matrix(): Matrix4 {
-        return this._state.getIn(['shape', 'matrix'], new Matrix4())
-    }
-
-    setMatrix(matrix: Matrix4): Node {
-        const newState = this._state.setIn(['shape', 'matrix'], matrix)
-        return this.update(newState)
-    }
-
-    applyMatrix(matrix: Matrix4): Node {
-        const m = new Matrix4().copy(matrix).multiply(this.matrix)
-        const newState = this._state.setIn(['shape', 'matrix'], m)
+    updateShape(updater: (c: NodeShape) => NodeShape): Node {
+        const newState = this._state.update('shape', new NodeShape(), updater)
         return this.update(newState)
     }
 
@@ -254,8 +218,7 @@ export default class Node {
             geometryNodeState,
             s => new Node(s)
                 .setTagName('craftml-geometry')
-                .setGeometry(geometry)
-                .setDimensions(3)
+                .updateShape(sp => sp.setGeometry(geometry).setDimensions(3))                
                 .setProps({})
                 .state)
         return this.update(newState)
@@ -307,10 +270,10 @@ export default class Node {
         return this.update(newState)
     }
 
-    translate(x: number, y: number, z: number): Node {
-        const m = new Matrix4().makeTranslation(x, y, z)
-        return this.applyMatrix(m)
-    }
+    // translate(x: number, y: number, z: number): Node {
+    //     const m = new Matrix4().makeTranslation(x, y, z)
+    //     return this.applyMatrix(m)
+    // }
 
     // src, dest must be a descendent of this node
     copyDescendent(src: Node, dest: Node): Node {
