@@ -7,6 +7,7 @@ import { React, DomNode, DOM } from '../../dom'
 import { Map } from 'immutable'
 
 import loadDoc from './loaders/doc-loader'
+import loadStl from './loaders/stl-loader'
 
 import evalParams from './params'
 
@@ -19,7 +20,7 @@ export default createRenderer({
         name: '',    // TODO: must be required
         t: '',
         repeat: '',
-        merge: true
+        merge: false
     },
     propTypes: t.interface({
         module: t.string,
@@ -57,8 +58,6 @@ export default createRenderer({
 
         const clientGivenTagName = props.name
 
-        const moduleId = props.module
-
         let instanceDef: {
             displayTagName: string,
             children: DomNode[],
@@ -70,16 +69,19 @@ export default createRenderer({
 
         if (part.type === 'import') {
 
+            const moduleId = part.body
+            // console.log('moduleId', moduleId, isStl(moduleId))
+
             if (isStl(moduleId)) {
 
-                // let children = yield call(load_stl, moduleId)
+                let children = yield call(loadStl, moduleId)
           
-                // instanceDef = {
-                //   displayTagName: `craftml-module@${moduleId}`,
-                //   children,
-                //   props,
-                //   partProps: part.props,
-                // }
+                instanceDef = {
+                  displayTagName: `craftml-module@${moduleId}`,
+                  children,
+                  props,
+                  partProps: part.props,
+                }
           
             } else {
           
@@ -146,7 +148,5 @@ export default createRenderer({
         
             yield render(node.child(0), wrapped)
         }
-        // yield commit(node)
-
     }
 })

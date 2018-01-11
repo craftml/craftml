@@ -1,0 +1,40 @@
+<test title='full url'>
+    <craftml-group id='top'>
+        <part name='leaf' module='https://res.cloudinary.com/craftml/raw/upload/files/NJeu3/-K21UQ55zArSVeEetoj2.modelLeaf.stl' />
+        <leaf/>
+    </craftml-group>
+    <script>
+        $('#top').should.have.size(33.65099906921387, 22.382999420166016, 2.2010000477312133)
+    </script>
+</test>
+
+<test title='size in instance'>
+    <craftml-group id='top'>
+        <part name='leaf' module='https://res.cloudinary.com/craftml/raw/upload/files/NJeu3/-K21UQ55zArSVeEetoj2.modelLeaf.stl' />
+        <leaf t='size xy 20' />
+    </craftml-group>
+    <script>
+        $('#top').should.have.size(20, 20, 2.2010000477312133)
+    </script>
+</test>
+
+<test title='size in part'>
+    <craftml-group id='top'>
+        <part name='leaf' module='https://res.cloudinary.com/craftml/raw/upload/files/NJeu3/-K21UQ55zArSVeEetoj2.modelLeaf.stl' t='size xy 20'
+        />
+        <leaf/>
+    </craftml-group>
+    <script>
+        $('#top').should.have.size(20, 20, 2.2010000477312133)
+    </script>
+</test>
+
+<test title='repeat'>
+    <craftml-group id='top'>
+        <part name='leaf' module='https://res.cloudinary.com/craftml/raw/upload/files/NJeu3/-K21UQ55zArSVeEetoj2.modelLeaf.stl' />
+        <leaf repeat="2" />
+    </craftml-group>
+    <script>
+        $('leaf').should.have.two
+    </script>
+</test>

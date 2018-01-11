@@ -52,7 +52,8 @@ const cases = {
     },
     module: {
         inline: null,
-        declare: null
+        declare: null,
+        stl: null
     },
     content: {
         basic: null
