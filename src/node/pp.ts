@@ -1,8 +1,11 @@
 import Node from './index'
 import * as _ from 'lodash'
-import chalk from 'chalk'
+import chak from 'chalk'
+const ansiHTML = require('ansi-html');
 import { Matrix4 } from 'three'
 import { Declaration, CssRule } from '../render/css/index';
+
+const chalk = new chak.constructor({level: 3});
 
 // pretty-print a node and its descendents to console
 export default function pp(node: Node, options: {} = {}) {
@@ -11,17 +14,25 @@ export default function pp(node: Node, options: {} = {}) {
     console.log(text)
 }
 
-function toStringRecursively(node: Node, levels: number = 0): string {
+export function pps(node: Node) {
+    return toStringRecursively(node)   
+}
 
-    const indent = _.repeat('  ', levels)
+export function html(node: Node) {
+    return ansiHTML(toStringRecursively(node, 0, '<br/>', '&nbsp;&nbsp;&nbsp;&nbsp;'))
+}
+
+function toStringRecursively(node: Node, levels: number = 0, changeLine: string = '\n', tab: string = '  '): string {
+
+    const indent = _.repeat(tab, levels)
 
     const self = indent + toString(node)
 
     const text = _.map(node.children, (c, i) => {
-        return toStringRecursively(c, levels + 1)
+        return toStringRecursively(c, levels + 1, changeLine, tab)
     }).join('')
 
-    return self + '\n' + text
+    return self + changeLine + text
 }
 
 //
@@ -91,6 +102,14 @@ function parts(node: Node): string {
     }    
 }
 
+function errors(node: Node): string {
+    if (node.errors.length > 0) {
+        return chalk.red(`${node.errors.length} error(s)`)
+    } else {
+        return ''
+    }
+}
+
 // ================================================
 //
 
@@ -101,7 +120,8 @@ const DefaultOptions = {
     geometry: true,
     style: true,
     styleSheets: false,
-    parts: true
+    parts: true,
+    errors: true
 }
 
 const Viewers = {
@@ -111,7 +131,8 @@ const Viewers = {
     geometry,
     style,
     styleSheets,
-    parts
+    parts,
+    errors
 }
 
 function toString(node: Node, enabled: {} = DefaultOptions): string {

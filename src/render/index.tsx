@@ -14,13 +14,16 @@ import cylinder from './primitives/cylinder'
 import cone from './primitives/cone'
 import sphere from './primitives/sphere'
 import prism from './primitives/prism'
+import dome from './primitives/dome'
+
 import circle from './primitives/circle'
 import rectangle from './primitives/rectangle'
 import polygon from './primitives/polygon'
 import path from './primitives/path'
 
-
 import style from './css/style'
+
+import braille from './access/braille'
 
 import row from './structure/row'
 import col from './structure/col'
@@ -46,10 +49,13 @@ function createRenderersMap(): Map<string, Renderer<{}>> {
     rs.set('cone', cone)
     rs.set('sphere', sphere)
     rs.set('prism', prism)
+    rs.set('dome', dome)
     rs.set('circle', circle)
     rs.set('rectangle', rectangle)
     rs.set('polygon', polygon)
     rs.set('path', path)
+
+    rs.set('braille', braille)
 
     rs.set('row', row)
     rs.set('col', col)

@@ -24,9 +24,9 @@ const reducer = (state: Node, action: RootAction) => {
             }
         }
         case UPDATE: {
-            const { node, updateFunc } = action.payload            
+            const { node, updateFunc } = action.payload
             const newNode = updateFunc(state.descendant(node.path))
-            state = state.setSubtree(newNode)        
+            state = state.setSubtree(newNode)
             state._root = state
             return state
         }
@@ -46,11 +46,11 @@ interface RenderAction {
 }
 
 function* handleRenderRequest(action: RenderAction) {
-    
+
     const dom = action.payload.dom
-    let root = Node.createRoot()    
+    let root = Node.createRoot()
     yield render(root, dom)
- }
+}
 
 function* engineSaga() {
     const requestChan = yield actionChannel('RENDER_REQUEST')
@@ -85,9 +85,7 @@ export async function renderAsync(dom: DomNode) {
     // console.timeEnd('render')
 
     // end the saga
-    store.dispatch(END)
-
-    store.getState().pp()
+    store.dispatch(END)    
 
     return store.getState()
 }
@@ -96,11 +94,19 @@ import parse from './parse'
 
 export default class Engine {
 
-    public async render(code: string) {
+    public async render(input: string | DomNode) {
 
-        const parsed = parse(code, {})
-        
-        const dom = parsed[0]
+        let dom
+        if (typeof input === 'string') {
+
+            const parsed = parse(input, {})
+
+            dom = parsed[0]
+
+        } else {
+
+            dom = input
+        }
 
         return await renderAsync(dom)
     }

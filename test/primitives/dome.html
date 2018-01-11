@@ -1,0 +1,13 @@
+<test title="default">
+    <dome/>
+    <script>
+        $('dome').should.have.one.and.size(10, 10, 5)
+    </script>
+</test>
+
+<test title="radius = 20">
+    <dome radius="20" />
+    <script>
+        $('dome').should.have.size(40, 40, 20)
+    </script>
+</test>

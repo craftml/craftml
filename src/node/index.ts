@@ -31,7 +31,7 @@ export interface NodeError {
 }
 
 import query from '../query'
-import pp from './pp'
+import pp, { pps, html } from './pp'
 
 import { Part } from '../render/part'
 import normalizeMatrix from './normalizeMatrix';
@@ -291,6 +291,14 @@ export default class Node {
 
     pp(): void {
         pp(this)
+    }
+
+    pps(): string {
+        return pps(this)
+    }
+
+    html(): string {
+        return html(this)
     }
 
     get layout(): Box {

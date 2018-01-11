@@ -74,15 +74,11 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
       } catch (err) {
     
         // tslint:disable-next-line:no-console
-        console.error(err.message)
-        // const parentNodux = nodux.parent()
-        // console.log('parentNodux', parentNodux)
-        // if (parentNodux){
-        //   yield put(parentNodux.PushError(err))
-        // }
+        // console.error(err.message)  
+              
         node = node.pushError(err) 
         yield commit(node)
-        //  yield put(nodux.PushError(err))
+
       }
 
     // const d = DOM(

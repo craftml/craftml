@@ -1,5 +1,3 @@
-console.log('hello world')
-
 import { renderAsync } from './engine'
 import * as _ from 'lodash'
 import * as fs from 'fs'

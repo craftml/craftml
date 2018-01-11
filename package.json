@@ -7,6 +7,7 @@
     "@types/invariant": "^2.2.29",
     "@types/lodash": "^4.14.81",
     "@types/three": "^0.84.33",
+    "ansi-html": "^0.0.7",
     "axios": "^0.17.1",
     "chalk": "^2.3.0",
     "convex-hull": "^1.0.3",

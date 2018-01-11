@@ -2,7 +2,7 @@ declare namespace JSX {
 
     interface IntrinsicElements {
         'craftml-group': {
-            merge: boolean,
+            merge?: boolean,
             tagName?: string
         },
         'craftml-geometry': {
@@ -24,6 +24,10 @@ declare namespace JSX {
         'g': {
             merge: boolean,
             tagName?: string
+        },
+        'dome': {    
+            radius: number,
+            height: number        
         }
     }
 
