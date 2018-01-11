@@ -1,5 +1,5 @@
 import { render, update } from '../effects'
-import { DomNode, DOM, React } from '../../dom'
+import { DOM, React } from '../../dom'
 import * as t from 'io-ts'
 import createRenderer from '../createRenderer'
 

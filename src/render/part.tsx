@@ -1,17 +1,21 @@
-import { commit, update, parentOf } from './effects'
+import { update, parentOf } from './effects'
 import { DomNode } from '../dom'
 import * as t from 'io-ts'
 import createRenderer from './createRenderer'
 
 export interface ImportPart {
     type: 'import',
-    props: {},
+    props: {
+        merge?: boolean
+    },
     body: string
 }
 
 export interface LocalPart {
     type: 'local',
-    props: {},
+    props: {
+        merge?: boolean
+    },
     body: DomNode
 }
 

@@ -1,6 +1,4 @@
 import { renderAsync } from './engine'
-import * as _ from 'lodash'
-import * as fs from 'fs'
 import parse from './parse'
 
 async function foo() {

@@ -5,11 +5,8 @@ import createRenderer from '../createRenderer'
 import * as _ from 'lodash'
 import { React, DomNode, DOM } from '../../dom'
 import { Map } from 'immutable'
-// isStl = 'moduleId'
 
 import loadDoc from './loaders/doc-loader'
-
-import { Part } from '../part'
 
 import evalParams from './params'
 
@@ -21,13 +18,15 @@ export default createRenderer({
         module: '',
         name: '',    // TODO: must be required
         t: '',
-        repeat: ''
+        repeat: '',
+        merge: true
     },
     propTypes: t.interface({
         module: t.string,
         name: t.string,
         t: t.string,
-        repeat: t.string
+        repeat: t.string,
+        merge: t.boolean,
     }),
     merge: false,
     getSaga: (node, props, domNode) => function* () {
@@ -63,8 +62,10 @@ export default createRenderer({
         let instanceDef: {
             displayTagName: string,
             children: DomNode[],
-            props: {},
-            partProps: {}
+            props: typeof props,
+            partProps: {
+                merge?: boolean
+            }
         } | null = null
 
         if (part.type === 'import') {
@@ -105,7 +106,7 @@ export default createRenderer({
         
             instanceDef = {
                 displayTagName: `craftml-module@local`,
-                children: part.body.children,
+                children: part.body.children || [],
                 props,
                 partProps
             }                          
@@ -124,7 +125,7 @@ export default createRenderer({
 
             node = yield refresh(node)
             
-            const clientGivenProps = domNode.attribs    
+            const clientGivenProps = domNode.attribs || {} 
 
             const params = evalParams(node, clientGivenProps, instanceDef.children)
 
@@ -132,7 +133,7 @@ export default createRenderer({
 
             node = node.setContext(contextMap)
 
-            node = node.setBlock({children: domNode.children, context: contextMap})
+            node = node.setBlock({children: domNode.children || [], context: contextMap})
                         
             yield commit(node)            
         

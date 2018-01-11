@@ -4,7 +4,7 @@ import Node from '../node'
 // import render from './index'
 import { select } from 'redux-saga/effects'
 import * as _ from 'lodash'
-import { commit, update, parentOf, refresh } from './effects'
+import { commit, update, parentOf } from './effects'
 import createRenderer from './createRenderer'
 import * as invariant from 'invariant'
 import { Map } from 'immutable'
@@ -32,7 +32,6 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
     let parentNode = yield parentOf(node)
     invariant(parentNode, 'a script node must have a parent node')
     
-
     let $ = root.$
 
     let thisPointer = {
@@ -57,7 +56,7 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
         // $root: root
      }
 
-    const code = domNode.children[0].data || ''
+    const code = domNode.children ? domNode.children[0].data : ''
     
     const stmts = localFunctionStatements(locals)
 
@@ -75,7 +74,7 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
     
         // tslint:disable-next-line:no-console
         // console.error(err.message)  
-              
+
         node = node.pushError(err) 
         yield commit(node)
 

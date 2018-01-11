@@ -45,7 +45,7 @@ function registerTestSuite(path: string[]) {
     parsed = _.filter(parsed, p => p.name === 'test')
 
     const testCases: TestCase[] = _.map(parsed, p => ({
-        title: p.attribs.title || ''
+        title: (p.attribs || {}).title || ''
     }))
 
     const testSuite = {
@@ -61,4 +61,5 @@ function registerTestSuite(path: string[]) {
 
 registerRecursively(cases, [], (f: string[]) => registerTestSuite(f))
 
+// tslint:disable-next-line:no-console
 console.log(JSON.stringify(suites, null, '  '))

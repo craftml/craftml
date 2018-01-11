@@ -1,4 +1,3 @@
-import * as THREE from 'three'
 import Polygon from './Polygon'
 import { BACK } from './constants'
 
@@ -34,15 +33,6 @@ export default class Node {
         if (back.length > 0) {
             this.back = new Node(back);
         }
-        
-        // console.log('in', polygons.length, ' out', this.allPolygons().length)
-        // console.log('input', polygons.length, 'front', front.length, 'back', back.length, 'this', this.polygons.length)
-        // console.log('all', this.allPolygons().length,
-        //     'front', this.front ? this.front.allPolygons().length : 0,
-        //     'back', this.back ? this.back.allPolygons().length : 0)
-
-        // )
-
     }
 
     isConvex(polygons: Polygon[]) {

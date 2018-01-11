@@ -12,7 +12,7 @@ function registerTestSuite(filename: string) {// , describe, it) {
 
       _.forEach(parsed, (p, k) => {
 
-          if (p.name === 'test' && p.attribs.title !== 'undefined') {
+          if (p.name === 'test' && p.attribs && p.attribs.title !== 'undefined') {
 
               const title = filename + '>' + p.attribs.title
 
@@ -21,7 +21,7 @@ function registerTestSuite(filename: string) {// , describe, it) {
                   const node = await renderAsync(p)
                              
                   const errors = node.children[1].errors      
-                                 
+
                   if (errors.length > 0) {
                       throw errors[0].message
                   }

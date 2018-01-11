@@ -24,6 +24,7 @@ function createBox3FromGeometry(geometry: Geometry | BufferGeometry, matrix: Mat
 
     } else if (geometry instanceof BufferGeometry) {
 
+        // not sure why there's a type error here
         var attribute = geometry.attributes.position;
 
         if (attribute !== undefined) {

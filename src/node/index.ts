@@ -440,8 +440,17 @@ export default class Node {
         }
     }
 
-    private update(newState: NodeState): Node {
-        return new Node(newState)
+    private update(newState: NodeState): Node {   
+        if (this._root === this) {
+            // if this node itself is a root node
+            // then the mutated node is still rooted
+            const newNode = new Node(newState)
+            newNode._root = newNode
+            return newNode
+        } else {
+            // it is not rooted
+            return new Node(newState)              
+        }
     }
 
 }
@@ -504,15 +513,12 @@ function computeStyleFromCssRules(rules: css.CssRule[], parentStyle: {}) {
     return computedStyle
 }
 
-
-// applyMixins(Node, [GeometryOperations])
-
 // ref: https://www.typescriptlang.org/docs/handbook/mixins.html
 // tslint:disable-next-line:no-any
-function applyMixins(derivedCtor: any, baseCtors: any[]) {
-    baseCtors.forEach(baseCtor => {
-        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
-            derivedCtor.prototype[name] = baseCtor.prototype[name];
-        });
-    });
-}
+// function applyMixins(derivedCtor: any, baseCtors: any[]) {
+//     baseCtors.forEach(baseCtor => {
+//         Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+//             derivedCtor.prototype[name] = baseCtor.prototype[name];
+//         });
+//     });
+// }

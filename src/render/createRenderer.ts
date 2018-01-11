@@ -1,6 +1,5 @@
 import { DomNode } from '../dom'
 import Node from '../node'
-import * as _ from 'lodash'
 import { update, refresh, parentOf } from './effects'
 
 import * as t from 'io-ts'
@@ -67,7 +66,6 @@ function* renderNode<T extends object>(
     
     node = yield refresh(node)
 
-
     const params = node.context.toJS()    
 
     const mergedPropTypes = t.intersection([def.propTypes, htmlPropTypes])
@@ -75,11 +73,12 @@ function* renderNode<T extends object>(
     const resolvedProps = resolve(mergedPropTypes, props, def.defaultProps, params) as T
 
     // const k = (ps) => _.omit(ps, 'geometry')
+    // tslint:disable-next-line:max-line-length
     // console.log(`[${node.tagName}]`, 'types:', def.propTypes.name, 'props:', k(props), 'defaultProps:', k(def.defaultProps), 'params:', params, '->', k(resolvedProps))
 
-    yield update(node, x => 
-        x.setMerge(resolvedProps.merge)
-         .setProps(resolvedProps))         
+    yield update(node, x =>  x.setProps(resolvedProps))
+        // x.setMerge(resolvedProps.merge)
+        //  x.setProps(resolvedProps))         
 
     yield update(node, x => x.computeStyle())
 

@@ -1,5 +1,5 @@
 import Node from './index'
-import { Vector3, Matrix4, Geometry } from 'three'
+import { Vector3 } from 'three'
 
 export function getVertices(node: Node): Vector3[] {
     const geometry = node.geometry

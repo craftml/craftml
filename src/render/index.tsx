@@ -86,7 +86,7 @@ const RENDERERS = createRenderersMap()
 export default function* renderMain(node: Node, domNode: DomNode): {} {
 
     const tagName = domNode.name
-    const props = domNode.attribs
+    const props = domNode.attribs || {}
 
     node = node.setTagName(tagName)
         // .setProps(props)
@@ -98,7 +98,7 @@ export default function* renderMain(node: Node, domNode: DomNode): {} {
 
     // strip empty children    
     const isNonEmpty = (c: DomNode) => !(c.type === 'text' && (c.data || '').trim().length === 0)
-    domNode.children = domNode.children.filter(isNonEmpty)
+    domNode.children = (domNode.children || []).filter(isNonEmpty)
     
     const renderer = RENDERERS.get(tagName)
     if (renderer) {        

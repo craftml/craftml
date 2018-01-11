@@ -6,18 +6,6 @@ import * as _ from 'lodash'
 import { Geometry } from 'three'
 
 import * as iots from 'io-ts'
-import { PathReporter, } from 'io-ts/lib/PathReporter'
-
-// type PrimitiveDefinition<T> = {
-//     tagName: string,
-//     propTypes: {},
-//     defaultProps: T,
-//     getGeometry: (props: T) => Geometry | Geometry[],
-//     dimensions: number
-// }
-
-// type PropTypes = iots.InterfaceType<iots.Props, iots.Any>
-
 type PropTypes<A> = iots.Type<{}, A>
 
 type PrimitiveDefinition<T extends object> = {
@@ -34,34 +22,15 @@ function wrap_t(component: DomNode, t: string): DomNode {
 
 function wrap_repeat(component: DomNode, props: { repeat: number | string }) {
 
-    // const { n = 1 } = props
-    // if (typeof props.repeat === 'number')
+    const n = Number(props.repeat) || 1
 
-    const n = props.repeat    
-
-    // $FlowFixMe
-    return <craftml-repeat n={n}>{component}</craftml-repeat>
+    return DOM(<craftml-repeat n={n}>{component}</craftml-repeat>)
 }
 
 import createRenderer, { } from '../createRenderer'
 
-// 
-//type Renderer<T extends PropTypes, K> = (node: Node, props: iots.TypeOf<T> & K, domNode: DomNode) => () => {}
-
 type Saga = () => {}
 type GetSaga<T> = (node: Node, props: T, domNode: DomNode) => Saga
-
-function mergeProps<T extends object, R extends object>
-    (defaultProps: T, propTypes: PropTypes<T>, newDefaultProps: R, newPropTypes: PropTypes<R>) {
-
-    const mergedPropTypes = iots.intersection([propTypes, newPropTypes])
-    
-    type T1 = iots.TypeOf<typeof mergedPropTypes>
-
-    const mergedDefaultProps: T1 = {...defaultProps as object, ...newDefaultProps as object} as {} as T1
-
-    return [mergedDefaultProps, mergedPropTypes]
-}
 
 export default function createPrimitive<T extends object>(def: PrimitiveDefinition<T>) {
 

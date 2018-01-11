@@ -3,9 +3,9 @@ import * as _ from 'lodash'
 export interface DomNode {
     type: string,
     name: string,
-    attribs: Attribs,
+    attribs?: Attribs,
     data?: string,
-    children: Array<DomNode>    
+    children?: Array<DomNode>    
 }
 
 export interface Attribs {
@@ -50,6 +50,8 @@ export const React = {
                 
                 return {
                     type: 'text',
+                    name: 'text',
+                    attribs: {},
                     data: c
                 }
                  

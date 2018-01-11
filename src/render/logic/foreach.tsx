@@ -24,7 +24,7 @@ export default createRenderer({
         // console.log('repeat', domNode)
 
         // if there is no children, nothing to repeat
-        if (domNode.children.length === 0) {
+        if (domNode.children && domNode.children.length === 0) {
             return
         }
       

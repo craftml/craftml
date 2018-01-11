@@ -1,8 +1,4 @@
-import { DomNode } from '../../../dom'
-import { DOM } from '../../../dom'
-import { call } from 'redux-saga/effects'
 import axios from 'axios'
-
 import parse from '../../../parse'
 
 function loadFromUrl(url: string): Promise<{ code?: string, error?: {}}> {
@@ -14,8 +10,6 @@ function loadFromUrl(url: string): Promise<{ code?: string, error?: {}}> {
         })
         .catch(error => ({ error }))
 }
-
-const React = {}
 
 const generateModuleFirebaseLink = (moduleId: string) => `https://craftml-io.firebaseio.com/modules/${moduleId}.json`
 

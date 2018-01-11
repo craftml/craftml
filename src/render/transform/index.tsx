@@ -1,6 +1,5 @@
-import { React, DomNode, DOM } from '../../dom'
+import { React, DOM } from '../../dom'
 import { render, update } from '../effects'
-import Node from '../../node'
 import transformEval from './eval'
 
 import * as t from 'io-ts'

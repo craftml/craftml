@@ -1,5 +1,4 @@
 import createRenderer from '../createRenderer'
-import * as _ from 'lodash'
 import { render, update } from '../effects'
 import * as t from 'io-ts'
 
@@ -19,7 +18,7 @@ export default createRenderer({
         // console.log('repeat', domNode)
 
         // if there is no children, nothing to repeat
-        if (domNode.children.length === 0) {
+        if (!domNode.children || domNode.children.length === 0) {
             return
         }
       

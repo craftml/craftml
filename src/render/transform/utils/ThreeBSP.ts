@@ -3,33 +3,48 @@ import * as _ from 'lodash'
 import Node from './Node'
 import Polygon from './Polygon'
 
-function geometry2Polygons(geometry: THREE.Geometry, matrix: THREE.Matrix4) {
+function geometry2Polygons(geometry: THREE.Geometry | THREE.BufferGeometry, matrix: THREE.Matrix4) {
     // console.log('g2p geometry', matrix.elements)
     // console.log('geometry', geometry.faces.length)
-    let vertices = geometry.vertices
+    let vertices
+
+    if (geometry instanceof THREE.Geometry) {
+
+        vertices = geometry.vertices
+
+    } else {
+
+        geometry = new THREE.Geometry().fromBufferGeometry(geometry)
+        // get vertices
+        vertices = geometry.vertices
+        matrix = new THREE.Matrix4();
+    }
+
     let polygons = []
+    // tslint:disable-next-line:variable-name
     for (let i = 0, _length_i = geometry.faces.length; i < _length_i; i++) {
         const face = geometry.faces[i];
         const faceVertexUvs = geometry.faceVertexUvs[0][i];
         let polygon = new Polygon()
-        let vertex, uvs, vertext
+        // let vertex, uvs, vertext
+        let vertex, uvs
         if (face instanceof THREE.Face3) {
             vertex = vertices[face.a];
-            uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[0].x, faceVertexUvs[0].y) : null;
+            uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[0].x, faceVertexUvs[0].y) : new THREE.Vector2();
             vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[0], uvs);
-            if (matrix) vertex.applyMatrix4(matrix);
+            if (matrix) { vertex.applyMatrix4(matrix); }
             polygon.vertices.push(vertex);
 
             vertex = vertices[face.b];
-            uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[1].x, faceVertexUvs[1].y) : null;
+            uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[1].x, faceVertexUvs[1].y) : new THREE.Vector2();
             vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[1], uvs);
-            if (matrix) vertex.applyMatrix4(matrix);
+            if (matrix) { vertex.applyMatrix4(matrix); }
             polygon.vertices.push(vertex);
 
             vertex = vertices[face.c];
-            uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[2].x, faceVertexUvs[2].y) : null;
+            uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[2].x, faceVertexUvs[2].y) : new THREE.Vector2();
             vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[2], uvs);
-            if (matrix) vertex.applyMatrix4(matrix);
+            if (matrix) { vertex.applyMatrix4(matrix); }
             polygon.vertices.push(vertex);
         }
 
@@ -39,7 +54,7 @@ function geometry2Polygons(geometry: THREE.Geometry, matrix: THREE.Matrix4) {
     return polygons
 }
 
-export function createThreeBSPFromGeometry(geometry, matrix) {
+export function createThreeBSPFromGeometry(geometry: THREE.Geometry, matrix: THREE.Matrix4) {
     const polygons = geometry2Polygons(geometry, matrix)
     return new ThreeBSP(polygons)
     // return bsp
@@ -51,18 +66,15 @@ export function createThreeBSP(nodeIterator: CraftMLNode[]): ThreeBSP {
 
     let bspAll = null
 
-    let allPolygons = []
-
-    // for (let value of nodeIterator) {
     for (let node of nodeIterator) {
 
         const geometry = node.geometry
         const matrix = node.matrix
 
         if (geometry) {
-        
+
             const polygons = geometry2Polygons(geometry, matrix)
-            
+
             const bsp = new ThreeBSP(polygons)
 
             if (bspAll) {
@@ -74,11 +86,11 @@ export function createThreeBSP(nodeIterator: CraftMLNode[]): ThreeBSP {
         }
     }
 
-    return bspAll
+    return bspAll || new ThreeBSP([])
 }
 
 import Vertex from './Vertex'
-import { Geometry } from 'three';
+import { Geometry, BufferGeometry } from 'three';
 
 type ThreeBSPGeometry = THREE.Mesh | Polygon[] | Node
 
@@ -102,11 +114,11 @@ export default class ThreeBSP {
         }
 
         // Convert THREE.Geometry to ThreeBSP
-        var i, lengthi,
-            face, vertex, faceVertexUvs, uvs,
-            polygon,
-            polygons = [],
-            tree;
+        // var i, lengthi,
+        //     face, vertex, faceVertexUvs, uvs,
+        //     polygon,
+        // polygons = [],
+        // tree;
 
         // this.Polygon = Polygon;
         // this.Vertex = Vertex;
@@ -125,7 +137,7 @@ export default class ThreeBSP {
         // } else {
         //     throw 'ThreeBSP: Given geometry is unsupported';
         // }
-        let vertices
+        // let vertices
         if (input instanceof Node) {
 
             this.tree = input;
@@ -139,96 +151,112 @@ export default class ThreeBSP {
             // geometry.updateMatrix();
             // this.matrix = geometry.matrix.clone();
             // geometry.updateMatrixWorld(true)
-            const mesh = input
+            const mesh: THREE.Mesh = input
             // mesh.updateMatrixWorld()
             // console.log('matrix world', geometry.matrixWorld.elements)
             // console.log('matrix local', geometry.matrix.elements)
 
+            let geometry = mesh.geometry;
 
-            const geometry = mesh.geometry;
-            //vertices = _.map(mesh.geometry.vertices, (v) => commonAncestorObject3D.localToWorld(v.clone()))
-            vertices = _.map(mesh.geometry.vertices, (v) => mesh.localToWorld(v.clone()))
-            console.log('world matrix', mesh.matrixWorld.elements)
-            console.log('local matrix', mesh.matrix.elements)
+            if (geometry instanceof Geometry) {
+                // vertices = _.map(mesh.geometry.vertices, (v) => commonAncestorObject3D.localToWorld(v.clone()))
+                geometry.vertices = _.map(geometry.vertices, (v) => mesh.localToWorld(v.clone()))
 
-            // this.matrix = mesh.matrixWorld.clone();
-            // this.matrix = mesh.matrix.clone();
-            this.matrix = new THREE.Matrix4;
+            } else if (geometry instanceof BufferGeometry) {
 
-        }
+                //     // convert to the normal geometry
+                //     geometry = new THREE.Geometry().fromBufferGeometry(geometry)
+                //     // get vertices
+                //     vertices = geometry.vertices
+                //     this.matrix = new THREE.Matrix4();
+                // }
+                // console.log('world matrix', mesh.matrixWorld.elements)
+                // console.log('local matrix', mesh.matrix.elements)
 
-        // console.log('vertices', _.map(vertices, (v) => _.values(v).join(',')))
+                // this.matrix = mesh.matrixWorld.clone();
+                // this.matrix = mesh.matrix.clone();
+                this.matrix = new THREE.Matrix4();
 
-        // if the geometry is a buffer geometry,
-        if (input.attributes && input.attributes.position) {
-            // convert to the normal geometry
-            input = new THREE.Geometry().fromBufferGeometry(input)
-            console.log('new geometry', input)
-            // get vertices
-            vertices = input.vertices
-            this.matrix = new THREE.Matrix4;
-            // vertices = _.map(geometry.vertices, (v) => mesh.localToWorld(v.clone()))
+                // this.tree = new Node(polygons);
 
-            // console.log('converted geometry', geometry)
-        }
+                // console.log('vertices', _.map(vertices, (v) => _.values(v).join(',')))
 
-        // console.log('geometry.faces', geometry.faces)
-        for (i = 0, lengthi = input.faces.length; i < lengthi; i++) {
-            face = input.faces[i];
-            faceVertexUvs = input.faceVertexUvs[0][i];
-            polygon = new Polygon;
+                // BufferGeometry -> Geometry
 
-            if (face instanceof THREE.Face3) {
-                vertex = vertices[face.a];
-                uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[0].x, faceVertexUvs[0].y) : null;
-                vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[0], uvs);
-                vertex.applyMatrix4(this.matrix);
-                polygon.vertices.push(vertex);
-
-                vertex = vertices[face.b];
-                uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[1].x, faceVertexUvs[1].y) : null;
-                vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[1], uvs);
-                vertex.applyMatrix4(this.matrix);
-                polygon.vertices.push(vertex);
-
-                vertex = vertices[face.c];
-                uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[2].x, faceVertexUvs[2].y) : null;
-                vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[2], uvs);
-                vertex.applyMatrix4(this.matrix);
-                polygon.vertices.push(vertex);
-            } else if (typeof THREE.Face4) {
-                vertex = input.vertices[face.a];
-                uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[0].x, faceVertexUvs[0].y) : null;
-                vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[0], uvs);
-                vertex.applyMatrix4(this.matrix);
-                polygon.vertices.push(vertex);
-
-                vertex = input.vertices[face.b];
-                uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[1].x, faceVertexUvs[1].y) : null;
-                vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[1], uvs);
-                vertex.applyMatrix4(this.matrix);
-                polygon.vertices.push(vertex);
-
-                vertex = input.vertices[face.c];
-                uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[2].x, faceVertexUvs[2].y) : null;
-                vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[2], uvs);
-                vertex.applyMatrix4(this.matrix);
-                polygon.vertices.push(vertex);
-
-                vertex = input.vertices[face.d];
-                uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[3].x, faceVertexUvs[3].y) : null;
-                vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[3], uvs);
-                vertex.applyMatrix4(this.matrix);
-                polygon.vertices.push(vertex);
-            } else {
-                throw 'Invalid face type at index ' + i;
+                // if the geometry is a buffer geometry,
+                // if (input.attributes && input.attributes.position) {
+                //     // convert to the normal geometry
+                //     input = new THREE.Geometry().fromBufferGeometry(input)
+                //     console.log('new geometry', input)
+                //     // get vertices
+                //     vertices = input.vertices
+                //     this.matrix = new THREE.Matrix4();
+                //     // vertices = _.map(geometry.vertices, (v) => mesh.localToWorld(v.clone()))
+                //     // console.log('converted geometry', geometry)
+                // }
             }
 
-            polygon.calculateProperties();
-            polygons.push(polygon);
+            const polygons = geometry2Polygons(geometry, this.matrix)
+            this.tree = new Node(polygons);
         }
 
-        this.tree = new Node(polygons);
+        // // console.log('geometry.faces', geometry.faces)
+        // for (i = 0, lengthi = input.faces.length; i < lengthi; i++) {
+        //     face = input.faces[i];
+        //     faceVertexUvs = input.faceVertexUvs[0][i];
+        //     polygon = new Polygon;
+
+        //     if (face instanceof THREE.Face3) {
+        //         vertex = vertices[face.a];
+        //         uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[0].x, faceVertexUvs[0].y) : null;
+        //         vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[0], uvs);
+        //         vertex.applyMatrix4(this.matrix);
+        //         polygon.vertices.push(vertex);
+
+        //         vertex = vertices[face.b];
+        //         uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[1].x, faceVertexUvs[1].y) : null;
+        //         vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[1], uvs);
+        //         vertex.applyMatrix4(this.matrix);
+        //         polygon.vertices.push(vertex);
+
+        //         vertex = vertices[face.c];
+        //         uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[2].x, faceVertexUvs[2].y) : null;
+        //         vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[2], uvs);
+        //         vertex.applyMatrix4(this.matrix);
+        //         polygon.vertices.push(vertex);
+        //     } else if (typeof THREE.Face4) {
+        //         vertex = input.vertices[face.a];
+        //         uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[0].x, faceVertexUvs[0].y) : null;
+        //         vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[0], uvs);
+        //         vertex.applyMatrix4(this.matrix);
+        //         polygon.vertices.push(vertex);
+
+        //         vertex = input.vertices[face.b];
+        //         uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[1].x, faceVertexUvs[1].y) : null;
+        //         vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[1], uvs);
+        //         vertex.applyMatrix4(this.matrix);
+        //         polygon.vertices.push(vertex);
+
+        //         vertex = input.vertices[face.c];
+        //         uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[2].x, faceVertexUvs[2].y) : null;
+        //         vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[2], uvs);
+        //         vertex.applyMatrix4(this.matrix);
+        //         polygon.vertices.push(vertex);
+
+        //         vertex = input.vertices[face.d];
+        //         uvs = faceVertexUvs ? new THREE.Vector2(faceVertexUvs[3].x, faceVertexUvs[3].y) : null;
+        //         vertex = new Vertex(vertex.x, vertex.y, vertex.z, face.vertexNormals[3], uvs);
+        //         vertex.applyMatrix4(this.matrix);
+        //         polygon.vertices.push(vertex);
+        //     } else {
+        //         throw 'Invalid face type at index ' + i;
+        //     }
+
+        //     polygon.calculateProperties();
+        //     polygons.push(polygon);
+
+        // this.tree = new Node(polygons);
+        // }
     }
 
     subtract(otherTree: ThreeBSP): ThreeBSP {

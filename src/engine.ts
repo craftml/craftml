@@ -16,9 +16,7 @@ const reducer = (state: Node, action: RootAction) => {
         case COMMIT: {
             if (state) {
                 const { node } = action.payload
-                state = state.setSubtree(node)
-                state._root = state
-                return state
+                return state.setSubtree(node)                
             } else {
                 return action.payload.node
             }
@@ -26,9 +24,7 @@ const reducer = (state: Node, action: RootAction) => {
         case UPDATE: {
             const { node, updateFunc } = action.payload
             const newNode = updateFunc(state.descendant(node.path))
-            state = state.setSubtree(newNode)
-            state._root = state
-            return state
+            return state.setSubtree(newNode)            
         }
         default: return state;
     }

@@ -10,8 +10,19 @@ const IMPATH = (p: string[]): string[] => _.reduce(p, (ret: string[], e: string,
 import Node from '../node'
 
 export interface Adapter<Elem> {
-    getParent(elem: Elem): Elem
-    removeSubsets(elems: Elem[]): Elem[]
+    getParent(elem: Elem): Elem | null
+    removeSubsets(elems: Array<Elem | null>): Array<Elem | null>
+    getChildren(elem: Elem): Elem[]
+    isTag(elem: Elem): boolean
+    existsOne(test: (n: Node) => boolean, elems: Node[]): boolean
+    // tslint:disable-next-line:no-any
+    getAttributeValue(elem: Node, name: string): any            
+    getName(elem: Elem): string
+    getText(elem: Elem): string    
+    hasAttrib(elem: Elem, name: string): boolean
+    findAll(test: (n: Elem) => boolean, elems: Elem[]): Elem[]
+    findOne(test: (n: Elem) => boolean, elems: Elem[]): Elem | undefined
+    equals(a: Node, b: Node): boolean
 }
 
 export function createAdapter(topNode: Node): Adapter<Node> {

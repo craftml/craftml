@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import { Box } from '../../node'
 
-const disp = (boxes: Box[]) => _.map(boxes, b => b.toString())
+// const disp = (boxes: Box[]) => _.map(boxes, b => b.toString())
     
 type Axis = 'x' | 'y' | 'z'
 type Arg = {

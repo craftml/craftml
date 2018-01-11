@@ -17,10 +17,6 @@ type StructureDefinition = {
     l: (props: StructurePropTypes) => string    
 }
 
-function wrap_t(component: DomNode, t: string): DomNode {
-    return DOM(<craftml-transform t={t}>{component}</craftml-transform>)
-}
-
 function wrap_repeat(component: DomNode, props: { repeat: number | string }): DomNode {
 
     // const { n = 1 } = props
@@ -63,13 +59,6 @@ export default function createStructure(def: StructureDefinition) {
         const layoutExpression = l(props) + ';' + customLayoutExpression
         
         const htmlProps = _.pick(domNode.attribs, ['id', 'class', 'style', 'merge'])
-    //     let wrapped = <craftml_group customTagName={customTagName} {...htmlProps}>
-    //     <craftml_transform t={t}>
-    //       <craftml_layout l={layoutExpression}>
-    //         { children }
-    //       </craftml_layout>
-    //     </craftml_transform>
-    //   </craftml_group>
 
         // this allows the tagName to be overriden by one specified in the tag attribute
         // <g tagName="foo"> --> props.tagName

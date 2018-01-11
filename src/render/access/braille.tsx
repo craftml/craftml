@@ -61,7 +61,7 @@ export default createRenderer({
     merge: false,
     getSaga: (node, props, domNode) => function* () {
 
-        let text = domNode.children[0].data || ''
+        let text = domNode.children && domNode.children[0].data || ''
 
         text = text.toUpperCase()        
 

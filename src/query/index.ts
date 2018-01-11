@@ -1,5 +1,5 @@
 import Node from '../node'
-import { should, ChainableMethod } from './assert'
+import { should } from './assert'
 // import CSSselect from 'css-select'
 const CSSselect = require('css-select')
 import { createAdapter } from './createAdapter'
@@ -96,7 +96,7 @@ export class Query {
                 try {
                     return CSSselect(selector, el, { adapter })
                 } catch (e) {
-                    console.error(e)
+                    // console.error(e)
                 }
             })
             .flatten()

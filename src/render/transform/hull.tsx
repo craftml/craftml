@@ -14,11 +14,8 @@ export default function hull(node: Node, args: string = '*', options: {}) {
     const selections = q.get()
 
     const allVertices = q.vertices()
-
     
     const newGeometry = compute_convex_hull(allVertices)
-
-
 
     const addGeometry = (x: Node) => x.addGeometryNode(newGeometry)
     
@@ -29,19 +26,17 @@ export default function hull(node: Node, args: string = '*', options: {}) {
     return updater(node)
 }
 
-type qhInput = [number, number, number][]
+type qhInput = number[][]
 type qhOuput = number[]
 
 const qh: (x: qhInput) => qhOuput = require('convex-hull')
 
-function compute_convex_hull(vertices: Vector3[]) {
-    // console.log('vertices', vertices.length)
-    const input = _.map(vertices, v => [v.x, v.y, v.z])
-    // console.log('input', input)
-    const DEBUG = `hull ${vertices.length} vertices`
-    console.time(DEBUG)
+function compute_convex_hull(vertices: Vector3[]) {    
+    const input = _.map(vertices, v => [v.x, v.y, v.z])    
+    // const DEBUG = `hull ${vertices.length} vertices`
+    // console.time(DEBUG)
     let is = qh(input)
-    console.timeEnd(DEBUG)
+    // console.timeEnd(DEBUG)
     let faces = []
     for (var i = 0; i < is.length; i++) {
         faces.push(new Face3(is[i][0], is[i][1], is[i][2]))

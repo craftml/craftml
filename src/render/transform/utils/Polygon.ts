@@ -63,7 +63,7 @@ export default class Polygon {
         return this;
     };
 
-    classifyVertex(vertex: Vertex) {
+    classifyVertex(vertex: Vertex): number | null {
         if (this.normal && typeof this.w !== 'undefined') {
             var sideValue = this.normal.dot(vertex) - this.w;
 
@@ -75,6 +75,7 @@ export default class Polygon {
                 return COPLANAR;
             }
         }
+        return null
     }
 
     classifySide(polygon: Polygon) {
@@ -151,7 +152,10 @@ export default class Polygon {
                 if (ti !== FRONT) {
                     b.push(vi);
                 }
-                if ((ti | tj) === SPANNING) {
+                // if (ti | tj) === SPANNING) {
+                // TODO: check if this is correct
+                if ( (ti === FRONT && tj === BACK) || (tj === BACK && ti === FRONT)
+                    || ti === SPANNING || tj === SPANNING) {
                     t = ( this.w - this.normal.dot(vi) ) / this.normal.dot(vj.clone().subtract(vi));
                     v = vi.interpolate(vj, t);
                     f.push(v);
