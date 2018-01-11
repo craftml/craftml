@@ -83,7 +83,7 @@ function styleSheets(node: Node): string {
 
     node.isSelectedBy('craftml-unit')
 
-    return chalk.bgRgb(20, 20, 20)(node.styleSheets.map(v => v.rules.map(ruleView).join('; ')).join('; '))
+    return chalk.bgRgb(20, 20, 20)(node.context.styleSheets.map(v => v.rules.map(ruleView).join('; ')).join('; '))
 }
 
 function geometry(node: Node): string {

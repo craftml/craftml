@@ -1,13 +1,13 @@
 import { Record } from 'immutable'
 import { Geometry, Matrix4 } from 'three'
 
-const NodeShapeRecord = Record({    
+const NodeShapeRecord = Record({
     dimensions: 0,
     matrix: new Matrix4(),
     geometry: new Geometry()
 })
 
-export default class NodeShape extends NodeShapeRecord {    
+export default class NodeShape extends NodeShapeRecord {
 
     setGeometry(geometry: Geometry) {
         return this.set('geometry', geometry)
@@ -45,6 +45,7 @@ export default class NodeShape extends NodeShapeRecord {
                 result.push(v)
             }
         }
+
         return result
     }
 

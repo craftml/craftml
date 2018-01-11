@@ -1,16 +1,18 @@
-import { Map, Record } from 'immutable'
+import { Map, Record, List } from 'immutable'
 import { Part } from '../render/part'
 import { DomNode } from '../dom'
+import * as css from '../render/css'
 
 const NodeContextRecord = Record({
     parts: Map<string, Part>(),
     // tslint:disable-next-line:no-any
     params: Map<string, any>(),
+    styleSheets: List<css.StyleSheet>(),
     block: {
         children: [] as DomNode[],
         // tslint:disable-next-line:no-any
         context: Map<string, any>()
-    }
+    }    
 })
 
 // tslint:disable-next-line:no-any
@@ -45,6 +47,14 @@ export default class NodeContext extends NodeContextRecord {
 
     setBlock(block: ContentBlock) {        
         return this.set('block', block)
+    }
+
+    addStyleSheet(stylesheet: css.StyleSheet) {        
+        return this.update('styleSheets', ss => ss.push(stylesheet))
+    }
+
+    setStyleSheets(styleSheets: List<css.StyleSheet>) {
+        return this.set('styleSheets', styleSheets)        
     }
     
 }

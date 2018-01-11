@@ -7,7 +7,6 @@ import * as invariant from 'invariant'
 import { createAdapter } from '../query/createAdapter';
 
 export { Box }
-import * as helpers from './helpers'
 
 const IMPATH = (p: Array<string>, root: string[] = []) => {
 
@@ -182,7 +181,7 @@ export default class Node {
     normalizeMatrix(): Node {
         return normalizeMatrix(this)
     }
-    
+
     child(index: number): Node {
         const key = '' + index as string
         const childPath = [...this.path, key]
@@ -295,30 +294,13 @@ export default class Node {
     // CSS
     //
 
-    get styleSheets(): List<css.StyleSheet> {
-        return this._state.get('stylesheets', List<css.StyleSheet>()) as List<css.StyleSheet>
-    }
-
-    addStyleSheet(stylesheet: css.StyleSheet): Node {
-        const newState = this._state.update(
-            'stylesheets',
-            List<StyleSheet>(),
-            s => (s as List<css.StyleSheet>).push(stylesheet)) as NodeState
-        return this.update(newState)
-    }
-
-    setStyleSheets(styleSheets: List<css.StyleSheet>): Node {
-        const newState = this._state.set('stylesheets', styleSheets)
-        return this.update(newState)
-    }
-
     computeStyle(): Node {
 
         if (this.parent && this.root) {
 
             // select rules from all inherited style sheets
             //            
-            const selectedCssRules = _.flatten(this.styleSheets.map(stylesheet => {
+            const selectedCssRules = _.flatten(this.context.styleSheets.map(stylesheet => {
 
                 return _.filter(stylesheet.rules, rule => this.isSelectedBy(rule.selectors.join(',')))
 

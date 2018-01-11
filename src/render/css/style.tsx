@@ -20,7 +20,8 @@ export default createRenderer({
 
             const { stylesheet } = css.parse(cssText)
 
-            yield update(parent, x => x.addStyleSheet(stylesheet))        
+            yield update(parent, x => 
+                x.updateContext(c => c.addStyleSheet(stylesheet)))
 
         }
 

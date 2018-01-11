@@ -58,7 +58,7 @@ function* renderNode<T extends object>(
                 x = x.updateContext(ctx => ctx.setBlock(parent.context.block))
             }
 
-            x = x.setStyleSheets(parent.styleSheets)
+            x = x.updateContext(ctx => ctx.setStyleSheets(parent.context.styleSheets))
             
         }
 
