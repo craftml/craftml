@@ -45,7 +45,7 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
         }
     }
 
-    let $params = parentNode.context.toJS()
+    let $params = parentNode.params.toJS()
 
     const locals = {
         $,
@@ -68,7 +68,7 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
     
         f.call(thisPointer, locals)
         
-        yield update(parentNode, x => x.setContext(Map($params)))    
+        yield update(parentNode, x => x.setParams(Map($params)))    
     
       } catch (err) {
     

@@ -36,6 +36,8 @@ import pp, { pps, html } from './pp'
 import { Part } from '../render/part'
 import normalizeMatrix from './normalizeMatrix';
 
+import NodeContext from './context'
+
 // tslint:disable-next-line:no-any
 type Context = Map<string, any>
 
@@ -49,6 +51,7 @@ export default class Node {
     private _state: NodeState
     private _root?: Node
     private _cachedLayout?: Box
+    // priv
 
     static createRoot(): Node {
 
@@ -150,14 +153,14 @@ export default class Node {
     }
 
     // tslint:disable-next-line:no-any
-    get context(): Map<string, any> {
+    get params(): Map<string, any> {
         // tslint:disable-next-line:no-any
-        return this._state.get('context', Map()) as Map<string, any>
+        return this._state.get('params', Map()) as Map<string, any>
     }
 
     // tslint:disable-next-line:no-any
-    setContext(obj: Map<string, any>): Node {
-        const newState = this._state.setIn(['context'], obj)
+    setParams(obj: Map<string, any>): Node {
+        const newState = this._state.setIn(['params'], obj)
         return this.update(newState)
     }
 
@@ -346,30 +349,39 @@ export default class Node {
     // Parts
     //
 
+    get context1() {
+        return this._state.get('context1', new NodeContext()) as NodeContext
+    }
+
+    updateContext(updater: (c: NodeContext) => NodeContext): Node {
+        const newState = this._state.update('context1', new NodeContext(), updater)
+        return this.update(newState)
+    }
+
     get parts(): Map<string, Part> {
         return this._state.get('parts', Map()) as Map<string, Part>
     }
 
-    setParts(parts: Map<string, Part>) {
-        const newState = this._state.set('parts', parts)
-        return this.update(newState)
-    }
+    // setParts(parts: Map<string, Part>) {
+    //     const newState = this._state.set('parts', parts)
+    //     return this.update(newState)
+    // }
 
-    addPart(name: string, part: Part): Node {
-        const newState = this._state.update(
-            'parts',
-            Map<string, Part>(),
-            s => (s as Map<string, Part>).set(name, part))
-        return this.update(newState)
-    }
+    // addPart(name: string, part: Part): Node {
+    //     const newState = this._state.update(
+    //         'parts',
+    //         Map<string, Part>(),
+    //         s => (s as Map<string, Part>).set(name, part))
+    //     return this.update(newState)
+    // }
 
-    getPart(name: string): Part | null {
-        if (this._state.hasIn(['parts', name])) {
-            return this._state.getIn(['parts', name]) as Part
-        } else {
-            return null
-        }
-    }
+    // getPart(name: string): Part | null {
+    //     if (this._state.hasIn(['parts', name])) {
+    //         return this._state.getIn(['parts', name]) as Part
+    //     } else {
+    //         return null
+    //     }
+    // }
 
     // 
     // CSS
@@ -387,7 +399,7 @@ export default class Node {
         return this.update(newState)
     }
 
-    setStyleSheets(styleSheets: css.StyleSheet[]): Node {
+    setStyleSheets(styleSheets: List<css.StyleSheet>): Node {
         const newState = this._state.set('stylesheets', styleSheets)
         return this.update(newState)
     }

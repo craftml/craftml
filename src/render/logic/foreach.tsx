@@ -30,7 +30,7 @@ export default createRenderer({
       
         const { iterator: iteratorName, iterable: iterableName, index: indexName } = props
 
-        const context = node.context        
+        const context = node.params        
 
         const eachTop = DOM(<craftml-group merge={true}/>)
         const eachContent = DOM(
@@ -57,7 +57,7 @@ export default createRenderer({
                     eachContext = eachContext.set(indexName, i)
                 }
 
-                yield update(node.child(i), c => c.setContext(eachContext))
+                yield update(node.child(i), c => c.setParams(eachContext))
 
                 yield render(node.child(i).child(0), eachContent)
 

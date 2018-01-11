@@ -32,7 +32,7 @@ export default createRenderer({
     merge: false,
     getSaga: (node, props, domNode) => function* () {
             
-        let part = node.getPart(props.name)        
+        let part = node.context1.getPart(props.name)        
 
         if (!part) {
 
@@ -133,7 +133,7 @@ export default createRenderer({
 
             const contextMap = Map(params)
 
-            node = node.setContext(contextMap)
+            node = node.setParams(contextMap)
 
             node = node.setBlock({children: domNode.children || [], context: contextMap})
                         

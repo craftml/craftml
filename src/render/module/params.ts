@@ -55,7 +55,7 @@ export default function evalParams(node: Node, props: {}, children: DomNode[]): 
     const { propTypes, defaultProps } = extractProps(children)
 
     // note: params should be a regular JS object (TODO: better type safety)
-    const params = node.context.toJS()
+    const params = node.params.toJS()
 
     // console.log('propTypes', propTypes)
     // console.log('defaultProps', defaultProps)

@@ -54,8 +54,8 @@ function matrix(node: Node): string {
 }
 
 function context(node: Node): string {
-    if (node.context && node.context.size > 0) {
-        return chalk.gray(JSON.stringify(node.context))
+    if (node.params && node.params.size > 0) {
+        return chalk.gray(JSON.stringify(node.params))
     } else {
         return ''
     }
@@ -95,8 +95,9 @@ function geometry(node: Node): string {
 }
 
 function parts(node: Node): string {
-    if (node.parts) {
-        return chalk.cyan(node.parts.keySeq().toArray().join(','))
+    if (node.context1.parts) {
+        // return chalk.cyan(node.parts.keySeq().toArray().join(',')) +
+        return chalk.cyan(node.context1.parts.keySeq().toArray().join(','))
     } else {
         return ''
     }    

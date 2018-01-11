@@ -31,7 +31,7 @@ export default createRenderer({
 
             yield render(node.child(0), topNode)
 
-            yield update(node.child(0), x => x.setContext(context))
+            yield update(node.child(0), x => x.setParams(context))
 
             yield render(node.child(0).child(0), contentNode)
 

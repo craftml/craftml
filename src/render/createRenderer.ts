@@ -38,7 +38,7 @@ function* renderNode<T extends object>(
     def: RendererDefinition<T>,
     node: Node, props: T, domNode: DomNode): {} {
 
-    const parent = yield parentOf(node)
+    const parent: Node = yield parentOf(node)
 
     const inheritFromParent = (x: Node) => {
 
@@ -46,14 +46,16 @@ function* renderNode<T extends object>(
 
         if (parent) {
 
-            if (parent.context) {
+            if (parent.params) {
                 
-                x = x.setContext(parent.context)
+                x = x.setParams(parent.params)
+            }            
+
+            x = x.updateContext(ctx => ctx.setParts(parent.context1.parts))
+
+            if (parent.block) {
+                x = x.setBlock(parent.block)
             }
-
-            x = x.setParts(parent.parts)
-
-            x = x.setBlock(parent.block)
 
             x = x.setStyleSheets(parent.styleSheets)
             
@@ -66,7 +68,7 @@ function* renderNode<T extends object>(
     
     node = yield refresh(node)
 
-    const params = node.context.toJS()    
+    const params = node.params.toJS()    
 
     const mergedPropTypes = t.intersection([def.propTypes, htmlPropTypes])
 

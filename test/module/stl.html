@@ -38,3 +38,16 @@
         $('leaf').should.have.two
     </script>
 </test>
+
+<test title='repeat and layout'>
+    <craftml-group id='top'>
+        <part name='leaf' module='https://res.cloudinary.com/craftml/raw/upload/files/NJeu3/-K21UQ55zArSVeEetoj2.modelLeaf.stl' />
+        <craftml-layout l='flow x'>
+            <leaf repeat="2" />
+        </craftml-layout>
+    </craftml-group>
+    <script>
+        $('leaf').should.have.two
+        $('#top').should.have.size(67.30199813, 22.382999420166016, 2.2010000477312133)
+    </script>
+</test>

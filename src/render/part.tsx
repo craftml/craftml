@@ -68,7 +68,9 @@ export default createRenderer({
 
         if (parent) {
 
-            yield update(parent, x => x.addPart(name, part))
+            // yield update(parent, x => x.addPart(name, part))
+
+            yield update(parent, x => x.updateContext(ctx => ctx.addPart(name, part)))
 
         }
 
