@@ -1,19 +1,26 @@
 import { Map, Record } from 'immutable'
-
 import { Part } from '../render/part'
+import { DomNode } from '../dom'
 
-const MyHashRecord = Record({
+const NodeContextRecord = Record({
     parts: Map<string, Part>(),
-    params: Map<string, any>()
+    // tslint:disable-next-line:no-any
+    params: Map<string, any>(),
+    block: {
+        children: [] as DomNode[],
+        // tslint:disable-next-line:no-any
+        context: Map<string, any>()
+    }
 })
 
-type S = {
-    parts: Map<string, Part>,
-    // tslint:disable-next-line:no-any
-    params: Map<string, any>
+// tslint:disable-next-line:no-any
+type Context = Map<string, any>
+interface ContentBlock {
+    children: DomNode[],
+    context: Context
 }
 
-export default class NodeContext extends MyHashRecord {
+export default class NodeContext extends NodeContextRecord {
 
     // tslint:disable-next-line:no-any
     setParams(obj: Map<string, any>) {        
@@ -35,15 +42,9 @@ export default class NodeContext extends MyHashRecord {
             return null
         }
     }
-}
 
-// const c = new NodeContext()
-// c.params
-// c.pa
-// c.set
-// c.update('parts', 3)
-// c.
-// c.p
-// c.p
-// c.get('parts', 3)
-// c.parts
+    setBlock(block: ContentBlock) {        
+        return this.set('block', block)
+    }
+    
+}

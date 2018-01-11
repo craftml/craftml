@@ -30,7 +30,7 @@ export default createRenderer({
       
         const { iterator: iteratorName, iterable: iterableName, index: indexName } = props
 
-        const params = node.context1.params        
+        const params = node.context.params        
 
         const eachTop = DOM(<craftml-group merge={true}/>)
         const eachContent = DOM(

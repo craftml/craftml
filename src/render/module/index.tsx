@@ -32,7 +32,7 @@ export default createRenderer({
     merge: false,
     getSaga: (node, props, domNode) => function* () {
             
-        let part = node.context1.getPart(props.name)        
+        let part = node.context.getPart(props.name)        
 
         if (!part) {
 
@@ -131,11 +131,11 @@ export default createRenderer({
 
             const params = evalParams(node, clientGivenProps, instanceDef.children)
 
-            const contextMap = Map(params)
+            const paramsMap = Map(params)
+            node = node.updateContext(ctx => ctx.setParams(paramsMap))
 
-            node = node.updateContext(ctx => ctx.setParams(contextMap))
-
-            node = node.setBlock({children: domNode.children || [], context: contextMap})
+            const block = {children: domNode.children || [], context: paramsMap}
+            node = node.updateContext(ctx => ctx.setBlock(block))
                         
             yield commit(node)            
         

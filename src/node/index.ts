@@ -33,7 +33,6 @@ export interface NodeError {
 import query from '../query'
 import pp, { pps, html } from './pp'
 
-import { Part } from '../render/part'
 import normalizeMatrix from './normalizeMatrix';
 
 import NodeContext from './context'
@@ -324,52 +323,14 @@ export default class Node {
         return this.update(newState)
     }
 
-    setBlock(block: ContentBlock): Node {
-        const newState = this._state.set('block', block)
-        return this.update(newState)
-    }
-
-    get block(): ContentBlock | null {
-        return this._state.get('block', null) as ContentBlock | null
-    }
-
-    //
-    // Parts
-    //
-
-    get context1() {
-        return this._state.get('context1', new NodeContext()) as NodeContext
+    get context() {
+        return this._state.get('context', new NodeContext()) as NodeContext
     }
 
     updateContext(updater: (c: NodeContext) => NodeContext): Node {
-        const newState = this._state.update('context1', new NodeContext(), updater)
+        const newState = this._state.update('context', new NodeContext(), updater)
         return this.update(newState)
     }
-
-    // get parts(): Map<string, Part> {
-    //     return this._state.get('parts', Map()) as Map<string, Part>
-    // }
-
-    // setParts(parts: Map<string, Part>) {
-    //     const newState = this._state.set('parts', parts)
-    //     return this.update(newState)
-    // }
-
-    // addPart(name: string, part: Part): Node {
-    //     const newState = this._state.update(
-    //         'parts',
-    //         Map<string, Part>(),
-    //         s => (s as Map<string, Part>).set(name, part))
-    //     return this.update(newState)
-    // }
-
-    // getPart(name: string): Part | null {
-    //     if (this._state.hasIn(['parts', name])) {
-    //         return this._state.getIn(['parts', name]) as Part
-    //     } else {
-    //         return null
-    //     }
-    // }
 
     // 
     // CSS

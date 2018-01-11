@@ -18,9 +18,9 @@ export default createRenderer({
 
         // const block = node.block
 
-        if (node.block) {
+        if (node.context.block) {
 
-            let {context, children} = node.block
+            let {context, children} = node.context.block
 
             let topNode = DOM(<craftml-group merge={true}/>)
             let contentNode = DOM(

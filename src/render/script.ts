@@ -45,7 +45,7 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
         }
     }
 
-    let $params = parentNode.context1.params.toJS()
+    let $params = parentNode.context.params.toJS()
 
     const locals = {
         $,
