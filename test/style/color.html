@@ -119,3 +119,53 @@
         $('#brown').should.have.style('color', 'brown')
     </script>
 </test>
+
+<test title="red and green">
+    <craftml-group id="top">
+        <style>
+            * {
+                color: inherit
+            }
+
+            .red {
+                color: red;
+            }
+
+            .green {
+                color: green
+            }
+        </style>
+        <craftml-layout l='flow x'>
+            <craftml-unit class="red" />
+            <craftml-unit class="green" />
+            <craftml-unit class="red" />
+            <craftml-unit class="green" />
+            <craftml-unit class="red" />
+            <craftml-unit class="green" />
+        </craftml-layout>
+    </craftml-group>
+    <script>        
+        $('.red').should.have.style('color', 'red')
+        $('.green').should.have.style('color', 'green')
+    </script>
+</test>
+
+<test title="opacity">
+    <craftml-group id="top">
+        <style>
+            * {
+                opacity: inherit;
+                color: blue;
+            }
+        </style>
+        <craftml-layout l='flow x'>
+            <craftml-unit style="opacity: 0.9" />
+            <craftml-unit style="opacity: 0.7" />
+            <craftml-unit style="opacity: 0.5" />
+            <craftml-unit style="opacity: 0.3" />
+            <craftml-unit style="opacity: 0.1" />
+        </craftml-layout>
+    </craftml-group>
+    <script>            
+    </script>
+</test>

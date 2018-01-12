@@ -1,13 +1,32 @@
-<test title="cylinder by two circles">
-    <craftml-transform t='wall' id='top'>
+<test title="cylinder by two circles">    
+    <craftml-group>
+        <craftml-transform t='wall' id='top'>
+            <stack spacing="5">
+                <circle/>
+                <circle/>
+            </stack>
+        </craftml-transform>
+    </craftml-group>
+    <script>        
+      // $('craftml-transform').pp()
+      $('craftml-geometry').should.have.one
+    </script>
+</test>
+
+<test title="inherit style">
+    <style>
+        * {
+            color: brown;
+        }
+    </style>    
+    <craftml-transform t='wall' id='top' style="color:brown">
         <stack spacing="5">
             <circle/>
             <circle/>
         </stack>
-    </craftml-transform>
+    </craftml-transform>    
     <script>
-        this.pp()
-      // $('craftml-transform').pp()
-      // $('craftml-geometry').should.have.one
+        this.pp()          
+        $('craftml-geometry').should.have.style('color', 'brown')
     </script>
 </test>

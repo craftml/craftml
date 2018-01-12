@@ -6,7 +6,8 @@ const cases = {
     style: {
         tag: null,
         color: null,
-        inline: null
+        inline: null,
+        material: null
     },
     access: {
         braille: null

@@ -144,6 +144,11 @@ export default class Node {
         return this._state.get('style', {}) as {}
     }
 
+    setStyle(style: {}) {
+        const newState = this._state.set('style', style)
+        return this.update(newState)
+    }
+
     setProps(obj: {}): Node {
         const newState = this._state.setIn(['props'], obj)
         return this.update(newState)
@@ -217,6 +222,7 @@ export default class Node {
                 .setTagName('craftml-geometry')
                 .updateShape(sp => sp.setGeometry(geometry).setDimensions(3))                
                 .setProps({})
+                .setStyle(this.style)               
                 .state)
         return this.update(newState)
     }

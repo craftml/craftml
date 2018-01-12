@@ -83,7 +83,7 @@ export default function wall(node: Node, args: string = '*', options: {}) {
         newGeometry = compute_geometry_from_slices(normalizedGeometries)
 
     }
-    console.log('newGeometry', newGeometry)
+    
     if (newGeometry) {
 
         const addGeometry = (x: Node) => x.addGeometryNode(newGeometry)
