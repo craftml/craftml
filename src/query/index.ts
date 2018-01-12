@@ -1,5 +1,5 @@
 import Node from '../node'
-import { should } from './assert'
+import { should, ChainableMethod } from './assert'
 // import CSSselect from 'css-select'
 const CSSselect = require('css-select')
 import { createAdapter } from './createAdapter'

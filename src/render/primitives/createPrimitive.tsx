@@ -6,9 +6,9 @@ import * as _ from 'lodash'
 import { Geometry } from 'three'
 
 import * as iots from 'io-ts'
-type PropTypes<A> = iots.Type<{}, A>
+export type PropTypes<A> = iots.Type<{}, A>
 
-type PrimitiveDefinition<T extends object> = {
+export type PrimitiveDefinition<T extends object> = {
     tagName: string,
     propTypes: PropTypes<T>,
     defaultProps: T,

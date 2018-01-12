@@ -4,9 +4,9 @@ import { update, refresh, parentOf } from './effects'
 
 import * as t from 'io-ts'
 
-type PropTypes<T> = t.Type<{}, T>
+export type PropTypes<T> = t.Type<{}, T>
 
-type RendererDefinition<T extends object> = {
+export type RendererDefinition<T extends object> = {
     tagName: string,
     propTypes: PropTypes<T>,
     defaultProps: T,

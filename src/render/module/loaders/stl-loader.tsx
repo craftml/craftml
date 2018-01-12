@@ -1,7 +1,10 @@
 import { DOM, React } from '../../../dom'
 import * as THREE from 'three'
-import { call } from 'redux-saga/effects'
+import { call, CallEffect } from 'redux-saga/effects'
 import axios from 'axios'
+import { DomNode } from '../../../dom'
+export { DomNode, CallEffect }
+
 const STLLoader = require('three-stl-loader')(THREE)
 const loader = new STLLoader()
 

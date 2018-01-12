@@ -1,7 +1,9 @@
 import { render, update } from '../effects'
-import { DOM, React } from '../../dom'
+import { DOM, React, DomNode } from '../../dom'
 import * as t from 'io-ts'
 import createRenderer from '../createRenderer'
+import Node from '../../node'
+export { DomNode, Node }
 
 export default createRenderer({
     tagName: 'content',

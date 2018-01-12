@@ -1,9 +1,11 @@
-import { React, DOM } from '../../dom'
+import { React, DOM, DomNode } from '../../dom'
 import { render, update } from '../effects'
 import transformEval from './eval'
 
 import * as t from 'io-ts'
 import createRenderer from '../createRenderer'
+import Node from '../../node'
+export { DomNode, Node }
 
 export default createRenderer({
     tagName: 'craftml-transform',

@@ -25,7 +25,8 @@ function createBox3FromGeometry(geometry: Geometry | BufferGeometry, matrix: Mat
     } else if (geometry instanceof BufferGeometry) {
 
         // not sure why there's a type error here
-        var attribute = geometry.attributes.position;
+        // tslint:disable-next-line:no-any
+        var attribute = (geometry.attributes as {} as {position: any}).position;
 
         if (attribute !== undefined) {
 
@@ -103,7 +104,7 @@ function computeBoundingBox(node: Node, parentMatrix: Matrix4 = new Matrix4()): 
     }
 }
 
-type V3 = { x: number, y: number, z: number }
+export type V3 = { x: number, y: number, z: number }
 
 export class Box {
 

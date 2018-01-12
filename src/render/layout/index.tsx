@@ -1,8 +1,10 @@
-import { React, DOM } from '../../dom'
+import { React, DOM, DomNode } from '../../dom'
 import { render, update } from '../effects'
 import layoutEval from './eval'
 import createRenderer from '../createRenderer'
 import * as t from 'io-ts'
+import Node from '../../node'
+export { Node, DomNode }
 
 export default createRenderer({
     tagName: 'craftml-layout',

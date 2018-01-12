@@ -1,6 +1,6 @@
 import { Map, List } from 'immutable'
 import * as _ from 'lodash'
-import { Geometry, Matrix4 } from 'three'
+import { Geometry } from 'three'
 import { createBox, Box } from './box'
 import * as css from '../render/css'
 import * as invariant from 'invariant'
@@ -28,7 +28,9 @@ export interface NodeError {
     message: string
 }
 
-import query from '../query'
+import query, { Query } from '../query'
+export { Query }
+
 import pp, { pps, html } from './pp'
 
 import normalizeMatrix from './normalizeMatrix';

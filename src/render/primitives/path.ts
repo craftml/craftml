@@ -3,6 +3,9 @@ import { Shape, Vector2 } from 'three'
 
 import * as _ from 'lodash'
 import * as t from 'io-ts'
+import Node from '../../node'
+import { DomNode } from '../../dom'
+export { Node, DomNode }
 
 type ContourPoint = number[]
 type Contour = ContourPoint[]

@@ -2,8 +2,10 @@ import Node from '../node'
 import { DomNode } from '../dom'
 
 import { actionCreators } from '../actions'
-import { put, select, call } from 'redux-saga/effects'
+import { put, select, call, PutEffect, SelectEffect, CallEffect } from 'redux-saga/effects'
 import { initial } from 'lodash'
+
+export { PutEffect, SelectEffect, CallEffect}
 
 import renderMain from './index'
 

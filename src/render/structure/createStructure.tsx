@@ -5,14 +5,14 @@ import * as _ from 'lodash'
 
 import * as iots from 'io-ts'
 
-type StructurePropTypes = {
+export type StructurePropTypes = {
     spacing?: number
     t: string,
     l: string,
     repeat: string,
     tagName?: string
 }
-type StructureDefinition = {
+export type StructureDefinition = {
     tagName: string,
     l: (props: StructurePropTypes) => string    
 }

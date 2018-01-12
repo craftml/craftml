@@ -2,7 +2,8 @@ import { update, parentOf } from './effects'
 import { DomNode } from '../dom'
 import * as t from 'io-ts'
 import createRenderer from './createRenderer'
-
+import Node from '../node'
+export { DomNode, Node }
 export interface ImportPart {
     type: 'import',
     props: {

@@ -2,8 +2,11 @@ import createPrimitive from './createPrimitive'
 import { SphereGeometry, CircleGeometry, Matrix4 } from 'three'
 import * as t from 'io-ts'
 import * as _ from 'lodash'
+import Node from '../../node'
+import { DomNode } from '../../dom'
+export { Node, DomNode }
 
-interface DomeProps {
+export interface DomeProps {
     radius: number
 }
 

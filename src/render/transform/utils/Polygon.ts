@@ -152,10 +152,10 @@ export default class Polygon {
                 if (ti !== FRONT) {
                     b.push(vi);
                 }
-                // if (ti | tj) === SPANNING) {
+                if (ti && tj && (ti | tj) === SPANNING) {
                 // TODO: check if this is correct
-                if ( (ti === FRONT && tj === BACK) || (tj === BACK && ti === FRONT)
-                    || ti === SPANNING || tj === SPANNING) {
+                // if ( (ti === FRONT && tj === BACK) || (tj === BACK && ti === FRONT)
+                    // || ti === SPANNING || tj === SPANNING) {
                     t = ( this.w - this.normal.dot(vi) ) / this.normal.dot(vj.clone().subtract(vi));
                     v = vi.interpolate(vj, t);
                     f.push(v);

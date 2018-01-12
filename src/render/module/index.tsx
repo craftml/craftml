@@ -5,11 +5,14 @@ import createRenderer from '../createRenderer'
 import * as _ from 'lodash'
 import { React, DomNode, DOM } from '../../dom'
 import { Map } from 'immutable'
+import Node from '../../node'
 
 import loadDoc from './loaders/doc-loader'
 import loadStl from './loaders/stl-loader'
 
 import evalParams from './params'
+
+export { DomNode, Node }
 
 const isStl = (moduleId: string): boolean => !_.isNull(moduleId.match(/\.stl$/))
 

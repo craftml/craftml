@@ -3,8 +3,8 @@ import { Box } from '../../node'
 
 // const disp = (boxes: Box[]) => _.map(boxes, b => b.toString())
 
-type Axis = 'x' | 'y' | 'z'
-type Arg = {
+export type Axis = 'x' | 'y' | 'z'
+export type Arg = {
     axes: Axis[],
     number: number,
     side: string

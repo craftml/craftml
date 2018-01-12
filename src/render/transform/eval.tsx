@@ -6,12 +6,12 @@ const peg = require('./peg-parser')
 
 import hull from './hull'
 import cut from './cut'
-// import wall from './wall'
+import wall from './wall'
 
 const nonlinear = {
   hull,
   cut,
-//   wall
+  wall
 }
 
 function transformReducer(node: Node, method: string, args: {}, options: {selectors: string, reverse: boolean}): Node {

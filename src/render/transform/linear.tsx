@@ -2,7 +2,7 @@ import * as _ from 'lodash'
 import Node from '../../node'
 import { Matrix4, Vector3 } from 'three'
 
-type XYZ = {
+export type XYZ = {
     x: number,
     y: number,
     z: number

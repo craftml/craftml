@@ -1,7 +1,9 @@
 import * as THREE from 'three'
+import { Mesh } from 'three'
 import * as _ from 'lodash'
 import Node from './Node'
 import Polygon from './Polygon'
+export { Mesh }
 
 function geometry2Polygons(geometry: THREE.Geometry | THREE.BufferGeometry, matrix: THREE.Matrix4) {
     // console.log('g2p geometry', matrix.elements)
@@ -92,7 +94,7 @@ export function createThreeBSP(nodeIterator: CraftMLNode[]): ThreeBSP {
 import Vertex from './Vertex'
 import { Geometry, BufferGeometry } from 'three';
 
-type ThreeBSPGeometry = THREE.Mesh | Polygon[] | Node
+export type ThreeBSPGeometry = THREE.Mesh | Polygon[] | Node
 
 export default class ThreeBSP {
 

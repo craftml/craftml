@@ -1,6 +1,9 @@
 import createPrimitive from './createPrimitive'
 import { CircleGeometry, Matrix4 } from 'three'
 import * as t from 'io-ts'
+import Node from '../../node'
+import { DomNode } from '../../dom'
+export { Node, DomNode }
 
 export default createPrimitive({
     tagName: 'circle',

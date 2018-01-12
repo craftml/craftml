@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import * as t from 'io-ts'
 
-type PropTypes<T> = t.Type<{}, T>
+export type PropTypes<T> = t.Type<{}, T>
 
 // check if the given string contains any template expression (i.e., {{ }})
 const isTemplate = (v: string) => v.match(/{{(.*)}}/)
@@ -40,8 +40,7 @@ const setPerPropType = (resolvedProps: {}, clientProps: {}, defaultProps: {}, co
             resolvedPropValue = Number(resolvedPropValue)
 
         } else if (propType === t.boolean) {
-
-            
+         
             if (!_.isBoolean(resolvedPropValue)) {
                 
                 // <foo merge> --> { merge: '' }                    
@@ -59,10 +58,10 @@ const setPerPropType = (resolvedProps: {}, clientProps: {}, defaultProps: {}, co
 
     }
 
-type Intersection = t.IntersectionType<t.Type<{}, {}>[], {}>
-type Interface =  t.InterfaceType<t.Props, {}>
-type PT = Intersection | Interface
-type PropType = t.Type<{}, {}>
+export type Intersection = t.IntersectionType<t.Type<{}, {}>[], {}>
+export type Interface =  t.InterfaceType<t.Props, {}>
+export type PT = Intersection | Interface
+export type PropType = t.Type<{}, {}>
 
 function forEachPropType(propTypes: PT, func: (propType: PropType, propName: string) => void) {
 

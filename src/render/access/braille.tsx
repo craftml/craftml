@@ -2,6 +2,8 @@ import { React, DomNode, DOM } from '../../dom'
 import { render } from '../effects'
 import * as _ from 'lodash'
 import * as t from 'io-ts'
+import Node from '../../node'
+export { DomNode, Node }
 
 // hard-coded params per official Braille dimensions
 const dotDistance = 2.5   // between two dot centers

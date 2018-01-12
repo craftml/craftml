@@ -2,15 +2,8 @@ import { DomNode } from '../dom'
 import { commit, render, update, refresh } from './effects'
 import * as t from 'io-ts'
 import createRenderer from './createRenderer'
-
-export interface NodeProps {
-
-}
-
-export interface GroupProps extends NodeProps {
-    merge: boolean,
-    tagName?: string
-}
+import Node from '../node'
+export { DomNode, Node }
 
 export default createRenderer({
     tagName: 'group',

@@ -1,7 +1,8 @@
 import { Record } from 'immutable'
-import { Geometry, Matrix4 } from 'three'
+import { Geometry, Matrix4, Vector3 } from 'three'
+export { Vector3 }
 
-const NodeShapeRecord = Record({
+export const NodeShapeRecord = Record({
     dimensions: 0,
     matrix: new Matrix4(),
     geometry: new Geometry()

@@ -3,7 +3,7 @@ import { Part } from '../render/part'
 import { DomNode } from '../dom'
 import * as css from '../render/css'
 
-const NodeContextRecord = Record({
+export const NodeContextRecord = Record({
     parts: Map<string, Part>(),
     // tslint:disable-next-line:no-any
     params: Map<string, any>(),
@@ -16,8 +16,8 @@ const NodeContextRecord = Record({
 })
 
 // tslint:disable-next-line:no-any
-type Context = Map<string, any>
-interface ContentBlock {
+export type Context = Map<string, any>
+export interface ContentBlock {
     children: DomNode[],
     context: Context
 }

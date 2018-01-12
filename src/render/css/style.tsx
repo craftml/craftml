@@ -2,6 +2,9 @@ import { parentOf, update } from '../effects'
 import * as t from 'io-ts'
 import createRenderer from '../createRenderer'
 import * as css from './index'
+import { DomNode } from '../../dom'
+import Node from '../../node'
+export { DomNode, Node }
 
 export default createRenderer({
     tagName: 'craftml-style',

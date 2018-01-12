@@ -31,7 +31,8 @@ const cases = {
         land: null,
         orbit: null,
         cut: null,
-        hull: null
+        hull: null,
+        wall: null
     },
     layout: {
         flow: null,

@@ -3,7 +3,7 @@ import { Box } from '../../node'
 
 // const disp = (boxes: Box[]) => _.map(boxes, b => b.toString())
 
-type XYZ = { x: string, y: string, z: string }
+export type XYZ = { x: string, y: string, z: string }
 type Side = string | { type: string, value: number }
 
 export function align(boxes: Box[], xyz: XYZ): Box[] {
