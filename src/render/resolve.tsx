@@ -6,8 +6,8 @@ export type PropTypes<T> = t.Type<{}, T>
 // check if the given string contains any template expression (i.e., {{ }})
 const isTemplate = (v: string) => v.match(/{{(.*)}}/)
 
-function resolveTemplateExpression(value: string | {}, params: {}) {
-
+export function resolveTemplateExpression(value: string | {}, params: {}) {
+// console.log('value:', value, isTemplate(value))
     _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 
     if (_.isString(value) && isTemplate(value)) {         
@@ -30,7 +30,8 @@ const setPerPropType = (resolvedProps: {}, clientProps: {}, defaultProps: {}, co
         // let propValue = resolveTemplateExpression
         let resolvedPropValue = _.has(clientProps, propName) ? clientProps[propName] : defaultProps[propName]
 
-        if (_.isString(resolvedPropValue)) {
+        // if propType is of primitive type && resolvedPropValue is a string        
+        if (propType !== t.object && _.isString(resolvedPropValue)) {
             resolvedPropValue = resolveTemplateExpression(resolvedPropValue, contextParams)
         }
 
@@ -52,6 +53,10 @@ const setPerPropType = (resolvedProps: {}, clientProps: {}, defaultProps: {}, co
 
                 // do nothing, keep the value as is
             
+        } else if (propType === t.object) {
+
+            // do nothing, keep the value as is
+
         }
         
         resolvedProps[propName] = resolvedPropValue

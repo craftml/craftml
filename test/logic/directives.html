@@ -1,0 +1,35 @@
+<test title="cube repeat">
+    <craftml-group id="top">
+        <cube repeat="5" />
+    </craftml-group>
+    <script>        
+        $('cube').should.have.five
+    </script>
+</test>
+
+<test title="cube foreach inline">
+    <craftml-group id="top">
+        <cube repeat="s in [1, 2, 3]" t="scale {{ s }}" id="cube{{s}}" />
+    </craftml-group>
+    <script>        
+        $('cube').should.have.three
+        $('#cube1').should.have.size(10, 10, 10)
+        $('#cube2').should.have.size(20, 20, 20)
+        $('#cube3').should.have.size(30, 30, 30)
+    </script>
+</test>
+
+<test title="cube foreach named">
+    <craftml-group id="top">
+        <script>
+            $params.ss = [1, 2, 3]
+        </script>
+        <cube repeat="s in ss" t="scale {{ s }}" id="cube{{s}}" />
+    </craftml-group>
+    <script>
+        $('cube').should.have.three
+        $('#cube1').should.have.size(10, 10, 10)
+        $('#cube2').should.have.size(20, 20, 20)
+        $('#cube3').should.have.size(30, 30, 30)        
+    </script>
+</test>

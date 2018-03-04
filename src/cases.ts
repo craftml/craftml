@@ -50,7 +50,8 @@ const cases = {
     logic: {
         repeat: null,
         params: null,
-        foreach: null
+        foreach: null,
+        directives: null
     },
     module: {
         inline: null,

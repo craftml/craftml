@@ -18,6 +18,10 @@ declare namespace JSX {
         'craftml-repeat': {
             n: number
         },
+        'craftml-foreach': {
+            iterator: string,            
+            iterable: string
+        },
         'craftml-module': {
             name: string
         },

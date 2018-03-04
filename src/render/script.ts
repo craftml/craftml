@@ -56,7 +56,13 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
         // $root: root
      }
 
-    const code = domNode.children ? domNode.children[0].data : ''
+    let code
+    if (domNode.children && domNode.children[0]) {
+        code = domNode.children[0].data
+    } else {
+        code = ''
+    }
+    // const code = domNode.children ? domNode.children[0].data : ''
     
     const stmts = localFunctionStatements(locals)
 
@@ -76,7 +82,7 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
       } catch (err) {
     
         // tslint:disable-next-line:no-console
-        // console.error(err.message)  
+        console.error(err.message)  
 
         node = node.pushError(err) 
         yield commit(node)

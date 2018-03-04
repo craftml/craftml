@@ -1,6 +1,6 @@
 import { DomNode } from '../dom'
 import Node from '../node'
-import { update, refresh, parentOf } from './effects'
+import { update, refresh, parentOf, render } from './effects'
 
 import * as t from 'io-ts'
 
@@ -20,13 +20,23 @@ export default function createRenderer<T extends object>(def: RendererDefinition
 
     return function* (node: Node, props: T, domNode: DomNode): {} {
 
-        yield renderNode(def, node, props, domNode)
+        const repeat: number | string = props.repeat
 
-        return
+        if (repeat && node.tagName !== 'craftml-foreach') {            
+
+            const wrapped = logic_directives(node, repeat, domNode)        
+            yield render(node, wrapped)
+
+        } else {
+
+            yield renderNode(def, node, props, domNode)
+        }
+        
     }
 }
 
 import resolve from './resolve'
+import logic_directives from './logic/directives'
 
 const htmlPropTypes = t.interface({
     id: t.string,

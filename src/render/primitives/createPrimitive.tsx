@@ -20,13 +20,6 @@ function wrap_t(component: DomNode, t: string): DomNode {
     return DOM(<craftml-transform t={t}>{component}</craftml-transform>)
 }
 
-function wrap_repeat(component: DomNode, props: { repeat: number | string }) {
-
-    const n = Number(props.repeat) || 1
-
-    return DOM(<craftml-repeat n={n}>{component}</craftml-repeat>)
-}
-
 import createRenderer, { } from '../createRenderer'
 
 type Saga = () => {}
@@ -35,7 +28,7 @@ type GetSaga<T> = (node: Node, props: T, domNode: DomNode) => Saga
 export default function createPrimitive<T extends object>(def: PrimitiveDefinition<T>) {
 
     const commonPropTypes = iots.interface({
-        t: iots.string,
+        t: iots.object, // do not resolve {{ }}
         repeat: iots.string
     })
 
@@ -51,7 +44,7 @@ export default function createPrimitive<T extends object>(def: PrimitiveDefiniti
         
         const geometry = def.getGeometry(geometryProps)
     
-        const dimensions = def.dimensions        
+        const dimensions = def.dimensions
         
         let wrapped: DomNode
         
@@ -81,13 +74,7 @@ export default function createPrimitive<T extends object>(def: PrimitiveDefiniti
         //     // example: https://github.com/OliverJAsh/io-ts-reporters/blob/master/src/index.ts
         //     console.error(PathReporter.report(validation))
         // }
-    
-        wrapped = wrap_repeat(wrapped, props)
-    
-        // console.log('wrapped', wrapped)
-    
-        // yield call(render(nodux.child(0), DOM(wrapped)))
-    
+        
         yield render(node, wrapped)
     }
 
