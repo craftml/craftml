@@ -1,0 +1,51 @@
+<test title="cube 2 stl">
+    <cube t="scale 2"/>
+    <script>        
+        this.saveAs('output/cube.stl')
+    </script>        
+</test>
+
+<test title="row of cubes">
+    <row>
+        <cube/>
+        <cube/>
+        <cube/>
+    </row>
+    <script>        
+        this.saveAs('output/row-of-cubes.stl')
+    </script>        
+</test>
+
+<test title="pyramid">
+    <stack>
+        <cube/>
+        <cube t='scale 2'/>
+        <cube t='scale 3'/>
+        <cube t='scale 4'/>
+        <cube t='scale 5'/>
+        <cube t='scale 6'/>        
+    </stack>
+    <script>        
+        this.saveAs('output/pyramid.stl')
+    </script>        
+</test>
+
+<test title="washer">
+    <g l="center" t="cut #hole">
+        <cylinder/>
+        <cylinder id="hole" t="scale xy 0.5"/>        
+    </g>
+    <script>        
+        this.saveAs('output/washer.stl')
+    </script>        
+ </test>
+
+ <test title="braille tag">
+    <stack>
+        <braille>hello</braille>
+        <cube t="size 50 10 5"/>
+    </stack>
+    <script>        
+        this.saveAs('output/braille-tag.stl')
+    </script>        
+</test>

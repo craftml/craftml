@@ -42,6 +42,14 @@ const getSaga = (node: Node, props: {}, domNode: DomNode) => function*() {
 
         pp() {
             parentNode.pp()
+        },
+
+        toSTLString() {
+            parentNode.toSTLString()
+        },
+
+        saveAs(filename: string) {
+            parentNode.saveAs(filename)
         }
     }
 

@@ -5,6 +5,7 @@ import { createBox, Box } from './box'
 import * as css from '../render/css'
 import * as invariant from 'invariant'
 import { createAdapter } from '../query/createAdapter';
+import { saveAs } from './io'
 
 export { Box }
 
@@ -272,12 +273,7 @@ export default class Node {
         const newState = this._state.update('errors', List<NodeError>(), (l: List<NodeError>) => l.push(err))
         return this.update(newState)
     }
-
-    // translate(x: number, y: number, z: number): Node {
-    //     const m = new Matrix4().makeTranslation(x, y, z)
-    //     return this.applyMatrix(m)
-    // }
-
+    
     // src, dest must be a descendent of this node
     copyDescendent(src: Node, dest: Node): Node {
 
@@ -296,6 +292,13 @@ export default class Node {
     updateContext(updater: (c: NodeContext) => NodeContext): Node {
         const newState = this._state.update('context', new NodeContext(), updater)
         return this.update(newState)
+    }
+
+    // 
+    // io
+    //     
+    saveAs(filename: string) {
+        saveAs(this, filename)
     }
 
     // 
@@ -422,6 +425,7 @@ function computeStyleFromCssRules(rules: css.CssRule[], parentStyle: {}) {
     // console.log('computedStyle', computedStyle)
     return computedStyle
 }
+
 
 // ref: https://www.typescriptlang.org/docs/handbook/mixins.html
 // tslint:disable-next-line:no-any

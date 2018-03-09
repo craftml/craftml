@@ -60,6 +60,9 @@ const cases = {
     },
     content: {
         basic: null
+    },
+    export: {
+        stl: null
     }
 }
 
