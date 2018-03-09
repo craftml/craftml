@@ -1,5 +1,14 @@
-#
+# CraftML
 
+## API
+
+```javascript
+import * as craftml from 'craftml'
+
+const model = await craftml.render('<cube/>')
+model.saveAs('cube.stl)
+
+```
 
 ## Notes
 
