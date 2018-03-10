@@ -33,18 +33,21 @@ const reducer = (state: Node, action: RootAction) => {
 const sagaMiddleware = createSagaMiddleware()
 
 import render from './render'
-// import Node from './node'
+import { Map } from 'immutable'
 
 interface RenderAction {
     payload: {
-        dom: DomNode
+        dom: DomNode,
+        params: object
     }
 }
 
 function* handleRenderRequest(action: RenderAction) {
 
     const dom = action.payload.dom
+    const params = action.payload.params
     let root = Node.createRoot()
+    root = root.updateContext(ctx => ctx.setParams(Map(params)))
     yield render(root, dom)
 }
 
@@ -57,7 +60,7 @@ function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function renderAsync(dom: DomNode) {
+export async function renderAsync(dom: DomNode, params: object = {}) {
 
     const store = createStore(
         reducer,
@@ -65,7 +68,7 @@ export async function renderAsync(dom: DomNode) {
     )
     sagaMiddleware.run(engineSaga)
     // console.log('renderAysnc')
-    store.dispatch({ type: 'RENDER_REQUEST', payload: { dom } })
+    store.dispatch({ type: 'RENDER_REQUEST', payload: { dom, params } })
 
     // poll every 100 seconds
     let status = ''
@@ -90,7 +93,7 @@ import parse from './parse'
 
 export default class Engine {
 
-    public async render(input: string | DomNode) {
+    public async render(input: string | DomNode, params: object = {}) {
 
         let dom
         if (typeof input === 'string') {
@@ -104,7 +107,7 @@ export default class Engine {
             dom = input
         }
 
-        return await renderAsync(dom)
+        return await renderAsync(dom, params)
     }
 
 }

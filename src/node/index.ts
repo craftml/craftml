@@ -168,6 +168,10 @@ export default class Node {
         return query(this)
     }
 
+    get should() {
+        return query(this)(this).should
+    }
+
     get status(): string {
         return this._state.get('status', 'unknown') as string
     }

@@ -16,7 +16,7 @@ declare namespace JSX {
             l: string
         },
         'craftml-repeat': {
-            n: number
+            n: number | string,
         },
         'craftml-foreach': {
             iterator: string,            

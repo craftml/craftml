@@ -60,13 +60,18 @@ export default function logic_directives(node: Node, repeat: number | string , c
                             {restComponent}
                         </craftml-foreach>
                     </craftml-group>)
-            }
+            } 
 
         }
+        //  else {
+            
+        //     return DOM(<craftml-repeat n={repeat}>{restComponent}</craftml-repeat>)
+
+        // }
         
     }
 
-    const n = Number(repeat) || 1
+    // const n = Number(repeat) || 1
     
-    return DOM(<craftml-repeat n={n}>{restComponent}</craftml-repeat>)
+    return DOM(<craftml-repeat n={repeat}>{restComponent}</craftml-repeat>)
 }

@@ -6,9 +6,13 @@ import { createAdapter } from './createAdapter'
 import * as _ from 'lodash'
 import { Vector3 } from 'three'
 
+// export function expect(node: Node) {
+//     return query(node)(node)
+// }
+
 export default function query(node: Node, $params?: {}) {
 
-    let queryFunction = (arg: string) => {
+    let queryFunction = (arg: string | Node) => {
 
         // return new Query(arg, queryContext, root, setState, getState, $params)
         // console.log('initialNodeState', initialNodeState)
@@ -16,11 +20,15 @@ export default function query(node: Node, $params?: {}) {
         return new Query(arg, [node], node)
     }
 
-    // queryFunction.should = should()
+    // queryFunction.should = queryFunction(node).should
     return queryFunction
 }
 
-export type Selector = string
+// export namespace query {
+//     export function should
+// }
+
+export type Selector = string | Node
 export type Selection = Node[]
 
 export class Query {
@@ -29,15 +37,22 @@ export class Query {
     private _topNode: Node
 
     constructor(selector: Selector, context: Selection = [], topNode: Node) {
+
         this._topNode = topNode
-        this._selection = this._find(selector, context)
-        if (selector === 'craftml-geometry') {
-            // _.forEach(context, n => {
-            //     console.log('n', n.tagName)
-            //     n.pp()
-            // })
-            // console.log('selection', selector, this._selection)                 
+
+        if (typeof selector === 'string') {            
+            this._selection = this._find(selector, context)
+        } else {
+            this._selection = [selector]
         }
+
+        // if (selector === 'craftml-geometry') {
+        //     // _.forEach(context, n => {
+        //     //     console.log('n', n.tagName)
+        //     //     n.pp()
+        //     // })
+        //     // console.log('selection', selector, this._selection)                 
+        // }
 
     }
 

@@ -1,18 +1,32 @@
 import * as craftml from './api'
 
+// tslint:disable:no-unused-expression
 describe('api', async () => {
 
-  it('render', async () => {
+    describe('render', async () => {
 
-    const model = await craftml.render('<cube/>')
-    model.pp()
+        it('simple cube', async () => {
 
-  })
+            const model = await craftml.render('<cube/>')
+            model.should.have.size(10, 10, 10)
+        })
+    
+        it('params repeat', async () => {
+    
+            const params = { s: 5 }
+            const model = await craftml.render('<row><cube repeat="{{5}}"/></row>', params)
+                        
+            model.$('cube').should.have.five            
+        })
+    
+        it('params t', async () => {
+    
+            const params = { s: 2 }
+            const model = await craftml.render('<cube t="scale {{s}}"/>', params)
 
-  it('render with params', async () => {
+            model.should.have.size(20, 20, 20)
+        })
 
-    await craftml.render('<cube/>')
-
-})
+    })
 
 })
