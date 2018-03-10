@@ -1,6 +1,41 @@
 # CraftML
 
+- written in TypeScript
+- no dependency on csg.js
+- no dependency on openjsacd
+
+## Roadmap
+
+Remaing features that need to be re-implemented
+[ ] div
+[ ] h1, h2, h3, h4, h5
+[ ] text using different fonts
+[ ] circle
+[ ] triangle
+[ ] flip
+[ ] clip
+[ ] fit
+[ ] mutating a model inside a <script> tag
+
+New features
+TBD
+
 ## API
+
+### commonjs
+
+```javascript
+var craftml = require('craftml')
+
+// render <cube/> into a model object
+craftml.render('<cube/>')
+    .then(model => {
+        // save the model as 'cube.stl'
+        model.saveAs('cube.stl')
+    })
+```
+
+### TypeScript
 
 Render
 
@@ -28,9 +63,3 @@ const model = await craftml.render('<row><cube repeat="{{s}}"/></row>', params)
 // save the model as 'cube.stl'
 model.saveAs('row-of-cube.stl')
 ```
-
-
-
-## Notes
-
-https://stackoverflow.com/questions/34622598/typescript-importing-from-libraries-written-in-es5-vs-es6

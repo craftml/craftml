@@ -17,7 +17,7 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "declaration": false
+    "declaration": true
   },
   "exclude": [
     "node_modules",
@@ -26,6 +26,7 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts"
+    "src/setupTests.ts",
+    "examples"
   ]
 }

@@ -1,12 +1,10 @@
 {
-  "name": "craftml-engine",
-  "version": "0.1.0",
+  "name": "@craftml/engine",
+  "version": "2.0.0-alpha",
   "private": true,
+  "main": "build/dist/api.js",
+  "types": "build/dist/api.d.ts",
   "dependencies": {
-    "@types/chalk": "^2.2.0",
-    "@types/invariant": "^2.2.29",
-    "@types/lodash": "^4.14.81",
-    "@types/three": "^0.84.33",
     "ansi-html": "^0.0.7",
     "axios": "^0.17.1",
     "chalk": "^2.3.0",
@@ -34,6 +32,10 @@
     "stories": "node build/dist/bin/generateStories.js > ../viewer/src/stories.json"
   },
   "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/invariant": "^2.2.29",
+    "@types/lodash": "^4.14.81",
+    "@types/three": "^0.84.33",
     "@types/jest": "^21.1.5",
     "@types/node": "^8.0.47",
     "@types/react": "^15.5.6",

@@ -5,7 +5,7 @@ const CSSselect = require('css-select')
 import { createAdapter } from './createAdapter'
 import * as _ from 'lodash'
 import { Vector3 } from 'three'
-
+// import { ChainableMethod } from './assert'
 // export function expect(node: Node) {
 //     return query(node)(node)
 // }

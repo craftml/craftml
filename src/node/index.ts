@@ -4,7 +4,8 @@ import { Geometry } from 'three'
 import { createBox, Box } from './box'
 import * as css from '../render/css'
 import * as invariant from 'invariant'
-import { createAdapter } from '../query/createAdapter';
+import { createAdapter } from '../query/createAdapter'
+import { ChainableMethod } from '../query/assert'
 import { saveAs } from './io'
 
 export { Box }
@@ -429,7 +430,6 @@ function computeStyleFromCssRules(rules: css.CssRule[], parentStyle: {}) {
     // console.log('computedStyle', computedStyle)
     return computedStyle
 }
-
 
 // ref: https://www.typescriptlang.org/docs/handbook/mixins.html
 // tslint:disable-next-line:no-any
