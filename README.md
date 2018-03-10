@@ -6,23 +6,6 @@
 - no dependency on csg.js
 - no dependency on openjscad
 
-## Roadmap
-
-Remaining features to implement:
-[ ] div
-[ ] h1, h2, h3, h4, h5
-[ ] text using different fonts
-[ ] circle
-[ ] triangle
-[ ] flip
-[ ] clip
-[ ] fit
-[ ] import from local file systems
-[ ] mutating a model inside a <script> tag
-
-New features:
-TBD
-
 ## API
 
 ### commonjs
@@ -67,5 +50,19 @@ const model = await craftml.render('<row><cube repeat="{{s}}"/></row>', params)
 model.saveAs('row-of-cube.stl')
 ```
 
+## Roadmap
 
+Remaining features to implement:
+[ ] div
+[ ] h1, h2, h3, h4, h5
+[ ] text using different fonts
+[ ] circle
+[ ] triangle
+[ ] flip
+[ ] clip
+[ ] fit
+[ ] import from local file systems
+[ ] mutating a model inside a <script> tag
 
+New features:
+TBD
