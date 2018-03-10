@@ -1,12 +1,14 @@
 # CraftML
 
+2.0 Beta
+
 - written in TypeScript
 - no dependency on csg.js
-- no dependency on openjsacd
+- no dependency on openjscad
 
 ## Roadmap
 
-Remaing features that need to be re-implemented
+Remaining features to implement:
 [ ] div
 [ ] h1, h2, h3, h4, h5
 [ ] text using different fonts
@@ -15,9 +17,10 @@ Remaing features that need to be re-implemented
 [ ] flip
 [ ] clip
 [ ] fit
+[ ] import from local file systems
 [ ] mutating a model inside a <script> tag
 
-New features
+New features:
 TBD
 
 ## API
@@ -63,3 +66,6 @@ const model = await craftml.render('<row><cube repeat="{{s}}"/></row>', params)
 // save the model as 'cube.stl'
 model.saveAs('row-of-cube.stl')
 ```
+
+
+

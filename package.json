@@ -1,9 +1,12 @@
 {
-  "name": "@craftml/engine",
+  "name": "craftml",
   "version": "2.0.0-alpha",
   "private": true,
   "main": "build/dist/api.js",
   "types": "build/dist/api.d.ts",
+  "files": [
+    "build/dist"
+  ],
   "dependencies": {
     "ansi-html": "^0.0.7",
     "axios": "^0.17.1",
