@@ -512,6 +512,12 @@ export default function bitmap(char: string) {
             1, 0,
             0, 0
         ]);
+	} else if (char == 'Й'){ // russian
+        return letter ([
+            1, 1,
+            1, 0,
+            1, 1
+        ]);
 	} else if (char == 'К'){ // russian
         return letter ([
             1, 0,
