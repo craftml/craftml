@@ -452,6 +452,204 @@ export default function bitmap(char: string) {
             0, 0,
             0, 0
         ]);
+	} else if (char == 'А'){ // russian
+        return letter ([
+            1, 0,
+            0, 0,
+            0, 0
+        ]);
+	} else if (char == 'Б'){ // russian
+        return letter ([
+            1, 0,
+            1, 0,
+            0, 0
+        ]);
+	} else if (char == 'В'){ // russian
+        return letter ([
+            0, 1,
+            1, 1,
+            0, 1
+        ]);
+	} else if (char == 'Г'){ // russian
+        return letter ([
+            1, 1,
+            1, 1,
+            0, 0
+        ]);
+	} else if (char == 'Д'){ // russian
+        return letter ([
+            1, 1,
+            0, 1,
+            0, 0
+        ]);
+	} else if (char == 'Е'){ // russian
+        return letter ([
+            1, 0,
+            0, 1,
+            0, 0
+        ]);
+	} else if (char == 'Ё'){ // russian
+        return letter ([
+            1, 0,
+            0, 0,
+            0, 1
+        ]);
+	} else if (char == 'Ж'){ // russian
+        return letter ([
+            0, 1,
+            1, 1,
+            0, 0
+        ]);
+	} else if (char == 'З'){ // russian
+        return letter ([
+            1, 0,
+            0, 1,
+            1, 1
+        ]);
+	} else if (char == 'И'){ // russian
+        return letter ([
+            0, 1,
+            1, 0,
+            0, 0
+        ]);
+	} else if (char == 'Й'){ // russian
+        return letter ([
+            1, 1,
+            1, 0,
+            1, 1
+        ]);
+	} else if (char == 'К'){ // russian
+        return letter ([
+            1, 0,
+            0, 0,
+            1, 0
+        ]);
+	} else if (char == 'Л'){ // russian
+        return letter ([
+            1, 0,
+            1, 0,
+            1, 0
+        ]);
+	} else if (char == 'М'){ // russian
+        return letter ([
+            1, 1,
+            0, 0,
+            1, 0
+        ]);
+	} else if (char == 'Н'){ // russian
+        return letter ([
+            1, 1,
+            0, 1,
+            1, 0
+        ]);
+	} else if (char == 'О'){ // russian
+        return letter ([
+            1, 0,
+            0, 1,
+            1, 0
+        ]);
+	} else if (char == 'П'){ // russian
+        return letter ([
+            1, 1,
+            1, 0,
+            1, 0
+        ]);
+	} else if (char == 'Р'){ // russian
+        return letter ([
+            1, 0,
+            1, 1,
+            1, 0
+        ]);
+	} else if (char == 'С'){ // russian
+        return letter ([
+            0, 1,
+            1, 0,
+            1, 0
+        ]);
+	} else if (char == 'Т'){ // russian
+        return letter ([
+            0, 1,
+            1, 1,
+            1, 0
+        ]);
+	} else if (char == 'У'){ // russian
+        return letter ([
+            1, 0,
+            0, 0,
+            1, 1
+        ]);
+	} else if (char == 'Ф'){ // russian
+        return letter ([
+            1, 1,
+            1, 0,
+            0, 0
+        ]);
+	} else if (char == 'Х'){ // russian
+        return letter ([
+            1, 0,
+            1, 1,
+            0, 0
+        ]);
+	} else if (char == 'Ц'){ // russian
+        return letter ([
+            1, 1,
+            0, 0,
+            0, 0
+        ]);
+	} else if (char == 'Ч'){ // russian
+        return letter ([
+            1, 1,
+            1, 1,
+            1, 0
+        ]);
+	} else if (char == 'Ш'){ // russian
+        return letter ([
+            1, 0,
+            0, 1,
+            0, 1
+        ]);
+	} else if (char == 'Щ'){ // russian
+        return letter ([
+            1, 1,
+            0, 0,
+            1, 1
+        ]);
+	} else if (char == 'Ъ'){ // russian
+        return letter ([
+            1, 0,
+            1, 1,
+            1, 1
+        ]);
+	} else if (char == 'Ы'){ // russian
+        return letter ([
+            0, 1,
+            1, 0,
+            1, 1
+        ]);
+	} else if (char == 'Ь'){ // russian
+        return letter ([
+            0, 1,
+            1, 1,
+            1, 1
+        ]);
+	} else if (char == 'Э'){ // russian
+        return letter ([
+            0, 1,
+            1, 0,
+            0, 1
+        ]);
+	} else if (char == 'Ю'){ // russian
+        return letter ([
+            1, 0,
+            1, 1,
+            0, 1
+        ]);
+	} else if (char == 'Я'){ // russian
+        return letter ([
+            1, 1,
+            1, 0,
+            0, 1
+        ]);
     } else {
         // console.log('Invalid Character: ', char);
         return letter([0, 0, 0, 0, 0, 0])
